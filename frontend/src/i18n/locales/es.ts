@@ -1037,4 +1037,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "blogGen.retry": "Retry",
   "blogGen.viewDraft": "View Draft",
   "blogGen.scores.framework": "Framework",
+
+  // Floating contact QR widget
+  "contactQR.pillLabel": "Agrégame en WeChat",
+  "contactQR.heading": "Conectar en WeChat",
+  "contactQR.subheading": "Escanea el QR con WeChat para escribirnos directamente.",
+  "contactQR.imageAlt": "Código QR de contacto en WeChat",
+  "contactQR.close": "Cerrar",
 };

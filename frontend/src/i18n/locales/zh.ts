@@ -1880,4 +1880,11 @@ export const zh: Partial<Record<TranslationKey, string>> = {
   "reports.snapshotNoActions": "暂未提取到明确下一步。请打开下方报告查看完整内容。",
   "monitors.addAnotherTitle": "持续扩大监控覆盖",
   "monitors.addAnotherDesc": "可以继续为这个项目添加新的 URL、语言或监控频率。",
+
+  // Floating contact QR widget
+  "contactQR.pillLabel": "加我微信",
+  "contactQR.heading": "扫码加我微信",
+  "contactQR.subheading": "用微信扫码即可与我们直接沟通。",
+  "contactQR.imageAlt": "微信联系二维码",
+  "contactQR.close": "关闭",
 };

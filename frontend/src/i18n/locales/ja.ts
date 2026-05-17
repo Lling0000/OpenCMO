@@ -1100,4 +1100,11 @@ export const ja: Partial<Record<TranslationKey, string>> = {
   "blogGen.retry": "Retry",
   "blogGen.viewDraft": "View Draft",
   "blogGen.scores.framework": "Framework",
+
+  // Floating contact QR widget
+  "contactQR.pillLabel": "WeChatで追加",
+  "contactQR.heading": "WeChatで連絡",
+  "contactQR.subheading": "WeChatでQRをスキャンすると、すぐにメッセージを送れます。",
+  "contactQR.imageAlt": "WeChat連絡QRコード",
+  "contactQR.close": "閉じる",
 };
