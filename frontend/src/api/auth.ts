@@ -10,6 +10,21 @@ export interface AuthPayload {
   usage: AccountUsage;
 }
 
+export interface SignupResponse {
+  ok: boolean;
+  needs_verification: boolean;
+  user_id: number;
+  email: string;
+  dev_mode?: boolean;
+}
+
+export interface ResendCodeResponse {
+  ok: boolean;
+  dev_mode?: boolean;
+  error?: string;
+  retry_after_seconds?: number;
+}
+
 export function getMe(): Promise<AuthPayload | { authenticated: false }> {
   return apiJson<AuthPayload | { authenticated: false }>("/auth/me");
 }
@@ -18,8 +33,9 @@ export function signup(data: {
   email: string;
   password: string;
   name?: string;
-}): Promise<AuthPayload> {
-  return apiJson<AuthPayload>("/auth/signup", {
+  locale?: string;
+}): Promise<SignupResponse> {
+  return apiJson<SignupResponse>("/auth/signup", {
     method: "POST",
     body: JSON.stringify(data),
   });
@@ -30,6 +46,26 @@ export function login(data: {
   password: string;
 }): Promise<AuthPayload> {
   return apiJson<AuthPayload>("/auth/login", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function verifyEmail(data: {
+  user_id: number;
+  code: string;
+}): Promise<AuthPayload> {
+  return apiJson<AuthPayload>("/auth/verify-email", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function resendVerificationCode(data: {
+  user_id: number;
+  locale?: string;
+}): Promise<ResendCodeResponse> {
+  return apiJson<ResendCodeResponse>("/auth/resend-code", {
     method: "POST",
     body: JSON.stringify(data),
   });

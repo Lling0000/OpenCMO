@@ -1354,12 +1354,23 @@ class _AuthSignupRequest(BaseModel):
     email: str = Field(..., min_length=5, max_length=254)
     password: str = Field(..., min_length=8, max_length=4096)
     name: str = Field("", max_length=120)
+    locale: str = Field("en", max_length=8)
 
 
 class _AuthLoginRequest(BaseModel):
     email: str | None = Field(None, min_length=5, max_length=254)
     password: str | None = Field(None, min_length=1, max_length=4096)
     token: str | None = Field(None, min_length=1, max_length=4096)
+
+
+class _AuthVerifyEmailRequest(BaseModel):
+    user_id: int = Field(..., ge=1)
+    code: str = Field(..., min_length=6, max_length=12)
+
+
+class _AuthResendCodeRequest(BaseModel):
+    user_id: int = Field(..., ge=1)
+    locale: str = Field("en", max_length=8)
 
 
 def _env_positive_int(name: str, default: int) -> int:
@@ -1454,7 +1465,21 @@ async def api_v1_auth_signup(payload: _AuthSignupRequest, request: Request):
     except ValueError as exc:
         status_code = 409 if str(exc) == "email_exists" else 400
         return JSONResponse({"ok": False, "error": str(exc)}, status_code=status_code)
-    return await _json_with_session(request, user, account, status_code=201)
+
+    # Issue a verification code and email it. The session cookie is not set
+    # until the user confirms the code via /api/v1/auth/verify-email.
+    code = await storage.create_verification_code(user["id"], purpose="signup")
+    send_result = await _send_verification_email(user["email"], code, payload.locale)
+    return JSONResponse(
+        {
+            "ok": True,
+            "needs_verification": True,
+            "user_id": user["id"],
+            "email": user["email"],
+            "dev_mode": bool(send_result.get("dev_mode")),
+        },
+        status_code=201,
+    )
 
 
 @app.post("/api/v1/auth/login")
@@ -1473,7 +1498,104 @@ async def api_v1_auth_login(payload: _AuthLoginRequest, request: Request):
     if authenticated is None:
         return JSONResponse({"ok": False, "error": "invalid_credentials"}, status_code=401)
     user, account = authenticated
+    if not await storage.is_user_verified(user["id"]):
+        return JSONResponse(
+            {
+                "ok": False,
+                "error": "email_not_verified",
+                "user_id": user["id"],
+                "email": user["email"],
+            },
+            status_code=403,
+        )
     return await _json_with_session(request, user, account)
+
+
+async def _send_verification_email(email: str, code: str, locale: str) -> dict:
+    """Wrapper that swallows errors so signup/resend can always respond fast."""
+    from opencmo.tools.email_verification import send_verification_code
+
+    try:
+        return await send_verification_code(email, code, locale)
+    except Exception as exc:  # pragma: no cover - defensive: SMTP libs throw
+        logger.exception("verification email send failed for %s: %s", email, exc)
+        return {"ok": False, "error": str(exc)}
+
+
+@app.post("/api/v1/auth/verify-email")
+async def api_v1_auth_verify_email(payload: _AuthVerifyEmailRequest, request: Request):
+    user = await storage.get_user_by_id(payload.user_id)
+    if user is None:
+        return JSONResponse({"ok": False, "error": "user_not_found"}, status_code=404)
+
+    if await storage.is_user_verified(payload.user_id):
+        # Idempotent: already verified -> just sign them in.
+        account = await storage.get_user_account(payload.user_id)
+        if account is None or account["status"] != "active":
+            return JSONResponse({"ok": False, "error": "account_unavailable"}, status_code=403)
+        return await _json_with_session(request, user, account)
+
+    result = await storage.consume_verification_code(payload.user_id, payload.code, purpose="signup")
+    if not result.get("ok"):
+        error = result.get("error", "code_invalid")
+        status_code = 429 if error == "code_locked" else 400
+        return JSONResponse(
+            {
+                "ok": False,
+                "error": error,
+                "remaining_attempts": int(result.get("remaining_attempts", 0)),
+            },
+            status_code=status_code,
+        )
+
+    await storage.mark_user_verified(payload.user_id)
+    refreshed = await storage.get_user_by_id(payload.user_id)
+    account = await storage.get_user_account(payload.user_id)
+    if refreshed is None or account is None:
+        return JSONResponse({"ok": False, "error": "account_unavailable"}, status_code=500)
+    return await _json_with_session(request, refreshed, account)
+
+
+@app.post("/api/v1/auth/resend-code")
+async def api_v1_auth_resend_code(payload: _AuthResendCodeRequest, request: Request):
+    user = await storage.get_user_by_id(payload.user_id)
+    if user is None:
+        return JSONResponse({"ok": False, "error": "user_not_found"}, status_code=404)
+    if await storage.is_user_verified(payload.user_id):
+        return JSONResponse({"ok": False, "error": "already_verified"}, status_code=400)
+
+    # 60s cooldown between sends.
+    last_sent = await storage.last_verification_send_at(payload.user_id, "signup")
+    cooldown = storage.DEFAULT_RESEND_COOLDOWN_SECONDS
+    if last_sent is not None:
+        from datetime import datetime, timezone
+
+        elapsed = (datetime.now(timezone.utc) - last_sent).total_seconds()
+        if elapsed < cooldown:
+            retry_after = max(1, int(cooldown - elapsed))
+            return JSONResponse(
+                {"ok": False, "error": "resend_cooldown", "retry_after_seconds": retry_after},
+                status_code=429,
+                headers={"Retry-After": str(retry_after)},
+            )
+
+    # Hourly send cap.
+    recent = await storage.recent_verification_send_count(payload.user_id, "signup", within_seconds=3600)
+    if recent >= storage.DEFAULT_HOURLY_SEND_LIMIT:
+        return JSONResponse(
+            {"ok": False, "error": "hourly_limit_reached", "retry_after_seconds": 3600},
+            status_code=429,
+            headers={"Retry-After": "3600"},
+        )
+
+    code = await storage.create_verification_code(payload.user_id, purpose="signup")
+    send_result = await _send_verification_email(user["email"], code, payload.locale)
+    return JSONResponse(
+        {
+            "ok": True,
+            "dev_mode": bool(send_result.get("dev_mode")),
+        }
+    )
 
 
 @app.post("/api/v1/auth/logout")

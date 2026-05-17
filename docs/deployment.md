@@ -87,6 +87,33 @@ location / {
 - Roll back with `git checkout <previous-sha> && docker compose up -d --build`.
 - Verify `/api/v1/health` after every deploy.
 
+## Email Verification (signup codes)
+
+OpenCMO requires every new user to verify their email before the first
+session is issued. The signup endpoint creates the user, issues a 6-digit
+code, emails it, and returns `needs_verification: true` — no session cookie
+is set until the user confirms the code at `/verify-email`.
+
+To deliver real codes in production set the SMTP variables:
+
+```
+OPENCMO_SMTP_HOST=smtp.yourprovider.com
+OPENCMO_SMTP_PORT=587            # 465 for implicit TLS
+OPENCMO_SMTP_USER=postmaster@yourdomain.com
+OPENCMO_SMTP_PASS=<smtp password>
+OPENCMO_SMTP_FROM=hello@aidcmo.com         # optional
+OPENCMO_SMTP_FROM_NAME=OpenCMO             # optional
+```
+
+If `OPENCMO_SMTP_HOST` is unset the sender logs the code to stderr at
+WARNING level so local dev still works — never run a production node in
+that mode.
+
+Schema changes are idempotent (`ALTER TABLE … ADD COLUMN` is wrapped in
+try/except), so no manual SQL is needed: the next service restart adds
+the `users.email_verified_at` column, creates the `email_verifications`
+table, and backfills existing users as verified so they keep logging in.
+
 ## Security Notes
 
 - Never commit `.env`, API keys, SMTP passwords, or `OPENCMO_WEB_TOKEN`.

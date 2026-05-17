@@ -1100,4 +1100,23 @@ export const ja: Partial<Record<TranslationKey, string>> = {
   "blogGen.retry": "Retry",
   "blogGen.viewDraft": "View Draft",
   "blogGen.scores.framework": "Framework",
+
+  // Email verification
+  "verify.title": "メールアドレスの確認",
+  "verify.subtitle": "次のアドレス宛に送信した 6 桁の認証コードを入力してください",
+  "verify.codeLabel": "認証コード",
+  "verify.digitAria": "{{index}} 桁目",
+  "verify.submit": "確認",
+  "verify.resend": "再送信",
+  "verify.resendCountdown": "{{seconds}} 秒後に再送可",
+  "verify.resentInfo": "新しいコードを送信しました。",
+  "verify.errorInvalid": "コードが無効です。もう一度入力してください。",
+  "verify.errorInvalidRemaining": "コードが無効です。残り {{remaining}} 回試せます。",
+  "verify.errorExpired": "コードの有効期限が切れました。新しいコードを発行してください。",
+  "verify.errorLocked": "試行回数が上限に達しました。新しいコードを発行してください。",
+  "verify.errorNoPending": "有効なコードがありません。新しいコードを発行してください。",
+  "verify.errorRateLimited": "しばらく待ってから再度お試しください。",
+  "verify.errorGeneric": "問題が発生しました。もう一度お試しください。",
+  "verify.missingUser": "確認情報が不足しています",
+  "verify.missingUserBody": "もう一度サインアップしてコードを取得してください。",
 };

@@ -275,6 +275,18 @@ from opencmo.storage.site_stats import (
     increment_site_counter,
 )
 
+# --- Email verification codes ---
+from opencmo.storage.verifications import (
+    DEFAULT_RESEND_COOLDOWN_SECONDS,
+    DEFAULT_HOURLY_SEND_LIMIT,
+    consume_code as consume_verification_code,
+    create_code as create_verification_code,
+    is_user_verified,
+    last_send_at as last_verification_send_at,
+    mark_user_verified,
+    recent_send_count as recent_verification_send_count,
+)
+
 # --- Waitlist (hosted version signups) ---
 from opencmo.storage.waitlist import (
     add_to_waitlist,
@@ -361,6 +373,11 @@ __all__ = [
     "get_site_counter", "increment_site_counter",
     # waitlist
     "add_to_waitlist", "count_waitlist", "is_valid_email",
+    # email verification codes
+    "DEFAULT_RESEND_COOLDOWN_SECONDS", "DEFAULT_HOURLY_SEND_LIMIT",
+    "consume_verification_code", "create_verification_code",
+    "is_user_verified", "last_verification_send_at",
+    "mark_user_verified", "recent_verification_send_count",
     # github stats cache
     "get_cached_github_stats", "set_cached_github_stats",
     # approvals

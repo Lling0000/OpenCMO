@@ -18,6 +18,19 @@ import opencmo.web.app as web_app
 from opencmo.web.app import app
 
 
+_CAPTURED_VERIFICATION_CODES: list[dict] = []
+
+
+async def _stub_send_mail(to: str, subject: str, html: str, text: str | None = None) -> dict:
+    """Capture the 6-digit code so trial tests can complete signup via verify."""
+    import re
+
+    haystack = text or html
+    match = re.search(r"\b(\d{6})\b", haystack)
+    _CAPTURED_VERIFICATION_CODES.append({"to": to, "code": match.group(1) if match else ""})
+    return {"ok": True}
+
+
 @pytest.fixture
 def trial_db(tmp_path, monkeypatch):
     monkeypatch.setenv("OPENCMO_REQUIRE_SESSION_AUTH", "1")
@@ -26,18 +39,43 @@ def trial_db(tmp_path, monkeypatch):
     monkeypatch.setenv("OPENCMO_ADMIN_EMAIL", "admin@example.test")
     db_path = tmp_path / "trial.db"
     web_app._AUTH_RATE_BUCKETS.clear()
-    with patch.object(storage, "_DB_PATH", db_path):
+    _CAPTURED_VERIFICATION_CODES.clear()
+    with patch.object(storage, "_DB_PATH", db_path), \
+         patch("opencmo.tools.email_send.send_mail", side_effect=_stub_send_mail), \
+         patch("opencmo.tools.email_verification.send_mail", side_effect=_stub_send_mail):
         yield
     web_app._AUTH_RATE_BUCKETS.clear()
+    _CAPTURED_VERIFICATION_CODES.clear()
+
+
+def _last_code_for(email: str) -> str:
+    for entry in reversed(_CAPTURED_VERIFICATION_CODES):
+        if entry["to"] == email and entry["code"]:
+            return entry["code"]
+    raise AssertionError(f"no captured code for {email}")
 
 
 def _signup(client: TestClient, email: str, password: str = "password123") -> dict:
+    """Sign up and immediately verify, returning the post-verify auth payload.
+
+    This keeps the rest of the trial-platform suite working under the new
+    signup -> verify-email flow without rewriting every test.
+    """
     resp = client.post(
         "/api/v1/auth/signup",
         json={"email": email, "password": password, "name": email.split("@", 1)[0]},
     )
     assert resp.status_code == 201, resp.text
-    payload = resp.json()
+    signup_payload = resp.json()
+    assert signup_payload.get("needs_verification") is True
+    user_id = signup_payload["user_id"]
+    code = _last_code_for(email)
+    verify = client.post(
+        "/api/v1/auth/verify-email",
+        json={"user_id": user_id, "code": code},
+    )
+    assert verify.status_code == 200, verify.text
+    payload = verify.json()
     assert payload["authenticated"] is True
     return payload
 
@@ -221,7 +259,11 @@ def test_legacy_project_global_unique_is_reconciled(tmp_path, monkeypatch):
         db.commit()
 
     web_app._AUTH_RATE_BUCKETS.clear()
-    with patch.object(storage, "_DB_PATH", db_path), patch.object(storage, "_SCHEMA_READY_FOR", None):
+    _CAPTURED_VERIFICATION_CODES.clear()
+    with patch.object(storage, "_DB_PATH", db_path), \
+         patch.object(storage, "_SCHEMA_READY_FOR", None), \
+         patch("opencmo.tools.email_send.send_mail", side_effect=_stub_send_mail), \
+         patch("opencmo.tools.email_verification.send_mail", side_effect=_stub_send_mail):
         with TestClient(app) as client:
             account_a = _signup(client, "tenant-a@example.test")["account"]["id"]
             cookie_a = client.cookies.get("opencmo_session")

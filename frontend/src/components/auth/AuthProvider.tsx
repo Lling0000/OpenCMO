@@ -9,6 +9,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import * as authApi from "../../api/auth";
 import type { AccountUsage, AuthAccount, AuthUser } from "../../types";
 
+export type SignupOutcome =
+  | { ok: true; needsVerification: true; userId: number; email: string }
+  | { ok: false; error?: string };
+
+export type LoginOutcome =
+  | { ok: true }
+  | { ok: false; error?: string; userId?: number; email?: string };
+
 export interface AuthContextValue {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -16,8 +24,10 @@ export interface AuthContextValue {
   user: AuthUser | null;
   account: AuthAccount | null;
   usage: AccountUsage | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  signup: (email: string, password: string, name?: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<LoginOutcome>;
+  signup: (email: string, password: string, name?: string, locale?: string) => Promise<SignupOutcome>;
+  verifyEmail: (userId: number, code: string) => Promise<boolean>;
+  applyAuthPayload: (payload: authApi.AuthPayload) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 }
@@ -29,8 +39,10 @@ export const AuthContext = createContext<AuthContextValue>({
   user: null,
   account: null,
   usage: null,
-  login: async () => false,
-  signup: async () => false,
+  login: async () => ({ ok: false }),
+  signup: async () => ({ ok: false }),
+  verifyEmail: async () => false,
+  applyAuthPayload: async () => {},
   logout: async () => {},
   refresh: async () => {},
 });
@@ -79,23 +91,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void refresh();
   }, [refresh]);
 
+  const applyAuthPayload = useCallback(
+    async (payload: authApi.AuthPayload) => {
+      applyPayload(payload);
+      await queryClient.invalidateQueries();
+    },
+    [applyPayload, queryClient],
+  );
+
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string): Promise<LoginOutcome> => {
       try {
-        applyPayload(await authApi.login({ email, password }));
+        const payload = await authApi.login({ email, password });
+        applyPayload(payload);
         await queryClient.invalidateQueries();
-        return true;
-      } catch {
-        return false;
+        return { ok: true };
+      } catch (err) {
+        const apiErr = err as {
+          errorCode?: string;
+          message?: string;
+          payload?: { user_id?: number; email?: string; error?: string };
+        };
+        const code = apiErr?.errorCode ?? apiErr?.payload?.error ?? apiErr?.message ?? "";
+        if (code === "email_not_verified") {
+          return {
+            ok: false,
+            error: "email_not_verified",
+            userId: apiErr.payload?.user_id,
+            email: apiErr.payload?.email,
+          };
+        }
+        return { ok: false, error: code || apiErr?.message };
       }
     },
     [applyPayload, queryClient],
   );
 
   const signup = useCallback(
-    async (email: string, password: string, name?: string) => {
+    async (email: string, password: string, name?: string, locale?: string): Promise<SignupOutcome> => {
       try {
-        applyPayload(await authApi.signup({ email, password, name }));
+        const payload = await authApi.signup({ email, password, name, locale });
+        if (payload.needs_verification) {
+          return {
+            ok: true,
+            needsVerification: true,
+            userId: payload.user_id,
+            email: payload.email,
+          };
+        }
+        // Legacy fallback: server may still return an AuthPayload shape.
+        return { ok: false, error: "unexpected_response" };
+      } catch (err) {
+        const apiErr = err as { message?: string };
+        return { ok: false, error: apiErr?.message };
+      }
+    },
+    [],
+  );
+
+  const verifyEmail = useCallback(
+    async (userId: number, code: string) => {
+      try {
+        const payload = await authApi.verifyEmail({ user_id: userId, code });
+        applyPayload(payload);
         await queryClient.invalidateQueries();
         return true;
       } catch {
@@ -128,6 +186,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         usage,
         login,
         signup,
+        verifyEmail,
+        applyAuthPayload,
         logout,
         refresh,
       }}

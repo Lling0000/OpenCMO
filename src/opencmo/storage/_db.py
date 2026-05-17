@@ -35,9 +35,25 @@ CREATE TABLE IF NOT EXISTS users (
     name TEXT NOT NULL DEFAULT '',
     role TEXT NOT NULL DEFAULT 'user',
     status TEXT NOT NULL DEFAULT 'active',
+    email_verified_at TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     last_login_at TEXT
 );
+
+CREATE TABLE IF NOT EXISTS email_verifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    code_hash TEXT NOT NULL,
+    purpose TEXT NOT NULL DEFAULT 'signup',
+    expires_at TEXT NOT NULL,
+    consumed_at TEXT,
+    attempts INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_email_verifications_user
+ON email_verifications(user_id);
 
 CREATE TABLE IF NOT EXISTS accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -908,6 +924,21 @@ _MIGRATIONS: list[tuple[int, str, list[str]]] = [
         "ALTER TABLE chat_sessions ADD COLUMN account_id INTEGER REFERENCES accounts(id) ON DELETE CASCADE",
         "CREATE INDEX IF NOT EXISTS idx_chat_sessions_account_updated ON chat_sessions(account_id, updated_at DESC)",
     ]),
+    (23, "email verification: per-user codes + verified timestamp", [
+        "ALTER TABLE users ADD COLUMN email_verified_at TEXT",
+        """CREATE TABLE IF NOT EXISTS email_verifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            code_hash TEXT NOT NULL,
+            purpose TEXT NOT NULL DEFAULT 'signup',
+            expires_at TEXT NOT NULL,
+            consumed_at TEXT,
+            attempts INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )""",
+        "CREATE INDEX IF NOT EXISTS idx_email_verifications_user ON email_verifications(user_id)",
+    ]),
 ]
 
 _LATEST_VERSION = _MIGRATIONS[-1][0]
@@ -1006,6 +1037,7 @@ async def _reconcile_required_columns(db: aiosqlite.Connection) -> None:
             "account_id": "ALTER TABLE chat_sessions ADD COLUMN account_id INTEGER REFERENCES accounts(id) ON DELETE CASCADE",
         },
         "competitors": {"aliases": "ALTER TABLE competitors ADD COLUMN aliases TEXT NOT NULL DEFAULT '[]'"},
+        "users": {"email_verified_at": "ALTER TABLE users ADD COLUMN email_verified_at TEXT"},
     }
 
     for table_name, columns in required_columns.items():
@@ -1080,6 +1112,38 @@ async def _ensure_project_account_uniqueness(db: aiosqlite.Connection) -> None:
         raise
     finally:
         await db.execute("PRAGMA foreign_keys=ON")
+
+
+async def _backfill_email_verified(db: aiosqlite.Connection) -> None:
+    """Mark pre-existing users as verified so they keep working after rollout.
+
+    Runs once per process startup. Uses ``email_verified_at IS NULL`` as the
+    only filter — once a user has been backfilled they will never match again,
+    and brand-new signups (created after this runs) will be picked up only on
+    the next boot, which is fine because they will go through the proper
+    verify-email flow before they ever try to log in.
+    """
+    try:
+        cursor = await db.execute(
+            "SELECT COUNT(*) FROM users WHERE email_verified_at IS NULL"
+        )
+        row = await cursor.fetchone()
+        pending = int(row[0] or 0) if row else 0
+    except Exception as exc:
+        logger.debug("email backfill skipped (count): %s", exc)
+        return
+
+    if pending == 0:
+        return
+
+    try:
+        await db.execute(
+            "UPDATE users SET email_verified_at = datetime('now') "
+            "WHERE email_verified_at IS NULL"
+        )
+        logger.info("Backfilled %d existing users as email_verified.", pending)
+    except Exception as exc:
+        logger.debug("email backfill skipped (update): %s", exc)
 
 
 async def _ensure_admin_account(db: aiosqlite.Connection) -> None:
@@ -1200,6 +1264,7 @@ async def ensure_db() -> None:
             await _ensure_project_account_uniqueness(db)
             await _ensure_platform_indexes(db)
             await _ensure_admin_account(db)
+            await _backfill_email_verified(db)
             await _ensure_dedupe_indexes(db)
             await _ensure_report_locale_indexes(db)
             await db.commit()

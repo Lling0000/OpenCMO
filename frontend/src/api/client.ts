@@ -6,6 +6,8 @@ const PUBLIC_BYOK_PATHS = new Set([
   "/auth/logout",
   "/auth/me",
   "/auth/signup",
+  "/auth/verify-email",
+  "/auth/resend-code",
   "/github-stats",
   "/health",
   "/site/stats",
@@ -53,7 +55,12 @@ export async function apiJson<T>(
   const resp = await apiFetch(path, init);
   if (!resp.ok) {
     const body = await resp.json().catch(() => ({}));
-    throw new ApiError(resp.status, getApiErrorMessage(body, resp.statusText), body.error_code);
+    throw new ApiError(
+      resp.status,
+      getApiErrorMessage(body, resp.statusText),
+      body.error_code ?? body.error,
+      body,
+    );
   }
   return resp.json() as Promise<T>;
 }
@@ -98,6 +105,7 @@ export class ApiError extends Error {
     public status: number,
     message: string,
     public errorCode?: string,
+    public payload?: unknown,
   ) {
     super(message);
     this.name = "ApiError";

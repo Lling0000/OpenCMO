@@ -5,7 +5,7 @@ import { useAuth } from "../components/auth/useAuth";
 import { useI18n } from "../i18n";
 
 export function SignupPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const auth = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -25,10 +25,19 @@ export function SignupPage() {
     event.preventDefault();
     setError("");
     setLoading(true);
-    const ok = await auth.signup(email, password, name);
+    const result = await auth.signup(email, password, name, locale);
     setLoading(false);
-    if (!ok) {
+    if (!result.ok) {
       setError(t("trial.authError"));
+      return;
+    }
+    if (result.needsVerification) {
+      const verifyParams = new URLSearchParams({
+        user_id: String(result.userId),
+        email: result.email,
+      });
+      if (next && next !== "/console") verifyParams.set("next", next);
+      navigate(`/verify-email?${verifyParams.toString()}`, { replace: true });
       return;
     }
     navigate(next, { replace: true });

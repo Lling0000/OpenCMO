@@ -3,9 +3,10 @@ import { Link, Navigate, useNavigate, useSearchParams } from "react-router";
 import { ArrowRight, Lock, Mail } from "lucide-react";
 import { useAuth } from "../components/auth/useAuth";
 import { useI18n } from "../i18n";
+import { resendVerificationCode } from "../api/auth";
 
 export function LoginPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const auth = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -24,13 +25,24 @@ export function LoginPage() {
     event.preventDefault();
     setError("");
     setLoading(true);
-    const ok = await auth.login(email, password);
+    const result = await auth.login(email, password);
     setLoading(false);
-    if (!ok) {
-      setError(t("trial.authError"));
+    if (result.ok) {
+      navigate(next, { replace: true });
       return;
     }
-    navigate(next, { replace: true });
+    if (result.error === "email_not_verified" && result.userId) {
+      const verifyParams = new URLSearchParams({
+        user_id: String(result.userId),
+        email: result.email ?? email,
+      });
+      if (next && next !== "/console") verifyParams.set("next", next);
+      // Trigger a fresh code so the user does not have to hunt for the old one.
+      void resendVerificationCode({ user_id: result.userId, locale }).catch(() => undefined);
+      navigate(`/verify-email?${verifyParams.toString()}`, { replace: true });
+      return;
+    }
+    setError(t("trial.authError"));
   };
 
   return (

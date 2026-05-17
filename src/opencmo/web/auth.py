@@ -18,6 +18,8 @@ PUBLIC_API_PATHS = frozenset({
     "/api/v1/auth/login",
     "/api/v1/auth/logout",
     "/api/v1/auth/me",
+    "/api/v1/auth/verify-email",
+    "/api/v1/auth/resend-code",
     "/api/v1/github-stats",
     "/api/v1/health",
     "/api/v1/site/stats",

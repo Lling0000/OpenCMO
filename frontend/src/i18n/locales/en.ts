@@ -83,6 +83,25 @@ export const en = {
   "trial.usageEvents": "Usage events",
   "trial.noUsageEvents": "No usage events in the latest window.",
 
+  // Email verification
+  "verify.title": "Verify your email",
+  "verify.subtitle": "Enter the 6-digit code we sent to",
+  "verify.codeLabel": "Verification code",
+  "verify.digitAria": "Digit {{index}}",
+  "verify.submit": "Verify",
+  "verify.resend": "Resend code",
+  "verify.resendCountdown": "Resend in {{seconds}}s",
+  "verify.resentInfo": "A new code is on the way.",
+  "verify.errorInvalid": "That code is not valid. Please try again.",
+  "verify.errorInvalidRemaining": "That code is not valid. {{remaining}} attempt(s) left.",
+  "verify.errorExpired": "Your code expired. Request a new one to continue.",
+  "verify.errorLocked": "Too many wrong attempts. Request a new code to continue.",
+  "verify.errorNoPending": "No active code. Request a new one to continue.",
+  "verify.errorRateLimited": "Please wait before requesting another code.",
+  "verify.errorGeneric": "Something went wrong. Please try again.",
+  "verify.missingUser": "Missing verification context",
+  "verify.missingUserBody": "Start the signup flow again to receive a fresh code.",
+
   // Dashboard
   "dashboard.title": "AI CMO Console",
   "dashboard.newMonitor": "New Monitor",

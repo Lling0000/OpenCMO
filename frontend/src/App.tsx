@@ -8,6 +8,7 @@ import { ServicesPage } from "./pages/ServicesPage";
 import { HostedWaitlistPage } from "./pages/HostedWaitlistPage";
 import { SignupPage } from "./pages/SignupPage";
 import { LoginPage } from "./pages/LoginPage";
+import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { AdminPage } from "./pages/AdminPage";
 import { BlogPage } from "./pages/BlogPage";
 import { BlogArticlePage } from "./pages/BlogArticlePage";
@@ -113,6 +114,7 @@ function AppRoutes() {
       <Route path="/zh/hosted" element={<LocalizedPublicPage locale="zh"><HostedWaitlistPage /></LocalizedPublicPage>} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/open-source" element={<PublicServicePage kind="open-source" />} />
       <Route path="/en/open-source" element={localizedService("en", "open-source")} />
       <Route path="/zh/open-source" element={localizedService("zh", "open-source")} />

@@ -1880,4 +1880,23 @@ export const zh: Partial<Record<TranslationKey, string>> = {
   "reports.snapshotNoActions": "暂未提取到明确下一步。请打开下方报告查看完整内容。",
   "monitors.addAnotherTitle": "持续扩大监控覆盖",
   "monitors.addAnotherDesc": "可以继续为这个项目添加新的 URL、语言或监控频率。",
+
+  // Email verification
+  "verify.title": "验证邮箱",
+  "verify.subtitle": "请输入我们发送至以下邮箱的 6 位验证码",
+  "verify.codeLabel": "验证码",
+  "verify.digitAria": "第 {{index}} 位",
+  "verify.submit": "验证",
+  "verify.resend": "重新发送",
+  "verify.resendCountdown": "{{seconds}} 秒后可重发",
+  "verify.resentInfo": "新的验证码已发送。",
+  "verify.errorInvalid": "验证码无效，请重新输入。",
+  "verify.errorInvalidRemaining": "验证码无效，还可再尝试 {{remaining}} 次。",
+  "verify.errorExpired": "验证码已过期，请重新发送一份。",
+  "verify.errorLocked": "尝试次数过多，请重新发送验证码。",
+  "verify.errorNoPending": "没有待验证的验证码，请重新发送。",
+  "verify.errorRateLimited": "请稍候再请求新的验证码。",
+  "verify.errorGeneric": "出错了，请稍后再试。",
+  "verify.missingUser": "缺少验证上下文",
+  "verify.missingUserBody": "请重新走一遍注册流程以获取新的验证码。",
 };

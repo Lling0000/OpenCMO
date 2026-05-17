@@ -1,37 +1,45 @@
-"""Email report — sends persisted AI CMO reports via SMTP."""
+"""Email report — sends persisted AI CMO reports via the shared SMTP sender."""
 
 from __future__ import annotations
 
 import logging
 import re
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 from agents import function_tool
+
+from opencmo.tools.email_send import send_mail
 
 logger = logging.getLogger(__name__)
 _REPORT_ASSET_RELATIVE_SRC_RE = re.compile(r'(<img\b[^>]*\bsrc=)(["\'])(/api/v1/report-assets/[a-f0-9]{32}\.svg)(\2)', re.IGNORECASE)
 
 
-def _get_smtp_config() -> dict | None:
-    """Read SMTP config from env/ContextVar. Returns None if any required var is missing."""
+def _get_report_recipient() -> str | None:
     from opencmo import llm
 
-    host = llm.get_key("OPENCMO_SMTP_HOST")
-    port = llm.get_key("OPENCMO_SMTP_PORT")
-    user = llm.get_key("OPENCMO_SMTP_USER")
-    password = llm.get_key("OPENCMO_SMTP_PASS")
-    recipient = llm.get_key("OPENCMO_REPORT_EMAIL")
+    recipient = llm.get_key("OPENCMO_REPORT_EMAIL") or llm.get_key("OPENCMO_SMTP_USER")
+    return str(recipient).strip() if recipient else None
 
-    if not all([host, port, user, password, recipient]):
+
+def _get_smtp_config() -> dict | None:
+    """Backward-compatible accessor for SMTP + recipient bundled together.
+
+    Returns ``None`` when SMTP credentials *or* the report recipient are
+    missing, so legacy callers that pre-checked this dict still get the same
+    short-circuit behaviour.
+    """
+    from opencmo.tools.email_send import _smtp_config
+
+    base = _smtp_config()
+    if base is None:
         return None
-
+    recipient = _get_report_recipient()
+    if not recipient:
+        return None
     return {
-        "host": host,
-        "port": int(port),
-        "user": user,
-        "password": password,
+        "host": base["host"],
+        "port": base["port"],
+        "user": base["user"],
+        "password": base["password"],
         "recipient": recipient,
     }
 
@@ -62,9 +70,9 @@ async def send_report_impl(project_id: int, *, locale: str = "zh") -> dict:
     from opencmo import storage
 
     locale = storage.normalize_report_locale(locale)
-    config = _get_smtp_config()
-    if not config:
-        return {"ok": False, "error": "SMTP not configured"}
+    recipient = _get_report_recipient()
+    if not recipient:
+        return {"ok": False, "error": "OPENCMO_REPORT_EMAIL not configured"}
 
     project = await storage.get_project(project_id)
     if not project:
@@ -80,35 +88,31 @@ async def send_report_impl(project_id: int, *, locale: str = "zh") -> dict:
         return {"ok": False, "error": "Latest weekly report is unavailable"}
 
     html = _make_report_asset_urls_absolute(report.get("content_html") or f"<pre>{report.get('content', '')}</pre>")
+    subject = f"OpenCMO Weekly Brief: {project['brand_name']}"
+    title_header = (
+        report.get("content", "").splitlines()[0].lstrip("# ").strip()
+        if report.get("content")
+        else "Weekly Brief"
+    ) or "Weekly Brief"
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"OpenCMO Weekly Brief: {project['brand_name']}"
-    msg["From"] = config["user"]
-    msg["To"] = config["recipient"]
-    msg["X-OpenCMO-Report-Title"] = report.get("content", "").splitlines()[0].lstrip("# ").strip() or "Weekly Brief"
-    msg.attach(MIMEText(html, "html"))
+    result = await send_mail(
+        recipient,
+        subject,
+        html,
+        headers={"X-OpenCMO-Report-Title": title_header},
+    )
+    if not result.get("ok"):
+        return {"ok": False, "error": result.get("error", "send_failed")}
 
-    try:
-        port = config["port"]
-        if port == 465:
-            with smtplib.SMTP_SSL(config["host"], port, timeout=30) as server:
-                server.login(config["user"], config["password"])
-                server.send_message(msg)
-        else:
-            with smtplib.SMTP(config["host"], port, timeout=30) as server:
-                server.starttls()
-                server.login(config["user"], config["password"])
-                server.send_message(msg)
-        return {
-            "ok": True,
-            "recipient": config["recipient"],
-            "report_id": report["id"],
-            "kind": report["kind"],
-            "audience": report["audience"],
-            "locale": report.get("locale", locale),
-        }
-    except Exception as exc:
-        return {"ok": False, "error": str(exc)}
+    return {
+        "ok": True,
+        "recipient": recipient,
+        "report_id": report["id"],
+        "kind": report["kind"],
+        "audience": report["audience"],
+        "locale": report.get("locale", locale),
+        "dev_mode": bool(result.get("dev_mode")),
+    }
 
 
 @function_tool

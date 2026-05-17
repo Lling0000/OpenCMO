@@ -1037,4 +1037,23 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "blogGen.retry": "Retry",
   "blogGen.viewDraft": "View Draft",
   "blogGen.scores.framework": "Framework",
+
+  // Email verification
+  "verify.title": "Verifica tu correo",
+  "verify.subtitle": "Introduce el código de 6 dígitos que enviamos a",
+  "verify.codeLabel": "Código de verificación",
+  "verify.digitAria": "Dígito {{index}}",
+  "verify.submit": "Verificar",
+  "verify.resend": "Reenviar código",
+  "verify.resendCountdown": "Reenviar en {{seconds}} s",
+  "verify.resentInfo": "Hemos enviado un nuevo código.",
+  "verify.errorInvalid": "Código no válido. Inténtalo de nuevo.",
+  "verify.errorInvalidRemaining": "Código no válido. Te quedan {{remaining}} intento(s).",
+  "verify.errorExpired": "El código ha caducado. Solicita uno nuevo.",
+  "verify.errorLocked": "Demasiados intentos. Solicita un código nuevo.",
+  "verify.errorNoPending": "No hay código activo. Solicita uno nuevo.",
+  "verify.errorRateLimited": "Espera antes de pedir otro código.",
+  "verify.errorGeneric": "Algo salió mal. Inténtalo de nuevo.",
+  "verify.missingUser": "Falta contexto de verificación",
+  "verify.missingUserBody": "Vuelve a registrarte para recibir un código nuevo.",
 };

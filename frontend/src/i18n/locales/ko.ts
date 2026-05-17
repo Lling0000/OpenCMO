@@ -1037,4 +1037,23 @@ export const ko: Partial<Record<TranslationKey, string>> = {
   "blogGen.retry": "Retry",
   "blogGen.viewDraft": "View Draft",
   "blogGen.scores.framework": "Framework",
+
+  // Email verification
+  "verify.title": "이메일 인증",
+  "verify.subtitle": "다음 주소로 보낸 6자리 인증 코드를 입력하세요",
+  "verify.codeLabel": "인증 코드",
+  "verify.digitAria": "{{index}}번째 자리",
+  "verify.submit": "확인",
+  "verify.resend": "코드 재전송",
+  "verify.resendCountdown": "{{seconds}}초 후 재전송",
+  "verify.resentInfo": "새 코드를 전송했습니다.",
+  "verify.errorInvalid": "잘못된 코드입니다. 다시 시도해 주세요.",
+  "verify.errorInvalidRemaining": "잘못된 코드입니다. {{remaining}}회 더 시도할 수 있습니다.",
+  "verify.errorExpired": "코드가 만료되었습니다. 새 코드를 요청해 주세요.",
+  "verify.errorLocked": "시도 횟수를 초과했습니다. 새 코드를 요청해 주세요.",
+  "verify.errorNoPending": "활성화된 코드가 없습니다. 새 코드를 요청해 주세요.",
+  "verify.errorRateLimited": "잠시 후 다시 요청해 주세요.",
+  "verify.errorGeneric": "문제가 발생했습니다. 다시 시도해 주세요.",
+  "verify.missingUser": "인증 정보가 없습니다",
+  "verify.missingUserBody": "새 코드를 받으려면 다시 가입해 주세요.",
 };
