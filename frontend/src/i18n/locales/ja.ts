@@ -1119,4 +1119,10 @@ export const ja: Partial<Record<TranslationKey, string>> = {
   "verify.errorGeneric": "問題が発生しました。もう一度お試しください。",
   "verify.missingUser": "確認情報が不足しています",
   "verify.missingUserBody": "もう一度サインアップしてコードを取得してください。",
+  // Floating contact QR widget
+  "contactQR.pillLabel": "WeChatで追加",
+  "contactQR.heading": "WeChatで連絡",
+  "contactQR.subheading": "WeChatでQRをスキャンすると、すぐにメッセージを送れます。",
+  "contactQR.imageAlt": "WeChat連絡QRコード",
+  "contactQR.close": "閉じる",
 };

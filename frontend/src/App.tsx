@@ -1,7 +1,9 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { BrowserRouter, Navigate, Routes, Route, useLocation } from "react-router";
 import { AppShell } from "./components/layout/AppShell";
+import { FloatingContactQR } from "./components/FloatingContactQR";
 import { PublicLocaleSync } from "./components/marketing/PublicLocaleSync";
+import { isPublicRoutePath } from "./utils/publicRoutes";
 import { LandingPage } from "./pages/LandingPage";
 import { PublicServicePage, type PublicServicePageKind } from "./pages/PublicServicePage";
 import { ServicesPage } from "./pages/ServicesPage";
@@ -94,6 +96,12 @@ function RequireAuth({ children, adminOnly = false }: { children: ReactNode; adm
   return children;
 }
 
+function PublicFloatingWidgets() {
+  const location = useLocation();
+  if (!isPublicRoutePath(location.pathname)) return null;
+  return <FloatingContactQR />;
+}
+
 function AppRoutes() {
   const localizedService = (locale: "en" | "zh", kind: PublicServicePageKind) => (
     <LocalizedPublicPage locale={locale}>
@@ -171,6 +179,7 @@ export default function App() {
   return (
     <BrowserRouter basename="/">
       <AppRoutes />
+      <PublicFloatingWidgets />
     </BrowserRouter>
   );
 }

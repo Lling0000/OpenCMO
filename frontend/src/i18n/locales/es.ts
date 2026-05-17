@@ -1056,4 +1056,10 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "verify.errorGeneric": "Algo salió mal. Inténtalo de nuevo.",
   "verify.missingUser": "Falta contexto de verificación",
   "verify.missingUserBody": "Vuelve a registrarte para recibir un código nuevo.",
+  // Floating contact QR widget
+  "contactQR.pillLabel": "Agrégame en WeChat",
+  "contactQR.heading": "Conectar en WeChat",
+  "contactQR.subheading": "Escanea el QR con WeChat para escribirnos directamente.",
+  "contactQR.imageAlt": "Código QR de contacto en WeChat",
+  "contactQR.close": "Cerrar",
 };

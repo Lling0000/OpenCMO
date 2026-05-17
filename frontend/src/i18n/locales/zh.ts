@@ -1899,4 +1899,10 @@ export const zh: Partial<Record<TranslationKey, string>> = {
   "verify.errorGeneric": "出错了，请稍后再试。",
   "verify.missingUser": "缺少验证上下文",
   "verify.missingUserBody": "请重新走一遍注册流程以获取新的验证码。",
+  // Floating contact QR widget
+  "contactQR.pillLabel": "加我微信",
+  "contactQR.heading": "扫码加我微信",
+  "contactQR.subheading": "用微信扫码即可与我们直接沟通。",
+  "contactQR.imageAlt": "微信联系二维码",
+  "contactQR.close": "关闭",
 };

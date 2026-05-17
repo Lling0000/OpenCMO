@@ -1056,4 +1056,10 @@ export const ko: Partial<Record<TranslationKey, string>> = {
   "verify.errorGeneric": "문제가 발생했습니다. 다시 시도해 주세요.",
   "verify.missingUser": "인증 정보가 없습니다",
   "verify.missingUserBody": "새 코드를 받으려면 다시 가입해 주세요.",
+  // Floating contact QR widget
+  "contactQR.pillLabel": "위챗으로 추가",
+  "contactQR.heading": "위챗으로 연결하기",
+  "contactQR.subheading": "위챗으로 QR을 스캔하면 바로 메시지를 보낼 수 있어요.",
+  "contactQR.imageAlt": "위챗 연락 QR 코드",
+  "contactQR.close": "닫기",
 };

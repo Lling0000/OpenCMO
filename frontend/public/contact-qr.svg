@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Placeholder contact QR code">
+  <rect width="240" height="240" fill="#ffffff"/>
+
+  <!-- Top-left finder pattern -->
+  <rect x="16" y="16" width="48" height="48" fill="#0f172a"/>
+  <rect x="22" y="22" width="36" height="36" fill="#ffffff"/>
+  <rect x="30" y="30" width="20" height="20" fill="#0f172a"/>
+
+  <!-- Top-right finder pattern -->
+  <rect x="176" y="16" width="48" height="48" fill="#0f172a"/>
+  <rect x="182" y="22" width="36" height="36" fill="#ffffff"/>
+  <rect x="190" y="30" width="20" height="20" fill="#0f172a"/>
+
+  <!-- Bottom-left finder pattern -->
+  <rect x="16" y="176" width="48" height="48" fill="#0f172a"/>
+  <rect x="22" y="182" width="36" height="36" fill="#ffffff"/>
+  <rect x="30" y="190" width="20" height="20" fill="#0f172a"/>
+
+  <!-- Faint noise blocks to evoke a QR pattern -->
+  <g fill="#0f172a" opacity="0.18">
+    <rect x="80" y="24" width="8" height="8"/>
+    <rect x="96" y="24" width="8" height="8"/>
+    <rect x="112" y="32" width="8" height="8"/>
+    <rect x="128" y="24" width="8" height="8"/>
+    <rect x="144" y="32" width="8" height="8"/>
+    <rect x="160" y="24" width="8" height="8"/>
+    <rect x="80" y="40" width="8" height="8"/>
+    <rect x="104" y="48" width="8" height="8"/>
+    <rect x="136" y="48" width="8" height="8"/>
+    <rect x="160" y="48" width="8" height="8"/>
+    <rect x="24" y="80" width="8" height="8"/>
+    <rect x="40" y="88" width="8" height="8"/>
+    <rect x="48" y="104" width="8" height="8"/>
+    <rect x="24" y="120" width="8" height="8"/>
+    <rect x="40" y="136" width="8" height="8"/>
+    <rect x="32" y="152" width="8" height="8"/>
+    <rect x="200" y="80" width="8" height="8"/>
+    <rect x="216" y="96" width="8" height="8"/>
+    <rect x="200" y="112" width="8" height="8"/>
+    <rect x="208" y="136" width="8" height="8"/>
+    <rect x="200" y="160" width="8" height="8"/>
+    <rect x="80" y="200" width="8" height="8"/>
+    <rect x="104" y="208" width="8" height="8"/>
+    <rect x="128" y="200" width="8" height="8"/>
+    <rect x="152" y="208" width="8" height="8"/>
+  </g>
+
+  <!-- Placeholder label in the center -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle" fill="#64748b">
+    <text x="120" y="108" font-size="11" font-weight="700" letter-spacing="0.06em">PLACEHOLDER</text>
+    <text x="120" y="126" font-size="9" letter-spacing="0.04em">REPLACE WITH</text>
+    <text x="120" y="140" font-size="9" letter-spacing="0.04em">REAL WECHAT / QQ</text>
+    <text x="120" y="154" font-size="9" letter-spacing="0.04em">QR CODE</text>
+  </g>
+</svg>
