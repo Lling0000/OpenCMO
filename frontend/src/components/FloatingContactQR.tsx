@@ -13,7 +13,7 @@ import { useI18n } from "../i18n";
 
 const DISMISS_STORAGE_KEY = "contact-qr-dismissed";
 const FADE_IN_DELAY_MS = 1500;
-const QR_ASSET = "/contact-qr.svg";
+const QR_ASSET = "/contact-qr.png";
 
 function readDismissed(): boolean {
   if (typeof window === "undefined") return false;
