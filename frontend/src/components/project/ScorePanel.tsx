@@ -79,11 +79,13 @@ export function ScorePanel({
   previous,
   latestMonitoring,
   projectId,
+  compact = false,
 }: {
   latest: LatestScans;
   previous?: ProjectSummary["previous"];
   latestMonitoring?: MonitoringSummary | null;
   projectId?: number;
+  compact?: boolean;
 }) {
   const { t } = useI18n();
   const [selectedKind, setSelectedKind] = useState<ScoreExplanationKind | null>(null);
@@ -105,7 +107,7 @@ export function ScorePanel({
 
   return (
     <>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className={compact ? "grid gap-3" : "grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"}>
         <ScoreMetricCard
           label={t("score.seoScore")}
           value={seoScore != null ? `${seoScore}%` : t("common.noData")}
