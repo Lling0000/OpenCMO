@@ -186,23 +186,29 @@ class TavilySerpProvider(SerpProvider):
 
     @property
     def is_enabled(self) -> bool:
+        from opencmo.tools.tavily_helper import tavily_available
 
-        from opencmo import llm
-        return bool(llm.get_key("TAVILY_API_KEY"))
+        return tavily_available()
 
     async def check_ranking(
         self, keyword: str, target_domain: str, num_results: int = 20
     ) -> SerpResult:
         try:
-            from opencmo import llm
-            api_key = llm.get_key("TAVILY_API_KEY", "")
-            client = self._get_client(api_key)
-            response = await client.search(query=keyword, max_results=num_results)
-            results = response.get("results", [])
+            from opencmo.tools.tavily_helper import tavily_search
+
+            results = await tavily_search(keyword, max_results=num_results)
+            if results is None:
+                return SerpResult(
+                    position=None,
+                    url_found=None,
+                    total_results=0,
+                    provider=self.name,
+                    error="Tavily unavailable",
+                )
 
             target = target_domain.lower().removeprefix("www.")
             for i, item in enumerate(results):
-                url = item.get("url", "")
+                url = item.url
                 domain = urlparse(url).netloc.lower().removeprefix("www.")
                 if _domain_matches(domain, target):
                     return SerpResult(

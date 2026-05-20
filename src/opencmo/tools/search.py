@@ -16,26 +16,17 @@ async def web_search(query: str) -> str:
     Args:
         query: The search query string.
     """
-    from opencmo import llm
-    if llm.get_key("TAVILY_API_KEY"):
-        try:
-            from tavily import AsyncTavilyClient
+    try:
+        from opencmo.tools.tavily_helper import tavily_search
 
-            client = AsyncTavilyClient()
-            response = await client.search(
-                query=query, max_results=5, search_depth="basic",
-            )
-            results = response.get("results", [])
-            if results:
-                parts = []
-                for r in results:
-                    title = r.get("title", "")
-                    url = r.get("url", "")
-                    content = r.get("content", "")
-                    parts.append(f"### {title}\n{url}\n\n{content}")
-                return "\n\n---\n\n".join(parts)
-        except Exception as exc:
-            logger.debug("Tavily search failed, trying fallback: %s", exc)
+        results = await tavily_search(query, max_results=5, search_depth="basic")
+        if results:
+            parts = []
+            for result in results:
+                parts.append(f"### {result.title}\n{result.url}\n\n{result.snippet}")
+            return "\n\n---\n\n".join(parts)
+    except Exception as exc:
+        logger.debug("Tavily search failed, trying fallback: %s", exc)
 
     # 2. Fallback: OpenAI built-in web search (native provider only)
     from opencmo.config import is_custom_provider

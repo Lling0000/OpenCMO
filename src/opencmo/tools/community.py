@@ -9,7 +9,6 @@ from urllib.parse import urlparse
 
 from agents import function_tool
 
-from opencmo import llm
 from opencmo.tools.browser_pool import browser_slot
 from opencmo.tools.community_providers import (
     PROVIDER_REGISTRY,
@@ -92,7 +91,9 @@ def _render_stub_queries(
 
 
 def _has_tavily() -> bool:
-    return bool(llm.get_key("TAVILY_API_KEY"))
+    from opencmo.tools.tavily_helper import tavily_available
+
+    return tavily_available()
 
 
 def _format_site_query(query: str, domains: list[str]) -> str:
@@ -167,15 +168,17 @@ async def _search_external_platform(
         # Try Tavily first
         if use_tavily:
             try:
-                from tavily import AsyncTavilyClient
-                api_key = llm.get_key("TAVILY_API_KEY")
-                client = AsyncTavilyClient(api_key=api_key)
-                resp = await client.search(
-                    query=_format_site_query(spec.query, domains),
+                from opencmo.tools.tavily_helper import tavily_search
+
+                tavily_results = await tavily_search(
+                    _format_site_query(spec.query, domains),
                     max_results=5,
                     search_depth="basic",
                 )
-                results = resp.get("results", []) if isinstance(resp, dict) else []
+                results = [
+                    {"url": item.url, "title": item.title, "content": item.snippet}
+                    for item in (tavily_results or [])
+                ]
             except Exception as exc:
                 errors.append(f"external {provider_name} {spec.source}: {exc}")
 
