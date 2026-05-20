@@ -191,7 +191,7 @@ async def tavily_search(
     try:
         from tavily import AsyncTavilyClient
 
-        client = AsyncTavilyClient()
+        client = AsyncTavilyClient(api_key=llm.get_key("TAVILY_API_KEY", ""))
         response = await client.search(
             query=query,
             max_results=max_results,
