@@ -50,10 +50,19 @@ def _select_providers(platform_names: list[str] | None) -> tuple[list[GeoProvide
     case_map = {p.name.lower(): p for p in enabled}
     selected: list[GeoProvider] = []
     unknown: list[str] = []
+    seen: set[str] = set()
     for name in platform_names:
-        prov = enabled_by_name.get(name) or case_map.get(name.lower())
+        if not isinstance(name, str):
+            unknown.append(str(name))
+            continue
+        normalized = name.strip()
+        key = normalized.lower()
+        if not normalized or key in seen:
+            continue
+        seen.add(key)
+        prov = enabled_by_name.get(normalized) or case_map.get(key)
         if prov is None:
-            unknown.append(name)
+            unknown.append(normalized)
         else:
             selected.append(prov)
     return selected, unknown
