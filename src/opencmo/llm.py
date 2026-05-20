@@ -63,6 +63,16 @@ _ENV_PRIORITY_KEYS = frozenset({
     "OPENAI_BASE_URL",
     "OPENCMO_MODEL_DEFAULT",
 })
+_ACCOUNT_SCOPED_SECRET_KEYS = frozenset({
+    "REDDIT_CLIENT_ID",
+    "REDDIT_CLIENT_SECRET",
+    "REDDIT_USERNAME",
+    "REDDIT_PASSWORD",
+    "TWITTER_API_KEY",
+    "TWITTER_API_SECRET",
+    "TWITTER_ACCESS_TOKEN",
+    "TWITTER_ACCESS_SECRET",
+})
 
 # ---------------------------------------------------------------------------
 # ContextVar — per-request key isolation (asyncio Task-local)
@@ -178,7 +188,12 @@ def get_key(name: str, default: str | None = None) -> str | None:
     if val:
         return val
 
-    # 3. os.environ
+    # 3. Sensitive account-scoped secrets must fail closed to avoid
+    # cross-account credential bleed through process-global env.
+    if name in _ACCOUNT_SCOPED_SECRET_KEYS:
+        return default
+
+    # 4. os.environ
     val = os.environ.get(name)
     if val:
         return val
@@ -222,13 +237,17 @@ async def get_key_async(name: str, default: str | None = None) -> str | None:
         except Exception:
             pass
 
-    # 4. For core router defaults, prefer env/.env over persisted DB settings.
+    # 4. Sensitive account-scoped secrets must not fall through to system/env.
+    if name in _ACCOUNT_SCOPED_SECRET_KEYS:
+        return default
+
+    # 5. For core router defaults, prefer env/.env over persisted DB settings.
     if name in _ENV_PRIORITY_KEYS:
         val = os.environ.get(name)
         if val:
             return val
 
-    # 5. System fallback (admin account → legacy settings table)
+    # 6. System fallback (admin account → legacy settings table)
     try:
         from opencmo import storage
         val = await storage.get_system_setting(name)
@@ -237,7 +256,7 @@ async def get_key_async(name: str, default: str | None = None) -> str | None:
     except Exception:
         pass  # DB may not be initialized yet
 
-    # 6. os.environ
+    # 7. os.environ
     val = os.environ.get(name)
     if val:
         return val
