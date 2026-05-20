@@ -1529,11 +1529,7 @@ async def api_v1_auth_verify_email(payload: _AuthVerifyEmailRequest, request: Re
         return JSONResponse({"ok": False, "error": "user_not_found"}, status_code=404)
 
     if await storage.is_user_verified(payload.user_id):
-        # Idempotent: already verified -> just sign them in.
-        account = await storage.get_user_account(payload.user_id)
-        if account is None or account["status"] != "active":
-            return JSONResponse({"ok": False, "error": "account_unavailable"}, status_code=403)
-        return await _json_with_session(request, user, account)
+        return JSONResponse({"ok": False, "error": "already_verified"}, status_code=400)
 
     result = await storage.consume_verification_code(payload.user_id, payload.code, purpose="signup")
     if not result.get("ok"):
