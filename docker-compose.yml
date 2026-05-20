@@ -2,7 +2,9 @@ services:
   opencmo:
     build: .
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
+    environment:
+      - OPENCMO_WEB_HOST=0.0.0.0
     volumes:
       - opencmo_data:/data
     env_file:

@@ -21,6 +21,5 @@ RUN playwright install-deps chromium \
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 VOLUME ["/data"]
 ENV OPENCMO_DB_PATH=/data/data.db
-ENV OPENCMO_WEB_HOST=0.0.0.0
 EXPOSE 8080
 CMD ["opencmo-web"]
