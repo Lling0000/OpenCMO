@@ -176,6 +176,23 @@ def test_get_key_async_reads_per_account_via_db_when_snapshot_empty(isolated_db)
     assert value == "alice_db_only"
 
 
+def test_publish_credentials_do_not_fallback_to_env_or_system(isolated_db, monkeypatch):
+    """Tenant-missing publish creds must not resolve from global/system fallbacks."""
+    admin_id = asyncio.run(storage.get_admin_account_id())
+    _, tenant_account = _seed_account(email="tenant@example.test", name="Tenant")
+    asyncio.run(storage.set_account_setting(admin_id, "REDDIT_CLIENT_ID", "admin-cid"))
+    monkeypatch.setenv("REDDIT_CLIENT_ID", "env-cid")
+
+    acct_token = llm.set_current_account_id(tenant_account)
+    snap_token = llm.set_current_account_settings({})
+    try:
+        assert asyncio.run(llm.get_key_async("REDDIT_CLIENT_ID")) is None
+        assert llm.get_key("REDDIT_CLIENT_ID") is None
+    finally:
+        llm.reset_current_account_settings(snap_token)
+        llm.reset_current_account_id(acct_token)
+
+
 # ---------------------------------------------------------------------------
 # System fallback / legacy table
 # ---------------------------------------------------------------------------
