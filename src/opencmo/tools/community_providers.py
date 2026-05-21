@@ -1061,8 +1061,9 @@ class YouTubeProvider(CommunityProvider):
 
     @staticmethod
     def _has_tavily() -> bool:
-        from opencmo import llm
-        return bool(llm.get_key("TAVILY_API_KEY"))
+        from opencmo.tools.tavily_helper import tavily_available
+
+        return tavily_available()
 
     @property
     def is_enabled(self) -> bool:
@@ -1196,19 +1197,17 @@ class YouTubeProvider(CommunityProvider):
 
     async def _search_via_tavily(self, query: str, source: str) -> tuple[list[DiscussionHit], list[str]]:
         try:
-            from tavily import AsyncTavilyClient
-        except ImportError:
-            return [], ["tavily-python not installed"]
-        try:
-            from opencmo import llm
-            api_key = llm.get_key("TAVILY_API_KEY", "")
-            client = AsyncTavilyClient(api_key=api_key)
-            resp = await client.search(
-                query=f"{query} site:youtube.com",
+            from opencmo.tools.tavily_helper import tavily_search
+
+            tavily_results = await tavily_search(
+                f"{query} site:youtube.com",
                 max_results=10,
                 search_depth="basic",
             )
-            results = resp.get("results", []) if isinstance(resp, dict) else []
+            results = [
+                {"url": item.url, "title": item.title, "content": item.snippet}
+                for item in (tavily_results or [])
+            ]
             return self.parse_tavily_results(results, source), []
         except Exception as e:
             return [], [f"tavily youtube {source}: {e}"]
@@ -1465,8 +1464,9 @@ class TwitterProvider(CommunityProvider):
 
     @staticmethod
     def _has_tavily() -> bool:
-        from opencmo import llm
-        return bool(llm.get_key("TAVILY_API_KEY"))
+        from opencmo.tools.tavily_helper import tavily_available
+
+        return tavily_available()
 
     @property
     def is_enabled(self) -> bool:
@@ -1573,20 +1573,17 @@ class TwitterProvider(CommunityProvider):
     async def _search_via_tavily(self, query: str, source: str) -> tuple[list[DiscussionHit], list[str]]:
         errors: list[str] = []
         try:
-            from tavily import AsyncTavilyClient
-        except ImportError:
-            return [], ["tavily-python not installed"]
+            from opencmo.tools.tavily_helper import tavily_search
 
-        try:
-            from opencmo import llm
-            api_key = llm.get_key("TAVILY_API_KEY", "")
-            client = AsyncTavilyClient(api_key=api_key)
-            resp = await client.search(
-                query=f"{query} site:x.com OR site:twitter.com",
+            tavily_results = await tavily_search(
+                f"{query} site:x.com OR site:twitter.com",
                 max_results=10,
                 search_depth="basic",
             )
-            results = resp.get("results", []) if isinstance(resp, dict) else []
+            results = [
+                {"url": item.url, "title": item.title, "content": item.snippet}
+                for item in (tavily_results or [])
+            ]
             return self.parse_tavily_results(results, source), errors
         except Exception as e:
             return [], [f"tavily {source}: {e}"]

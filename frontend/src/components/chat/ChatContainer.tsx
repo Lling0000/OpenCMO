@@ -65,6 +65,7 @@ export function ChatContainer({
   hasMessages,
   projectId,
   projectContext,
+  compact = false,
 }: {
   messages: ChatMessage[];
   isStreaming: boolean;
@@ -73,6 +74,7 @@ export function ChatContainer({
   hasMessages: boolean;
   projectId: number | null;
   projectContext?: ChatProjectContext | null;
+  compact?: boolean;
 }) {
   const { t } = useI18n();
   const projectName = projectContext?.project.brand_name ?? null;
@@ -95,13 +97,16 @@ export function ChatContainer({
                 <ProjectContextCard
                   context={projectContext}
                   onSuggest={(prompt) => sendMessage(prompt)}
+                  compact={compact}
                 />
-                <div className="border-t border-slate-100 pt-6">
-                  <AgentGrid
-                    onSelect={(prompt) => sendMessage(prompt)}
-                    projectName={projectName}
-                  />
-                </div>
+                {!compact && (
+                  <div className="border-t border-slate-100 pt-6">
+                    <AgentGrid
+                      onSelect={(prompt) => sendMessage(prompt)}
+                      projectName={projectName}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <AgentGrid

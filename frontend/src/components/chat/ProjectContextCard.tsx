@@ -63,9 +63,11 @@ function SeverityDot({ severity }: { severity: string }) {
 export function ProjectContextCard({
   context,
   onSuggest,
+  compact = false,
 }: {
   context: ChatProjectContext;
   onSuggest: (prompt: string) => void;
+  compact?: boolean;
 }) {
   const { t } = useI18n();
   const { project, scores, keywords, competitors, keyword_gaps, findings } =
@@ -118,7 +120,7 @@ export function ProjectContextCard({
       </div>
 
       {/* Score cards */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className={compact ? "grid grid-cols-2 gap-3" : "grid grid-cols-2 gap-3 lg:grid-cols-4"}>
         <ScoreCard
           label="SEO"
           value={
@@ -249,7 +251,7 @@ export function ProjectContextCard({
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
           {t("chat.contextQuickStart")}
         </p>
-        <div className="grid grid-cols-2 gap-2">
+        <div className={compact ? "grid gap-2" : "grid grid-cols-2 gap-2"}>
           {suggestions.map((s) => (
             <button
               key={s.label}
