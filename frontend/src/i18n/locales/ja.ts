@@ -1122,10 +1122,10 @@ export const ja: Partial<Record<TranslationKey, string>> = {
   "verify.missingUser": "確認情報が不足しています",
   "verify.missingUserBody": "もう一度サインアップしてコードを取得してください。",
   // Floating contact QR widget
-  "contactQR.pillLabel": "WeChatで追加",
-  "contactQR.heading": "WeChatで連絡",
-  "contactQR.subheading": "WeChatでQRをスキャンすると、すぐにメッセージを送れます。",
-  "contactQR.imageAlt": "WeChat連絡QRコード",
+  "contactQR.pillLabel": "グループに参加",
+  "contactQR.heading": "QRでグループに参加",
+  "contactQR.subheading": "ご質問・ご意見は、WeChatでQRを読み取ってグループにご参加ください。",
+  "contactQR.imageAlt": "OpenCMO WeChatグループQRコード",
   "contactQR.close": "閉じる",
 
   // Unlock custom plan CTA + modal

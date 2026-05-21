@@ -33,6 +33,12 @@
   <p><i>Turn visibility signals into growth decisions from one open-source workspace.</i></p>
 </div>
 
+<div align="center">
+  <h3>Join the OpenCMO community</h3>
+  <img src="assets/community-qr.png" alt="OpenCMO WeChat group QR code" width="240" />
+  <p><i>Questions, ideas, or feedback? Scan with WeChat to join our group chat.</i></p>
+</div>
+
 ---
 
 ## Real Production Examples

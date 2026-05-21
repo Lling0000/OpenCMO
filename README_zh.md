@@ -33,6 +33,12 @@
   <p><i>在一个开源工作区里，把可见性信号变成增长决策。</i></p>
 </div>
 
+<div align="center">
+  <h3>加入 OpenCMO 交流群</h3>
+  <img src="assets/community-qr.png" alt="OpenCMO 微信交流群二维码" width="240" />
+  <p><i>有任何问题、想交流意见?用微信扫码进群沟通。</i></p>
+</div>
+
 ---
 
 ## 真实生产示例

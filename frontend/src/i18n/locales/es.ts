@@ -1059,10 +1059,10 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "verify.missingUser": "Falta contexto de verificación",
   "verify.missingUserBody": "Vuelve a registrarte para recibir un código nuevo.",
   // Floating contact QR widget
-  "contactQR.pillLabel": "Agrégame en WeChat",
-  "contactQR.heading": "Conectar en WeChat",
-  "contactQR.subheading": "Escanea el QR con WeChat para escribirnos directamente.",
-  "contactQR.imageAlt": "Código QR de contacto en WeChat",
+  "contactQR.pillLabel": "Unirse al grupo",
+  "contactQR.heading": "Únete al grupo de OpenCMO",
+  "contactQR.subheading": "¿Preguntas o comentarios? Escanea el QR con WeChat para unirte a nuestro grupo.",
+  "contactQR.imageAlt": "Código QR del grupo de WeChat de OpenCMO",
   "contactQR.close": "Cerrar",
 
   // Unlock custom plan CTA + modal

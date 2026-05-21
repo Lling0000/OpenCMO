@@ -33,6 +33,12 @@
   <p><i>모니터링, 리포트, 승인, 경쟁 맥락을 하나의 화면에서 봅니다.</i></p>
 </div>
 
+<div align="center">
+  <h3>OpenCMO 커뮤니티 참여</h3>
+  <img src="assets/community-qr.png" alt="OpenCMO WeChat 그룹 QR 코드" width="240" />
+  <p><i>질문, 아이디어, 피드백이 있으신가요? WeChat으로 QR을 스캔해 그룹에 참여하세요.</i></p>
+</div>
+
 ---
 
 ## 실제 프로덕션 사례

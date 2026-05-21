@@ -2013,10 +2013,10 @@ export const en = {
   "monitors.addAnotherDesc": "Add another URL, locale, or schedule for this project without leaving the page.",
 
   // Floating contact QR widget
-  "contactQR.pillLabel": "Add me on WeChat",
-  "contactQR.heading": "Scan to connect on WeChat",
-  "contactQR.subheading": "Scan the QR with WeChat to message us directly.",
-  "contactQR.imageAlt": "WeChat contact QR code",
+  "contactQR.pillLabel": "Join our group",
+  "contactQR.heading": "Join the OpenCMO group",
+  "contactQR.subheading": "Questions or feedback? Scan with WeChat to join our group chat.",
+  "contactQR.imageAlt": "OpenCMO WeChat group QR code",
   "contactQR.close": "Close",
 
   // Unlock custom plan CTA + modal
