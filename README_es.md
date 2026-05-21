@@ -33,6 +33,12 @@
   <p><i>Un solo workspace para monitoreo, reportes, aprobaciones y contexto competitivo.</i></p>
 </div>
 
+<div align="center">
+  <h3>Únete a la comunidad de OpenCMO</h3>
+  <img src="assets/community-qr.png" alt="Código QR del grupo de WeChat de OpenCMO" width="240" />
+  <p><i>¿Preguntas, ideas o comentarios? Escanea el QR con WeChat para unirte a nuestro grupo.</i></p>
+</div>
+
 ---
 
 ## Ejemplos de Produccion Reales

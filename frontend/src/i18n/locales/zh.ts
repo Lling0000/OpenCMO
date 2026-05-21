@@ -1991,10 +1991,10 @@ export const zh: Partial<Record<TranslationKey, string>> = {
   "verify.missingUser": "缺少验证上下文",
   "verify.missingUserBody": "请重新走一遍注册流程以获取新的验证码。",
   // Floating contact QR widget
-  "contactQR.pillLabel": "加我微信",
-  "contactQR.heading": "扫码加我微信",
-  "contactQR.subheading": "用微信扫码即可与我们直接沟通。",
-  "contactQR.imageAlt": "微信联系二维码",
+  "contactQR.pillLabel": "进群交流",
+  "contactQR.heading": "扫码进群交流",
+  "contactQR.subheading": "有任何问题、想交流意见?用微信扫码加入我们的群聊。",
+  "contactQR.imageAlt": "OpenCMO 微信交流群二维码",
   "contactQR.close": "关闭",
 
   // Unlock custom plan CTA + modal

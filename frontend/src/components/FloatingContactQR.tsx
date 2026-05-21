@@ -180,14 +180,14 @@ export function FloatingContactQR() {
             <p className="mt-2 text-sm font-semibold leading-5 text-white">
               {t("contactQR.subheading")}
             </p>
-            <div className="mt-4 overflow-hidden rounded-2xl bg-white p-2">
+            <div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-white/10">
               <img
                 src={QR_ASSET}
                 alt={t("contactQR.imageAlt")}
                 width={240}
-                height={240}
+                height={337}
                 loading="lazy"
-                className="block h-[160px] w-full rounded-xl sm:h-[200px]"
+                className="block w-full h-auto"
               />
             </div>
           </div>

@@ -33,6 +33,12 @@
   <p><i>監視、レポート、承認、競合文脈を1つの画面で確認できます。</i></p>
 </div>
 
+<div align="center">
+  <h3>OpenCMO コミュニティに参加</h3>
+  <img src="assets/community-qr.png" alt="OpenCMO WeChat グループQRコード" width="240" />
+  <p><i>ご質問・ご意見・フィードバックは、WeChat でQRを読み取ってグループにご参加ください。</i></p>
+</div>
+
 ---
 
 ## 本番環境の実例
