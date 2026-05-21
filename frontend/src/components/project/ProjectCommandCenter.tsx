@@ -132,7 +132,10 @@ function AgentCard({
 }
 
 function getLatestSerpTimestamp(latest: LatestScans) {
-  const timestamps = latest.serp
+  // Tolerate older/partial payloads where `serp` is missing — without this
+  // fallback the optional-chained `.map` chain blows up and surfaces as a
+  // blank project page.
+  const timestamps = (latest.serp ?? [])
     .map((snapshot) => snapshot.checked_at)
     .filter((value): value is string => Boolean(value))
     .map((value) => utcDate(value).getTime());
@@ -167,7 +170,7 @@ function hasAnyScanData(latest: LatestScans, latestMonitoring?: MonitoringSummar
     latest.seo ||
       latest.geo ||
       latest.community ||
-      latest.serp.length > 0 ||
+      (latest.serp?.length ?? 0) > 0 ||
       latestMonitoring,
   );
 }
