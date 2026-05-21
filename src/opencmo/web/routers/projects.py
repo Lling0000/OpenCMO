@@ -400,8 +400,23 @@ async def api_v1_geo_ask(project_id: int, request: Request):
         return JSONResponse({"error": "query too long (max 500 chars)"}, status_code=400)
 
     platforms = body.get("platforms")
-    if platforms is not None and not isinstance(platforms, list):
-        return JSONResponse({"error": "platforms must be a list of strings"}, status_code=400)
+    if platforms is not None:
+        if not isinstance(platforms, list):
+            return JSONResponse({"error": "platforms must be a list of strings"}, status_code=400)
+        if len(platforms) > 20:
+            return JSONResponse({"error": "platforms too long (max 20 entries)"}, status_code=400)
+        if any(not isinstance(name, str) or not name.strip() for name in platforms):
+            return JSONResponse({"error": "platforms must be a list of non-empty strings"}, status_code=400)
+        # Collapse duplicate provider names (case-insensitive) to prevent fan-out amplification.
+        deduped: list[str] = []
+        seen: set[str] = set()
+        for name in platforms:
+            key = name.strip().lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(name.strip())
+        platforms = deduped
 
     from dataclasses import asdict
 

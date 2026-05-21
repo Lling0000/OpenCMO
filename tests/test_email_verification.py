@@ -205,6 +205,31 @@ def test_verified_user_login_succeeds(verification_db):
         assert login.json()["authenticated"] is True
 
 
+def test_verify_email_already_verified_requires_login_flow(verification_db):
+    with TestClient(app) as client:
+        signup = _signup(client, "already@example.test")
+        user_id = signup["user_id"]
+        code = _last_code_for("already@example.test")
+
+        first = client.post(
+            "/api/v1/auth/verify-email",
+            json={"user_id": user_id, "code": code},
+        )
+        assert first.status_code == 200, first.text
+        assert first.json()["authenticated"] is True
+
+        client.post("/api/v1/auth/logout")
+        client.cookies.clear()
+
+        second = client.post(
+            "/api/v1/auth/verify-email",
+            json={"user_id": user_id, "code": "000000"},
+        )
+        assert second.status_code == 400, second.text
+        assert second.json()["error"] == "already_verified"
+        assert "opencmo_session" not in client.cookies
+
+
 def test_existing_legacy_users_remain_verified_after_backfill(tmp_path, monkeypatch):
     """A user created before this feature should keep working — backfill runs
     once at ensure_db() startup."""

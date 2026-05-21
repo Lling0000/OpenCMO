@@ -201,6 +201,20 @@ def test_select_providers_reports_unknown(stub_registry):
     assert unknown == ["Nope"]
 
 
+
+
+def test_select_providers_deduplicates_case_insensitive(stub_registry):
+    stub_registry.append(_StubProvider("StubA", result=_make_result("StubA")))
+    selected, unknown = _select_providers(["StubA", "stuba", " StubA "])
+    assert [p.name for p in selected] == ["StubA"]
+    assert unknown == []
+
+
+def test_select_providers_non_string_is_unknown(stub_registry):
+    stub_registry.append(_StubProvider("StubA", result=_make_result("StubA")))
+    selected, unknown = _select_providers(["StubA", 123])
+    assert [p.name for p in selected] == ["StubA"]
+    assert unknown == ["123"]
 def test_list_available_platforms_reports_status(stub_registry):
     stub_registry.append(_StubProvider("StubA", result=_make_result("StubA")))
     items = list_available_platforms()
@@ -318,3 +332,39 @@ def test_geo_ask_endpoint_platforms_must_be_list(client):
         json={"query": "hi", "platforms": "not-a-list"},
     )
     assert resp.status_code == 400
+
+
+def test_geo_ask_endpoint_platforms_max_entries(client):
+    pid = _seed_project()
+    resp = client.post(
+        f"/api/v1/projects/{pid}/geo/ask",
+        json={"query": "hi", "platforms": ["Perplexity"] * 21},
+    )
+    assert resp.status_code == 400
+    assert "max 20" in resp.json()["error"]
+
+
+def test_geo_ask_endpoint_platforms_must_be_non_empty_strings(client):
+    pid = _seed_project()
+    resp = client.post(
+        f"/api/v1/projects/{pid}/geo/ask",
+        json={"query": "hi", "platforms": ["Perplexity", "", 123]},
+    )
+    assert resp.status_code == 400
+    assert "non-empty strings" in resp.json()["error"]
+
+
+def test_geo_ask_endpoint_platforms_deduped_before_call(client):
+    pid = _seed_project()
+    fake_response = GeoAskResponse(query="hi", results=[], total_duration_ms=1, query_lang="en")
+    with patch(
+        "opencmo.tools.geo_ask.ask_platforms",
+        new=AsyncMock(return_value=fake_response),
+    ) as ask_mock:
+        resp = client.post(
+            f"/api/v1/projects/{pid}/geo/ask",
+            json={"query": "hi", "platforms": ["Perplexity", "perplexity", "  Perplexity  "]},
+        )
+    assert resp.status_code == 200
+    assert ask_mock.await_count == 1
+    assert ask_mock.await_args.kwargs["platform_names"] == ["Perplexity"]

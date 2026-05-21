@@ -34,57 +34,68 @@ async def test_publish_reddit_no_consent():
 @pytest.mark.asyncio
 async def test_publish_reddit_success(monkeypatch):
     """Real publish with mocked praw."""
-    monkeypatch.setenv("REDDIT_CLIENT_ID", "test_id")
-    monkeypatch.setenv("REDDIT_CLIENT_SECRET", "test_secret")
-    monkeypatch.setenv("REDDIT_USERNAME", "test_user")
-    monkeypatch.setenv("REDDIT_PASSWORD", "test_pass")
+    from opencmo import llm
 
-    import opencmo.tools.publishers as pub
+    token = llm.set_request_keys({
+        "REDDIT_CLIENT_ID": "test_id",
+        "REDDIT_CLIENT_SECRET": "test_secret",
+        "REDDIT_USERNAME": "test_user",
+        "REDDIT_PASSWORD": "test_pass",
+    })
+    try:
+        import opencmo.tools.publishers as pub
 
-    mock_submission = MagicMock()
-    mock_submission.permalink = "/r/test/comments/abc123"
-    mock_submission.id = "abc123"
+        mock_submission = MagicMock()
+        mock_submission.permalink = "/r/test/comments/abc123"
+        mock_submission.id = "abc123"
 
-    mock_sub = MagicMock()
-    mock_sub.submit = MagicMock(return_value=mock_submission)
+        mock_sub = MagicMock()
+        mock_sub.submit = MagicMock(return_value=mock_submission)
 
-    mock_reddit = MagicMock()
-    mock_reddit.subreddit = MagicMock(return_value=mock_sub)
+        mock_reddit = MagicMock()
+        mock_reddit.subreddit = MagicMock(return_value=mock_sub)
 
-    # Create a fake praw module
-    mock_praw = MagicMock()
-    mock_praw.Reddit = MagicMock(return_value=mock_reddit)
+        mock_praw = MagicMock()
+        mock_praw.Reddit = MagicMock(return_value=mock_reddit)
 
-    pub._HAS_PRAW = True
-    monkeypatch.setattr(pub, "praw", mock_praw, raising=False)
+        pub._HAS_PRAW = True
+        monkeypatch.setattr(pub, "praw", mock_praw, raising=False)
 
-    result = await pub.publish_reddit_post_impl("test", "Title", "Body", dry_run=False)
+        result = await pub.publish_reddit_post_impl("test", "Title", "Body", dry_run=False)
 
-    assert result["ok"]
-    assert not result["dry_run"]
-    assert "reddit.com" in result["url"]
+        assert result["ok"]
+        assert not result["dry_run"]
+        assert "reddit.com" in result["url"]
+    finally:
+        llm.reset_request_keys(token)
 
 
 @pytest.mark.asyncio
 async def test_publish_reddit_error(monkeypatch):
     """Reddit API error returns error dict, doesn't raise."""
-    monkeypatch.setenv("REDDIT_CLIENT_ID", "id")
-    monkeypatch.setenv("REDDIT_CLIENT_SECRET", "secret")
-    monkeypatch.setenv("REDDIT_USERNAME", "user")
-    monkeypatch.setenv("REDDIT_PASSWORD", "pass")
+    from opencmo import llm
 
-    import opencmo.tools.publishers as pub
+    token = llm.set_request_keys({
+        "REDDIT_CLIENT_ID": "id",
+        "REDDIT_CLIENT_SECRET": "secret",
+        "REDDIT_USERNAME": "user",
+        "REDDIT_PASSWORD": "pass",
+    })
+    try:
+        import opencmo.tools.publishers as pub
 
-    mock_praw = MagicMock()
-    mock_praw.Reddit = MagicMock(side_effect=Exception("Auth failed"))
+        mock_praw = MagicMock()
+        mock_praw.Reddit = MagicMock(side_effect=Exception("Auth failed"))
 
-    pub._HAS_PRAW = True
-    monkeypatch.setattr(pub, "praw", mock_praw, raising=False)
+        pub._HAS_PRAW = True
+        monkeypatch.setattr(pub, "praw", mock_praw, raising=False)
 
-    result = await pub.publish_reddit_post_impl("test", "T", "B", dry_run=False)
+        result = await pub.publish_reddit_post_impl("test", "T", "B", dry_run=False)
 
-    assert not result["ok"]
-    assert "Auth failed" in result["error"]
+        assert not result["ok"]
+        assert "Auth failed" in result["error"]
+    finally:
+        llm.reset_request_keys(token)
 
 
 @pytest.mark.asyncio
@@ -132,29 +143,35 @@ async def test_publish_tweet_too_long():
 @pytest.mark.asyncio
 async def test_publish_tweet_success(monkeypatch):
     """Real publish with mocked tweepy."""
-    monkeypatch.setenv("TWITTER_API_KEY", "key")
-    monkeypatch.setenv("TWITTER_API_SECRET", "secret")
-    monkeypatch.setenv("TWITTER_ACCESS_TOKEN", "token")
-    monkeypatch.setenv("TWITTER_ACCESS_SECRET", "secret")
+    from opencmo import llm
 
-    import opencmo.tools.publishers as pub
+    token = llm.set_request_keys({
+        "TWITTER_API_KEY": "key",
+        "TWITTER_API_SECRET": "secret",
+        "TWITTER_ACCESS_TOKEN": "token",
+        "TWITTER_ACCESS_SECRET": "secret",
+    })
+    try:
+        import opencmo.tools.publishers as pub
 
-    mock_response = MagicMock()
-    mock_response.data = {"id": "12345"}
+        mock_response = MagicMock()
+        mock_response.data = {"id": "12345"}
 
-    mock_client = MagicMock()
-    mock_client.create_tweet = MagicMock(return_value=mock_response)
+        mock_client = MagicMock()
+        mock_client.create_tweet = MagicMock(return_value=mock_response)
 
-    mock_tweepy = MagicMock()
-    mock_tweepy.Client = MagicMock(return_value=mock_client)
+        mock_tweepy = MagicMock()
+        mock_tweepy.Client = MagicMock(return_value=mock_client)
 
-    pub._HAS_TWEEPY = True
-    monkeypatch.setattr(pub, "tweepy", mock_tweepy, raising=False)
+        pub._HAS_TWEEPY = True
+        monkeypatch.setattr(pub, "tweepy", mock_tweepy, raising=False)
 
-    result = await pub.publish_tweet_impl("Hello!", dry_run=False)
+        result = await pub.publish_tweet_impl("Hello!", dry_run=False)
 
-    assert result["ok"]
-    assert result["tweet_id"] == "12345"
+        assert result["ok"]
+        assert result["tweet_id"] == "12345"
+    finally:
+        llm.reset_request_keys(token)
 
 
 @pytest.mark.asyncio
