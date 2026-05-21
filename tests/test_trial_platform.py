@@ -79,6 +79,47 @@ def _signup(client: TestClient, email: str, password: str = "password123") -> di
     return payload
 
 
+def _seed_admin(client: TestClient, email: str = "admin@example.test", password: str = "password123") -> dict:
+    """Activate the bootstrapped admin user and log in.
+
+    Admin bootstrap inserts a row with password_hash='!unusable'; self-service
+    signup can no longer claim that row (see PR #22), so tests must set the
+    password directly and mark the admin verified before logging in.
+    """
+    from opencmo.storage.accounts import hash_password
+    from opencmo.storage._db import get_db
+
+    async def _activate() -> int:
+        db = await get_db()
+        try:
+            cursor = await db.execute(
+                "SELECT id FROM users WHERE email = ?",
+                (email.lower(),),
+            )
+            row = await cursor.fetchone()
+            assert row is not None, f"admin row not bootstrapped for {email}"
+            user_id = int(row[0])
+            await db.execute(
+                "UPDATE users SET password_hash = ?, status = 'active' WHERE id = ?",
+                (hash_password(password), user_id),
+            )
+            await db.commit()
+            return user_id
+        finally:
+            await db.close()
+
+    user_id = asyncio.run(_activate())
+    asyncio.run(storage.mark_user_verified(user_id))
+    login = client.post(
+        "/api/v1/auth/login",
+        json={"email": email, "password": password},
+    )
+    assert login.status_code == 200, login.text
+    payload = login.json()
+    assert payload["authenticated"] is True
+    return payload
+
+
 def test_signup_login_me_and_logout(trial_db):
     with TestClient(app) as client:
         signup = _signup(client, "user@example.test")
@@ -286,7 +327,7 @@ def test_legacy_project_global_unique_is_reconciled(tmp_path, monkeypatch):
 
 def test_admin_summary_requires_admin(trial_db):
     with TestClient(app) as client:
-        _signup(client, "admin@example.test")
+        _seed_admin(client)
         admin_cookie = client.cookies.get("opencmo_session")
         _signup(client, "normal@example.test")
         user_cookie = client.cookies.get("opencmo_session")
@@ -305,7 +346,7 @@ def test_admin_summary_requires_admin(trial_db):
 
 def test_admin_account_actions_update_and_disable_access(trial_db):
     with TestClient(app) as client:
-        _signup(client, "admin@example.test")
+        _seed_admin(client)
         admin_cookie = client.cookies.get("opencmo_session")
         user_payload = _signup(client, "managed@example.test")
         user_cookie = client.cookies.get("opencmo_session")
