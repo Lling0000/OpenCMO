@@ -86,8 +86,8 @@ def _seed_admin(client: TestClient, email: str = "admin@example.test", password:
     signup can no longer claim that row (see PR #22), so tests must set the
     password directly and mark the admin verified before logging in.
     """
-    from opencmo.storage.accounts import hash_password
     from opencmo.storage._db import get_db
+    from opencmo.storage.accounts import hash_password
 
     async def _activate() -> int:
         db = await get_db()
