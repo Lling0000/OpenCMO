@@ -1892,7 +1892,7 @@ def test_spa_catchall_blog_route_injects_public_metadata(client, tmp_path):
             <meta name="twitter:description" content="home desc" />
           </head>
           <body>
-            <main id="static-site-copy"><h1>Home</h1></main>
+            <main id="static-site-copy" translate="yes"><h1>Home</h1></main>
           </body>
         </html>
         """
@@ -1927,7 +1927,7 @@ def test_spa_catchall_zh_blog_route_injects_localized_metadata(client, tmp_path)
             <script type="application/ld+json">{}</script>
           </head>
           <body>
-            <main id="static-site-copy"><h1>Home</h1></main>
+            <main id="static-site-copy" translate="yes"><h1>Home</h1></main>
           </body>
         </html>
         """
