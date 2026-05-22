@@ -1865,7 +1865,19 @@ async def spa_catchall(request: Request, full_path: str = ""):
         if spa_root in asset.parents and asset.exists() and asset.is_file():
             import mimetypes
             ct = mimetypes.guess_type(str(asset))[0] or "application/octet-stream"
-            return StreamingResponse(open(asset, "rb"), media_type=ct)
+            # Vite emits content-hashed files under assets/ — cache them
+            # forever. Other files (logo, contact-qr, etc.) can be swapped in
+            # place, so keep them revalidated.
+            cache_control = (
+                "public, max-age=31536000, immutable"
+                if full_path.startswith("assets/")
+                else "no-cache"
+            )
+            return StreamingResponse(
+                open(asset, "rb"),
+                media_type=ct,
+                headers={"Cache-Control": cache_control},
+            )
 
     new_visitor_id: str | None = None
     try:
@@ -1880,6 +1892,9 @@ async def spa_catchall(request: Request, full_path: str = ""):
 
     # SPA fallback — always return index.html
     response = HTMLResponse(rendered_html)
+    # The shell references content-hashed assets that change every build, so it
+    # must be revalidated to avoid serving a stale shell (blank page) post-deploy.
+    response.headers["Cache-Control"] = "no-cache"
     if _is_app_surface(full_path):
         response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive, nosnippet"
     if new_visitor_id:
