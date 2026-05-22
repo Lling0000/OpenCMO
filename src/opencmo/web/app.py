@@ -886,9 +886,14 @@ def _replace_metadata(rendered: str, replacements: list[tuple[str, str]]) -> str
 
 
 def _replace_static_site_copy(rendered: str, static_copy: str) -> str:
+    # Match the real element, which carries translate="yes" — NOT the bare
+    # `<main id="static-site-copy">` mentioned inside the head comment. Matching
+    # the comment text would extend `.*?</main>` from inside the comment to the
+    # real </main>, swallowing the closing `-->`, the module <script>, and
+    # <body> — leaving an unterminated comment that blanks the whole page.
     return re.sub(
-        r'<main id="static-site-copy">.*?</main>',
-        static_copy,
+        r'<main id="static-site-copy" translate="yes"[^>]*>.*?</main>',
+        lambda _match: static_copy,
         rendered,
         count=1,
         flags=re.DOTALL,
