@@ -148,8 +148,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Legacy fallback: server may still return an AuthPayload shape.
         return { ok: false, error: "unexpected_response" };
       } catch (err) {
-        const apiErr = err as { message?: string };
-        return { ok: false, error: apiErr?.message };
+        const apiErr = err as {
+          errorCode?: string;
+          message?: string;
+          payload?: { error?: string };
+        };
+        return { ok: false, error: apiErr?.errorCode ?? apiErr?.payload?.error ?? apiErr?.message };
       }
     },
     [applyPayload, queryClient],
