@@ -89,12 +89,21 @@ location / {
 
 ## Email Verification (signup codes)
 
-OpenCMO requires every new user to verify their email before the first
-session is issued. The signup endpoint creates the user, issues a 6-digit
-code, emails it, and returns `needs_verification: true` — no session cookie
-is set until the user confirms the code at `/verify-email`.
+Email verification is disabled by default. New signups receive a session
+immediately, and existing users who have not verified their email are allowed
+to log in and are marked verified during that login.
 
-To deliver real codes in production set the SMTP variables:
+To require email verification again, set:
+
+```
+OPENCMO_EMAIL_VERIFICATION_ENABLED=1
+```
+
+When verification is enabled, the signup endpoint creates the user, issues a
+6-digit code, emails it, and returns `needs_verification: true` — no session
+cookie is set until the user confirms the code at `/verify-email`.
+
+To deliver real codes in production, also set the SMTP variables:
 
 ```
 OPENCMO_SMTP_HOST=smtp.yourprovider.com
@@ -105,9 +114,9 @@ OPENCMO_SMTP_FROM=hello@aidcmo.com         # optional
 OPENCMO_SMTP_FROM_NAME=OpenCMO             # optional
 ```
 
-If `OPENCMO_SMTP_HOST` is unset the sender logs the code to stderr at
-WARNING level so local dev still works — never run a production node in
-that mode.
+If verification is enabled and `OPENCMO_SMTP_HOST` is unset, the sender logs
+the code to stderr at WARNING level so local dev still works — never run a
+production node in that mode.
 
 Schema changes are idempotent (`ALTER TABLE … ADD COLUMN` is wrapped in
 try/except), so no manual SQL is needed: the next service restart adds
