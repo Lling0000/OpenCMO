@@ -1,13 +1,67 @@
+# docker-compose.yml — production deployment for OpenCMO.
+#
+# Designed to slot in behind the existing nginx-on-host TLS terminator:
+# nginx listens on 80/443 (with the aidcmo.com cert) and proxies to
+# 127.0.0.1:8081, which is what this container exposes.
+#
+# Quick reference:
+#   docker compose up -d --build           # build + (re)start
+#   docker compose logs -f opencmo         # tail logs
+#   docker compose down                    # stop (data preserved in ./data)
+#   docker compose pull && docker compose up -d   # if using a registry image
+#
+# Migration from the legacy systemd unit:
+#   1. `systemctl stop opencmo && systemctl disable opencmo`
+#   2. Copy SQLite over: `mkdir -p ./data && cp ~/.opencmo/data.db ./data/`
+#      (or bind-mount ~/.opencmo at /data — see the alt mount below)
+#   3. `docker compose up -d --build`
+#   4. Rollback: `docker compose down && systemctl enable --now opencmo`
+
 services:
   opencmo:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: opencmo:latest
+    container_name: opencmo
+
+    # Bind to localhost only — nginx-on-host proxies in. Never expose
+    # the container port directly to the internet.
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8081:8081"
+
+    # Persistent state. Bind mount (not named volume) so the user can
+    # `cp ./data/data.db backup.db` from the host without docker tooling.
+    # If migrating from systemd, swap this for: ${HOME}/.opencmo:/data
     volumes:
-      - opencmo_data:/data
+      - ./data:/data
+
+    # All secrets and provider config flow through .env on the host.
     env_file:
       - .env
+
+    # Belt and suspenders: respect any port override from .env, but
+    # the Dockerfile default of 8081 already matches nginx.
+    environment:
+      OPENCMO_WEB_HOST: "0.0.0.0"
+      OPENCMO_WEB_PORT: "8081"
+
     restart: unless-stopped
 
-volumes:
-  opencmo_data:
+    # Surface the container's own healthcheck to docker so `docker ps`
+    # shows (healthy)/(unhealthy) and `restart: unless-stopped` kicks in
+    # if uvicorn wedges.
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8081/api/v1/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+    # Cap log volume — uvicorn is chatty under load and the default
+    # json-file driver has no rotation, which has bitten servers before.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

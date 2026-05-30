@@ -127,41 +127,59 @@ When optimizing report generation or other LLM-heavy workflows:
 - **Nginx security headers**: `Strict-Transport-Security` + `X-Frame-Options: DENY` configured in `aidcmo.conf`.
 - **Port allocation**: Do not assume production app port is `8080`. `8080` is occupied by `sub2api` on `newyork`; OpenCMO uses `8081`.
 - **BWG role**: `BWG` is no longer the primary OpenCMO host. Treat it as a lightweight box, temporary reverse proxy, or fallback node unless explicitly re-promoted.
-- **Browser-backed scans**: SEO/context fallback paths use `crawl4ai`/Playwright. Fresh servers need browser binaries installed, or scans will fail with `BrowserType.launch` executable errors.
+- **Browser-backed scans**: SEO/context fallback paths use `crawl4ai`/Playwright. The Docker image installs the Chromium binary during build (`playwright install --with-deps chromium`), so containers work out of the box. For the legacy systemd path, fresh servers need `playwright install chromium` manually or scans fail with `BrowserType.launch` executable errors.
+- **Deployment**: Production runs in Docker. The host runs `docker compose up -d` from `/opt/OpenCMO`; the legacy systemd unit (`opencmo.service`) is disabled but left in place for rollback. See `docs/DOCKER.md` for the full migration story.
+- **Local testing**: Don't `npm run dev` / `opencmo-web` locally for verification. The user's laptop is not the deployment target and the local environment doesn't mirror production. Verify on `newyork` via SSH + curl. Local `npm run build` and `pytest` are fine (no runtime dependency on prod topology).
 
 ## Deployment (newyork — aidcmo.com)
 
-### Deploy frontend assets to New York
+### Default path: Docker
 
 ```bash
-cd frontend && npm run build   # Build locally (avoid server-side frontend builds)
-rsync -avz --delete frontend/dist/ root@192.3.16.77:/opt/OpenCMO/frontend/dist/
+./deploy/docker-deploy.sh                 # rsync + docker compose build + up -d + health probe
+./deploy/docker-deploy.sh --no-build      # config-only change (skip image rebuild)
+./deploy/docker-deploy.sh --logs          # tail container logs after deploy
 ```
 
-### Deploy backend code to New York
+Manual equivalent:
 
 ```bash
+# Sync source (excludes data/, .env, frontend/dist — those live on the server)
 rsync -avz --delete \
-  --exclude '.git' \
-  --exclude 'frontend/node_modules' \
-  --exclude 'frontend/dist' \
-  --exclude '.venv' \
+  --exclude '.git' --exclude '.venv' \
+  --exclude 'frontend/node_modules' --exclude 'frontend/dist' \
+  --exclude 'data/' --exclude '.env' --exclude '.env.*' \
   ./ root@192.3.16.77:/opt/OpenCMO/
-ssh newyork "cd /opt/OpenCMO && source .venv/bin/activate && pip install -e . -q && systemctl restart opencmo"
+
+ssh newyork "cd /opt/OpenCMO && docker compose up -d --build"
 ```
 
-### New York service / runtime checks
+### Health + log checks
 
 ```bash
-ssh newyork "systemctl status opencmo --no-pager"
-ssh newyork "journalctl -u opencmo -n 200 --no-pager"
-ssh newyork "ss -ltnp | grep -E ':80|:443|:8081'"
+ssh newyork "cd /opt/OpenCMO && docker compose ps"          # container + (healthy) status
+ssh newyork "cd /opt/OpenCMO && docker compose logs -f --tail=100 opencmo"
+ssh newyork "ss -ltnp | grep -E ':80|:443|:8081'"           # nginx + container ports
+curl -sL -o /dev/null -w '%{http_code}\n' https://www.aidcmo.com/app/
 ```
 
-### Install Playwright browsers (when scan workers need them)
+### Rollback to systemd (emergency only)
 
 ```bash
-ssh newyork "cd /opt/OpenCMO && .venv/bin/playwright install chromium"
+ssh newyork "cd /opt/OpenCMO && docker compose down && systemctl enable --now opencmo"
+# Nginx upstream is unchanged (127.0.0.1:8081) so traffic resumes instantly.
+# DB: container reads /opt/OpenCMO/data/data.db; systemd reads ~/.opencmo/data.db.
+# If the schema migrated forward under Docker, `cp /opt/OpenCMO/data/data.db ~/.opencmo/data.db` before starting systemd.
+```
+
+### Legacy frontend-only deploy (still valid for tiny UI tweaks)
+
+The Docker image bakes the frontend in at build time. To ship UI changes without a full image rebuild you can still rsync the bundle into the container's build context and rebuild:
+
+```bash
+cd frontend && npm run build
+rsync -avz --delete frontend/dist/ root@192.3.16.77:/opt/OpenCMO/frontend/dist/
+ssh newyork "cd /opt/OpenCMO && docker compose up -d --build"
 ```
 
 ### BWG (optional fallback / proxy only)
