@@ -45,7 +45,7 @@ export function ChatInput({
         disabled={disabled}
         placeholder={t("chat.placeholder")}
         rows={1}
-        className="max-h-48 flex-1 resize-none bg-transparent px-4 py-3 text-[15px] text-slate-800 placeholder:text-slate-400 focus:outline-none disabled:opacity-50"
+        className="max-h-48 flex-1 resize-none bg-transparent px-4 py-3 text-[15px] text-slate-800 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
       <button
         onClick={handleSubmit}

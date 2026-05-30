@@ -191,7 +191,7 @@ export function ActionFeed({ projectId }: { projectId: number }) {
               <button
                 onClick={() => handleCta(item)}
                 disabled={isLoading}
-                className={`inline-flex w-full shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 md:w-auto ${cta.color}`}
+                className={`inline-flex w-full shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto ${cta.color}`}
               >
                 {isLoading ? (
                   <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />

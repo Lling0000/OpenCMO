@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router";
 import { useProjectSummary } from "../hooks/useProject";
 import { useGraphData, useExpansionStatus } from "../hooks/useGraphData";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { GraphSkeleton } from "../components/common/Skeleton";
 import { ErrorAlert } from "../components/common/ErrorAlert";
 import { EmptyState } from "../components/common/EmptyState";
 import { ProjectHeader } from "../components/project/ProjectHeader";
@@ -21,7 +21,7 @@ export function GraphPage() {
   const { data: graph, isLoading: loadingGraph } = useGraphData(projectId, isExpanding);
   const { t } = useI18n();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <GraphSkeleton />;
   if (!summary) return <ErrorAlert message={t("common.projectNotFound")} />;
   const nodes = graph?.nodes ?? [];
   const competitorNodes = nodes.filter((node) => node.type === "competitor").length;
@@ -94,7 +94,7 @@ export function GraphPage() {
 
         {/* Graph */}
         {loadingGraph ? (
-          <LoadingSpinner />
+          <div className="rounded-2xl bg-slate-100 animate-pulse" style={{ height: "min(640px, calc(100vh - 16rem))" }} />
         ) : !graph || graph.nodes.length === 0 ? (
           <EmptyState
             title={t("graph.noData")}

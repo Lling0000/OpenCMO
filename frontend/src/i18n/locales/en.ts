@@ -2028,6 +2028,27 @@ export const en = {
   "unlock.qrAlt": "WeChat contact QR code",
   "unlock.footer": "We'll respond on WeChat within a day.",
   "unlock.close": "Close",
+
+  // Toasts + recoverable errors
+  "common.tryAgain": "Try again",
+  "common.copied": "Copied to clipboard",
+  "common.copyFailed": "Couldn't copy — try again",
+  "common.savedChanges": "Changes saved",
+  "common.somethingWentWrong": "Something went wrong",
+  "common.checkConnection": "Check your internet connection and try again.",
+  "common.sessionExpired": "Session expired — please sign in again.",
+  "common.loading": "Loading…",
+  "toast.approved": "Approved & queued for publishing",
+  "toast.rejected": "Rejected",
+  "toast.monitorAdded": "Monitor added",
+  "toast.monitorRemoved": "Monitor removed",
+  "toast.scanStarted": "Scan started — results will appear here",
+  "toast.keywordAdded": "Keyword tracked",
+  "toast.keywordRemoved": "Keyword removed",
+  "toast.projectCreated": "Project created",
+  "toast.projectDeleted": "Project deleted",
+  "toast.publishFailed": "Publish failed",
+  "toast.signInAgain": "Sign in again",
 } as const;
 
 export type TranslationKey = keyof typeof en;

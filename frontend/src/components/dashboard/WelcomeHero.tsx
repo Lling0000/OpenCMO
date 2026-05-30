@@ -115,7 +115,7 @@ export function WelcomeHero({
                 <button
                   type="submit"
                   disabled={createMonitor.isPending || !url.trim()}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-slate-800 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {createMonitor.isPending ? t("monitorForm.creatingWorkspace") : t("monitorForm.analyzeMySite")}
                   <ArrowRight size={16} />

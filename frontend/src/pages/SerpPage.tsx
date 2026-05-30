@@ -2,7 +2,8 @@ import { useParams } from "react-router";
 import { useProjectSummary } from "../hooks/useProject";
 import { useSerpLatest, useSerpChart } from "../hooks/useSerpData";
 import { useKeywords, useAddKeyword, useDeleteKeyword } from "../hooks/useKeywords";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { useToast } from "../components/common/Toast";
+import { ProjectSubpageSkeleton } from "../components/common/Skeleton";
 import { ErrorAlert } from "../components/common/ErrorAlert";
 import { ProjectHeader } from "../components/project/ProjectHeader";
 import { ProjectTabs } from "../components/project/ProjectTabs";
@@ -97,8 +98,9 @@ export function SerpPage() {
   const addKeyword = useAddKeyword(projectId);
   const deleteKeyword = useDeleteKeyword(projectId);
   const { t } = useI18n();
+  const toast = useToast();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <ProjectSubpageSkeleton />;
   if (!summary) return <ErrorAlert message={t("common.projectNotFound")} />;
 
   const ranked = (serpLatest ?? []).filter((s) => s.position != null);
@@ -114,7 +116,7 @@ export function SerpPage() {
       <ProjectTabs projectId={projectId} />
       <div className="space-y-6">
         {/* KPI Cards */}
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           <KpiCard
             icon={Hash}
             label={t("serp.trackedKeywords")}
@@ -156,13 +158,23 @@ export function SerpPage() {
         {/* Keyword Management */}
         <ChartCard title={t("serp.trackedKeywords")} accentBorder="border-l-indigo-500">
           <AddKeywordForm
-            onAdd={(kw) => addKeyword.mutate(kw)}
+            onAdd={(kw) =>
+              addKeyword.mutate(kw, {
+                onSuccess: () => toast.success(t("toast.keywordAdded")),
+                onError: (err) => toast.error(err instanceof Error ? err.message : String(err)),
+              })
+            }
             isLoading={addKeyword.isPending}
           />
           <EnhancedKeywordList
             keywords={keywords ?? []}
             serpData={serpLatest ?? []}
-            onDelete={(kwId) => deleteKeyword.mutate(kwId)}
+            onDelete={(kwId) =>
+              deleteKeyword.mutate(kwId, {
+                onSuccess: () => toast.info(t("toast.keywordRemoved")),
+                onError: (err) => toast.error(err instanceof Error ? err.message : String(err)),
+              })
+            }
           />
         </ChartCard>
 

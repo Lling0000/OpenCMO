@@ -3,11 +3,14 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import * as authApi from "../../api/auth";
 import type { AccountUsage, AuthAccount, AuthUser } from "../../types";
+import { useToast } from "../common/Toast";
+import { useI18n } from "../../i18n";
 
 export type SignupOutcome =
   | { ok: true; needsVerification: true; userId: number; email: string }
@@ -53,6 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [account, setAccount] = useState<AuthAccount | null>(null);
   const [usage, setUsage] = useState<AccountUsage | null>(null);
+  const userRef = useRef<AuthUser | null>(null);
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
 
   const applyPayload = useCallback((payload: authApi.AuthPayload | { authenticated: false }) => {
     if (!payload.authenticated) {
@@ -75,17 +82,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [applyPayload]);
 
+  const toast = useToast();
+  const { t } = useI18n();
+
   // Listen for 401 events from apiFetch
   useEffect(() => {
     const handler = () => {
+      const wasAuthed = userRef.current != null;
       setUser(null);
       setAccount(null);
       setUsage(null);
       queryClient.cancelQueries();
+      if (wasAuthed) {
+        toast.error(t("common.sessionExpired"), {
+          action: {
+            label: t("toast.signInAgain"),
+            onClick: () => {
+              window.location.href = "/login";
+            },
+          },
+        });
+      }
     };
     window.addEventListener("opencmo:unauthorized", handler);
     return () => window.removeEventListener("opencmo:unauthorized", handler);
-  }, [queryClient]);
+  }, [queryClient, t, toast]);
 
   useEffect(() => {
     void refresh();

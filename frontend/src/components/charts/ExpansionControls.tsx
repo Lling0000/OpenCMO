@@ -47,7 +47,7 @@ export function ExpansionControls({ projectId }: { projectId: number }) {
         <button
           onClick={() => startMut.mutate()}
           disabled={startMut.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-purple-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-purple-600 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-purple-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-purple-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {startMut.isPending ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -62,7 +62,7 @@ export function ExpansionControls({ projectId }: { projectId: number }) {
         <button
           onClick={() => pauseMut.mutate()}
           disabled={pauseMut.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-200 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pauseMut.isPending ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -85,7 +85,7 @@ export function ExpansionControls({ projectId }: { projectId: number }) {
         <button
           onClick={() => setShowReset(true)}
           disabled={resetMut.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-200 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           {t("graph.reset")}

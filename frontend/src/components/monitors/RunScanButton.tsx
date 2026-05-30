@@ -77,7 +77,7 @@ export function RunScanButton({
           type="button"
           onClick={handleRun}
           disabled={runMonitor.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-sky-50 px-3 py-1.5 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-100 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-sky-50 px-3 py-1.5 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <RotateCw size={13} />
           {t("runScan.rerun")}
@@ -100,7 +100,7 @@ export function RunScanButton({
           type="button"
           onClick={handleRun}
           disabled={runMonitor.isPending}
-          className="flex items-center gap-1.5 rounded-lg bg-sky-50 px-3 py-1.5 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-100 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-sky-50 px-3 py-1.5 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <RotateCw size={13} />
           {t("runScan.rerun")}
@@ -114,7 +114,7 @@ export function RunScanButton({
       type="button"
       onClick={handleRun}
       disabled={runMonitor.isPending}
-      className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:opacity-50"
+      className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50"
     >
       <Play size={12} />
       {t("runScan.run")}

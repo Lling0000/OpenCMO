@@ -9,9 +9,10 @@ import { MonitorForm } from "../components/monitors/MonitorForm";
 import { AnalysisDialog } from "../components/monitors/AnalysisDialog";
 import { ProjectHeader } from "../components/project/ProjectHeader";
 import { ProjectTabs } from "../components/project/ProjectTabs";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ProjectHeaderSkeleton, ListRowSkeleton, SkeletonFrame } from "../components/common/Skeleton";
 import { ErrorAlert } from "../components/common/ErrorAlert";
 import { EmptyState } from "../components/common/EmptyState";
+import { useToast } from "../components/common/Toast";
 import { useI18n } from "../i18n";
 
 export function ProjectMonitorsPage() {
@@ -22,6 +23,7 @@ export function ProjectMonitorsPage() {
   const deleteMonitor = useDeleteMonitor();
   const createMonitor = useCreateMonitor();
   const { t } = useI18n();
+  const toast = useToast();
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [selectedTaskUrl, setSelectedTaskUrl] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -39,7 +41,14 @@ export function ProjectMonitorsPage() {
     return () => window.clearTimeout(timeoutId);
   }, [dialogOpen, selectedTaskId, taskDone]);
 
-  if (projectLoading || monitorsLoading) return <LoadingSpinner />;
+  if (projectLoading || monitorsLoading) {
+    return (
+      <SkeletonFrame className="space-y-5">
+        <ProjectHeaderSkeleton />
+        <ListRowSkeleton rows={3} />
+      </SkeletonFrame>
+    );
+  }
   if (error || !data) return <ErrorAlert message={t("common.projectNotFound")} />;
 
   const handleTaskCreated = (taskId: string, url: string) => {
@@ -49,12 +58,19 @@ export function ProjectMonitorsPage() {
   };
 
   const handleCreateMonitor = async (payload: { url: string; cron_expr: string }) => {
-    const result = await createMonitor.mutateAsync({
-      ...payload,
-      locale: monitors[0]?.locale,
-    });
-    if (result.task_id) {
-      handleTaskCreated(result.task_id, payload.url);
+    try {
+      const result = await createMonitor.mutateAsync({
+        ...payload,
+        locale: monitors[0]?.locale,
+      });
+      toast.success(t("toast.monitorAdded"));
+      if (result.task_id) {
+        toast.info(t("toast.scanStarted"));
+        handleTaskCreated(result.task_id, payload.url);
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : String(err));
+      throw err;
     }
   };
 
@@ -114,7 +130,13 @@ export function ProjectMonitorsPage() {
             />
             <MonitorList
               monitors={monitors}
-              onDelete={(id) => deleteMonitor.mutate(id)}
+              onDelete={(id) =>
+                deleteMonitor.mutate(id, {
+                  onSuccess: () => toast.info(t("toast.monitorRemoved")),
+                  onError: (err) =>
+                    toast.error(err instanceof Error ? err.message : String(err)),
+                })
+              }
               onTaskCreated={handleTaskCreated}
             />
           </div>
