@@ -6,6 +6,7 @@ from agents import function_tool
 from crawl4ai import AsyncWebCrawler
 
 from opencmo.tools.browser_pool import browser_slot
+from opencmo.tools.deep_search_trace import get_cached, record_trace, set_cached
 
 
 def _extract_markdown(result) -> str:
@@ -60,6 +61,25 @@ async def fetch_url_content(
     tavily_extract_depth: str = "advanced",
 ) -> tuple[str, str]:
     """Fetch page content with Tavily-first fallback to crawl4ai."""
+    payload = {
+        "url": url,
+        "max_chars": max_chars,
+        "tavily_extract_depth": tavily_extract_depth,
+    }
+    cached = get_cached("crawl_website", "fetch_url_content", payload)
+    if isinstance(cached, dict) and "content" in cached and "source" in cached:
+        content = str(cached["content"])
+        source = str(cached["source"])
+        record_trace(
+            tool="crawl_website",
+            action="fetch_url_content",
+            payload=payload,
+            provider=source,
+            cache_hit=True,
+            output=content,
+        )
+        return content, source
+
     from opencmo.tools.tavily_helper import tavily_extract
 
     content = await tavily_extract(
@@ -86,6 +106,19 @@ async def fetch_url_content(
     if max_chars is not None and len(content) > max_chars:
         content = content[:max_chars]
 
+    set_cached(
+        "crawl_website",
+        "fetch_url_content",
+        payload,
+        {"content": content, "source": source},
+    )
+    record_trace(
+        tool="crawl_website",
+        action="fetch_url_content",
+        payload=payload,
+        provider=source,
+        output=content,
+    )
     return content, source
 
 

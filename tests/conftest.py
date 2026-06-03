@@ -22,6 +22,9 @@ def _isolate_external_provider_keys(monkeypatch):
     token = llm.set_request_keys({})
     for key in EXTERNAL_PROVIDER_KEYS:
         monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("OPENCMO_DEEP_SEARCH_TRACE", "0")
+    monkeypatch.delenv("OPENCMO_DEEP_SEARCH_CACHE", raising=False)
+    monkeypatch.delenv("OPENCMO_DEEP_SEARCH_DIR", raising=False)
     try:
         yield
     finally:

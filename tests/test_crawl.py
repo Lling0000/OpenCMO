@@ -89,3 +89,37 @@ async def test_fetch_url_content_falls_back_to_html_metadata_when_markdown_is_em
     assert "Page title: Coze" in content
     assert "Meta description: AI agent workspace for teams" in content
     assert "Open Graph description: Build agents quickly" in content
+
+
+@pytest.mark.asyncio
+async def test_fetch_url_content_uses_deep_search_cache(tmp_path, monkeypatch):
+    """Shared content fetch should reuse opt-in deep-search cache entries."""
+    from opencmo.tools import crawl as crawl_module
+    import opencmo.tools.deep_search_trace as trace
+
+    monkeypatch.setenv("OPENCMO_DEEP_SEARCH_CACHE", "1")
+    monkeypatch.setenv("OPENCMO_DEEP_SEARCH_TRACE", "1")
+    monkeypatch.setenv("OPENCMO_DEEP_SEARCH_DIR", str(tmp_path))
+
+    payload = {
+        "url": "https://example.com",
+        "max_chars": None,
+        "tavily_extract_depth": "advanced",
+    }
+    trace.set_cached(
+        "crawl_website",
+        "fetch_url_content",
+        payload,
+        {"content": "# Cached page", "source": "tavily"},
+    )
+
+    mock_extract = AsyncMock(side_effect=AssertionError("live extraction should not run"))
+
+    with patch("opencmo.tools.tavily_helper.tavily_extract", mock_extract, create=True):
+        content, source = await crawl_module.fetch_url_content("https://example.com")
+
+    assert content == "# Cached page"
+    assert source == "tavily"
+    mock_extract.assert_not_called()
+    trace_lines = trace.trace_path().read_text(encoding="utf-8").splitlines()
+    assert any('"cache_hit": true' in line for line in trace_lines)
