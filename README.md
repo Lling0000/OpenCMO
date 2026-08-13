@@ -141,6 +141,8 @@ Enter your project URL on the homepage to run the first scan. If no LLM API key 
 
 > Tip: you can also configure API keys from the web dashboard's **Settings** panel without touching `.env`.
 
+For a fuller walkthrough of provider keys and optional integrations, see the [configuration guide](docs/configuration.md).
+
 <details>
 <summary>Frontend development (optional)</summary>
 
