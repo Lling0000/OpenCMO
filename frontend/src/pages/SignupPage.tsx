@@ -4,6 +4,8 @@ import { ArrowRight, Github, Lock, Mail, UserRound } from "lucide-react";
 import { useAuth } from "../components/auth/useAuth";
 import { useI18n } from "../i18n";
 
+const EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
 export function SignupPage() {
   const { t, locale } = useI18n();
   const auth = useAuth();
@@ -17,6 +19,24 @@ export function SignupPage() {
   const url = params.get("url") || "";
   const next = params.get("next") || (url ? `/console?url=${encodeURIComponent(url)}` : "/console");
 
+  const signupErrorMessage = (code?: string) => {
+    switch (code) {
+      case "invalid_email":
+        return t("trial.errorInvalidEmail");
+      case "password_too_short":
+        return t("trial.errorPasswordTooShort");
+      case "email_exists":
+        return t("trial.errorEmailExists");
+      case "rate_limited":
+        return t("trial.errorRateLimited");
+      case "signup_closed":
+      case "invite_required":
+        return t("trial.errorSignupClosed");
+      default:
+        return t("trial.authError");
+    }
+  };
+
   if (!auth.isLoading && auth.isAuthenticated) {
     return <Navigate to={next} replace />;
   }
@@ -24,11 +44,21 @@ export function SignupPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+    const normalizedEmail = email.trim().toLowerCase();
+    const trimmedName = name.trim();
+    if (!EMAIL_PATTERN.test(normalizedEmail)) {
+      setError(t("trial.errorInvalidEmail"));
+      return;
+    }
+    if (password.length < 8) {
+      setError(t("trial.errorPasswordTooShort"));
+      return;
+    }
     setLoading(true);
-    const result = await auth.signup(email, password, name, locale);
+    const result = await auth.signup(normalizedEmail, password, trimmedName, locale);
     setLoading(false);
     if (!result.ok) {
-      setError(t("trial.authError"));
+      setError(signupErrorMessage(result.error));
       return;
     }
     if (result.needsVerification) {
@@ -81,7 +111,7 @@ export function SignupPage() {
 
         <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-semibold">{t("trial.createAccount")}</h2>
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-4">
             <label className="block">
               <span className="text-sm font-medium text-slate-700">{t("trial.email")}</span>
               <span className="mt-1 flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2.5">
@@ -95,6 +125,7 @@ export function SignupPage() {
                   className="min-w-0 flex-1 outline-none"
                 />
               </span>
+              <span className="mt-1 block text-xs text-slate-500">{t("trial.emailHint")}</span>
             </label>
             <label className="block">
               <span className="text-sm font-medium text-slate-700">{t("trial.password")}</span>
@@ -110,6 +141,7 @@ export function SignupPage() {
                   className="min-w-0 flex-1 outline-none"
                 />
               </span>
+              <span className="mt-1 block text-xs text-slate-500">{t("trial.passwordHint")}</span>
             </label>
             <label className="block">
               <span className="text-sm font-medium text-slate-700">{t("trial.displayName")}</span>
@@ -122,8 +154,10 @@ export function SignupPage() {
                   className="min-w-0 flex-1 outline-none"
                 />
               </span>
+              <span className="mt-1 block text-xs text-slate-500">{t("trial.displayNameHint")}</span>
             </label>
             {error && <p className="text-sm text-rose-600">{error}</p>}
+            <p className="text-xs leading-5 text-slate-500">{t("trial.instantAccessHint")}</p>
             <button
               type="submit"
               disabled={loading}

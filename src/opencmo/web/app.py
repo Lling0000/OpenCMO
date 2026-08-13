@@ -1414,6 +1414,10 @@ def _env_positive_int(name: str, default: int) -> int:
         return default
 
 
+def _email_verification_enabled() -> bool:
+    return os.environ.get("OPENCMO_EMAIL_VERIFICATION_ENABLED", "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _request_ip(request: Request) -> str:
     forwarded_for = request.headers.get("x-forwarded-for", "")
     if forwarded_for:
@@ -1500,6 +1504,11 @@ async def api_v1_auth_signup(payload: _AuthSignupRequest, request: Request):
         status_code = 409 if str(exc) == "email_exists" else 400
         return JSONResponse({"ok": False, "error": str(exc)}, status_code=status_code)
 
+    if not _email_verification_enabled():
+        await storage.mark_user_verified(user["id"])
+        refreshed = await storage.get_user_by_id(user["id"]) or user
+        return await _json_with_session(request, refreshed, account, status_code=201)
+
     # Issue a verification code and email it. The session cookie is not set
     # until the user confirms the code via /api/v1/auth/verify-email.
     code = await storage.create_verification_code(user["id"], purpose="signup")
@@ -1533,6 +1542,10 @@ async def api_v1_auth_login(payload: _AuthLoginRequest, request: Request):
         return JSONResponse({"ok": False, "error": "invalid_credentials"}, status_code=401)
     user, account = authenticated
     if not await storage.is_user_verified(user["id"]):
+        if not _email_verification_enabled():
+            await storage.mark_user_verified(user["id"])
+            user = await storage.get_user_by_id(user["id"]) or user
+            return await _json_with_session(request, user, account)
         return JSONResponse(
             {
                 "ok": False,

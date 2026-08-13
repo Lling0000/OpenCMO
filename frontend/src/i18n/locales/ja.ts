@@ -23,6 +23,15 @@ export const ja: Partial<Record<TranslationKey, string>> = {
   "auth.loggingIn": "ログイン中...",
   "auth.login": "ログイン",
   "auth.invalidToken": "無効なトークン",
+  "trial.emailHint": "通常のメール形式を使用してください。例: name@example.com。",
+  "trial.passwordHint": "8文字以上で入力してください。",
+  "trial.displayNameHint": "任意です。空欄でもかまいません。",
+  "trial.instantAccessHint": "現在、メールコードは不要です。このフォームの後、すぐにコンソールへ進みます。",
+  "trial.errorInvalidEmail": "name@example.com のようなメールアドレスを入力してください。",
+  "trial.errorPasswordTooShort": "パスワードは8文字以上必要です。",
+  "trial.errorEmailExists": "このメールはすでに登録されています。ログインしてください。",
+  "trial.errorRateLimited": "試行回数が多すぎます。少し待ってから再試行してください。",
+  "trial.errorSignupClosed": "現在、登録は一時的に停止されています。",
 
   // Dashboard
   "dashboard.title": "ダッシュボード",
