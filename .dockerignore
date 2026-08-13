@@ -1,0 +1,86 @@
+# Keep the build context small and the image lean.
+#
+# Two things matter:
+#  1. Anything COPYed (or implicitly included by a wildcard) gets uploaded
+#     to the docker daemon — make sure huge dev-only trees never go.
+#  2. Anything that *isn't* COPYed still affects layer-cache invalidation
+#     via `COPY src/ ./src/` and friends. List paths even if no stage
+#     uses them so the daemon doesn't ship them.
+
+# Source-control + IDE
+.git
+.gitignore
+.gitattributes
+.github
+.vscode
+.idea
+.cursor
+.claude
+.continue
+
+# Python build/runtime junk
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv
+venv
+env
+.python-version
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.tox
+htmlcov
+.coverage
+.coverage.*
+*.cover
+
+# Node — the frontend stage installs its own deps from package-lock.
+frontend/node_modules
+frontend/dist
+**/.npm
+**/.yarn
+**/yarn-error.log
+**/.parcel-cache
+
+# Tests & local fixtures — runtime image doesn't need them.
+tests/
+*.db
+*.sqlite
+*.sqlite3
+
+# Captures / screenshots / video produced by capture_*.py scripts.
+# These live at the repo root and are megabytes of binary noise.
+capture_*.py
+assets/
+video/
+docs/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+
+# Local secrets — env_file mounts .env into the container at runtime;
+# never bake it into the image.
+.env
+.env.*
+!.env.example
+
+# OS + editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Docker itself
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Big planning docs that don't ship to prod.
+*.md
+!README.md
+!frontend/package*.json

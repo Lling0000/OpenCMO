@@ -179,7 +179,7 @@ export function GitHubLeadsPage() {
         <button
           onClick={() => scoreMut.mutate({ projectId })}
           disabled={scoreMut.isPending}
-          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 shadow-sm transition hover:bg-zinc-50 disabled:opacity-50"
+          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 shadow-sm transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Zap className="h-4 w-4" />
           {t("github.rescore")}
@@ -290,7 +290,7 @@ export function GitHubLeadsPage() {
             <button
               onClick={handleGenerate}
               disabled={genOutreach.isPending}
-              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
               {genOutreach.isPending ? "..." : t("github.generateOutreach")}

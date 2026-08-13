@@ -51,7 +51,7 @@ function AccountRow({
             <button
               disabled={busy}
               onClick={() => onDisable(account.id)}
-              className="inline-flex items-center gap-1.5 rounded-md border border-rose-200 px-2.5 py-1.5 text-xs font-semibold text-rose-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-md border border-rose-200 px-2.5 py-1.5 text-xs font-semibold text-rose-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Ban size={13} />
               {t("trial.disable")}
@@ -60,7 +60,7 @@ function AccountRow({
             <button
               disabled={busy}
               onClick={() => onEnable(account.id)}
-              className="inline-flex items-center gap-1.5 rounded-md border border-emerald-200 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-md border border-emerald-200 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <CheckCircle2 size={13} />
               {t("trial.enable")}
@@ -79,7 +79,7 @@ function AccountRow({
             <button
               disabled={busy}
               onClick={() => onExtend(account.id, Math.max(1, numberValue(days, 7)))}
-              className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Clock size={13} />
               {t("trial.extendTrial")}
@@ -117,7 +117,7 @@ function AccountRow({
                 daily_scan_limit: numberValue(dailyScans, account.daily_scan_limit),
                 monthly_report_limit: numberValue(monthlyReports, account.monthly_report_limit),
               })}
-              className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <SlidersHorizontal size={13} />
               {t("trial.apply")}

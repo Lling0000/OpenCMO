@@ -63,8 +63,9 @@ interface NewNodeData extends GraphNode {
 export function KnowledgeGraph({ data }: { data: GraphData }) {
   const fgRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [dimensions, setDimensions] = useState({ width: 800, height: 520 });
   const [selectedNode, setSelectedNode] = useState<NewNodeData | null>(null);
+  const [legendOpen, setLegendOpen] = useState(false);
   const { t } = useI18n();
   const typeLabels = Object.fromEntries(
     Object.entries(TYPE_LABEL_KEYS).map(([k, v]) => [k, t(v)])
@@ -75,17 +76,43 @@ export function KnowledgeGraph({ data }: { data: GraphData }) {
   const animatedMeshesRef = useRef<any[]>([]);
   const animationFrameRef = useRef<number | undefined>(undefined);
 
-  // Measure container
+  // Measure container — listens to actual rendered size so the graph
+  // never overflows on mobile and resizes cleanly when the sidebar toggles.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0]!.contentRect;
-      if (width > 0 && height > 0) setDimensions({ width, height });
+      if (width > 0 && height > 0) {
+        const w = Math.round(width);
+        const h = Math.round(height);
+        // Only update when values actually changed — avoids gratuitous re-renders
+        // of the heavy ForceGraph3D on unrelated layout shifts.
+        setDimensions((prev) => (prev.width === w && prev.height === h ? prev : { width: w, height: h }));
+      }
     });
     ro.observe(el);
+    // Seed initial dimensions immediately to avoid a one-frame flash at 800×520.
+    const rect = el.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      setDimensions({ width: Math.round(rect.width), height: Math.round(rect.height) });
+    }
     return () => ro.disconnect();
   }, []);
+
+  // Refit the camera when dimensions change so the graph stays centered on resize.
+  useEffect(() => {
+    const fg = fgRef.current;
+    if (!fg) return;
+    const id = window.setTimeout(() => {
+      try {
+        fg.zoomToFit(500, 60);
+      } catch {
+        /* graph not ready */
+      }
+    }, 200);
+    return () => window.clearTimeout(id);
+  }, [dimensions.width, dimensions.height]);
 
   // Update Data & detect newly added nodes
   const graphData = useMemo(() => {
@@ -113,8 +140,10 @@ export function KnowledgeGraph({ data }: { data: GraphData }) {
     const fg = fgRef.current;
     if (!fg || graphData.nodes.length === 0) return;
 
-    // Zoom to fit on initial load
-    setTimeout(() => fg.zoomToFit(800, 80), 500);
+    // Zoom to fit on initial load. Capture the id so polling-driven graphData
+    // updates can't pile up uncancelled timeouts that snap the camera back
+    // after a user has manually positioned the view.
+    const fitId = window.setTimeout(() => fg.zoomToFit(800, 80), 500);
 
     // Auto rotate
     const controls = fg.controls();
@@ -140,6 +169,7 @@ export function KnowledgeGraph({ data }: { data: GraphData }) {
       (dirLight as any).__customLight = true;
       scene.add(dirLight);
     }
+    return () => window.clearTimeout(fitId);
   }, [graphData]);
 
   // Handle animation loop for new node pulses
@@ -430,33 +460,82 @@ export function KnowledgeGraph({ data }: { data: GraphData }) {
       {/* Background Gradient to make it look premium but light */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 opacity-80 pointer-events-none" />
 
-      {/* Legend */}
-      <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2.5 rounded-xl bg-white/70 backdrop-blur-xl px-4 py-3 shadow-lg ring-1 ring-zinc-200/60 transition-all">
-        {Object.entries(NODE_COLORS_CSS).map(([type, color]) => (
-          <div key={type} className="flex items-center gap-2">
-            <span
-              className="inline-block h-3 w-3 rounded-full shadow-sm"
-              style={{ backgroundColor: color }}
-            />
-            <span className="text-[11px] font-semibold text-slate-700 tracking-wide uppercase">
-              {typeLabels[type] ?? type}
-            </span>
-          </div>
-        ))}
+      {/* Legend — collapsed on mobile to dots-only; tap to expand. */}
+      <div className="absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-xl bg-white/80 backdrop-blur-xl shadow-lg ring-1 ring-zinc-200/60">
+        <button
+          type="button"
+          onClick={() => setLegendOpen((v) => !v)}
+          aria-label={t("graph.controlsHint")}
+          aria-expanded={legendOpen}
+          className="flex items-center gap-2 px-3 py-2 sm:hidden"
+        >
+          <span className="flex items-center gap-1">
+            {Object.values(NODE_COLORS_CSS).slice(0, 4).map((color) => (
+              <span
+                key={color}
+                className="inline-block h-2.5 w-2.5 rounded-full shadow-sm"
+                style={{ backgroundColor: color }}
+              />
+            ))}
+          </span>
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+            {legendOpen ? "−" : "+"}
+          </span>
+        </button>
+        <div
+          className={`${legendOpen ? "flex" : "hidden"} sm:flex flex-wrap gap-2 sm:gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3`}
+        >
+          {Object.entries(NODE_COLORS_CSS).map(([type, color]) => (
+            <div key={type} className="flex items-center gap-1.5 sm:gap-2">
+              <span
+                className="inline-block h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full shadow-sm"
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-[10px] sm:text-[11px] font-semibold text-slate-700 tracking-wide uppercase">
+                {typeLabels[type] ?? type}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Controls hint */}
-      <div className="absolute bottom-4 left-4 z-10 rounded-xl bg-white/70 px-3 py-2 text-[11px] font-medium text-slate-500 backdrop-blur-xl shadow-sm ring-1 ring-zinc-200/50">
+      {/* "Fit view" button — drag tends to lose users on mobile; one tap recenters. */}
+      <button
+        type="button"
+        onClick={() => {
+          const fg = fgRef.current;
+          try {
+            fg?.zoomToFit(600, 80);
+          } catch {
+            /* graph not ready */
+          }
+        }}
+        className="absolute top-3 right-3 z-10 inline-flex h-9 items-center gap-1.5 rounded-xl bg-white/80 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-700 shadow-md ring-1 ring-zinc-200/60 backdrop-blur-xl transition hover:bg-white hover:text-slate-900 active:scale-95"
+        aria-label={t("graph.controlsHint")}
+      >
+        ⤢
+      </button>
+
+      {/* Controls hint — hidden on mobile (touch users don't have a mouse) */}
+      <div className="absolute bottom-3 left-3 z-10 hidden sm:block rounded-xl bg-white/70 px-3 py-2 text-[11px] font-medium text-slate-500 backdrop-blur-xl shadow-sm ring-1 ring-zinc-200/50">
         🖱 {t("graph.controlsHint")}
       </div>
 
-      {/* 3D Graph container */}
-      <div ref={containerRef} style={{ width: "100%", height: 600, zIndex: 1 }}>
+      {/* 3D Graph container — fluid height so it fits any viewport, including phones. */}
+      <div
+        ref={containerRef}
+        className="w-full"
+        style={{
+          height: "min(720px, calc(100vh - 14rem))",
+          minHeight: 360,
+          zIndex: 1,
+        }}
+      >
         <ForceGraph3D
           ref={fgRef}
           graphData={graphData}
           width={dimensions.width}
-          height={600}
+          height={dimensions.height}
           backgroundColor="rgba(0,0,0,0)" // Transparent to show the CSS gradient behind
           nodeThreeObject={nodeThreeObject}
           nodeLabel={getNodeLabelHtml}

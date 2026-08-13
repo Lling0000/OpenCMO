@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router";
 import { useProjectSummary } from "../hooks/useProject";
 import { useGeoChart } from "../hooks/useGeoData";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ProjectSubpageSkeleton, ChartCardSkeleton, KpiRowSkeleton } from "../components/common/Skeleton";
 import { ErrorAlert } from "../components/common/ErrorAlert";
 import { EmptyState } from "../components/common/EmptyState";
 import { ProjectHeader } from "../components/project/ProjectHeader";
@@ -74,7 +74,7 @@ export function GeoPage() {
   const { data: chart, isLoading: loadingChart } = useGeoChart(projectId);
   const { t } = useI18n();
 
-  if (loadingSummary) return <LoadingSpinner />;
+  if (loadingSummary) return <ProjectSubpageSkeleton />;
   if (!summary) return <ErrorAlert message={t("common.projectNotFound")} />;
 
   const geoScore = chart?.geo_score as (number | null)[] | undefined;
@@ -104,7 +104,10 @@ export function GeoPage() {
         <span>{t("geo.configHint")}</span>
       </div>
       {loadingChart ? (
-        <LoadingSpinner />
+        <div className="space-y-6">
+          <KpiRowSkeleton />
+          <ChartCardSkeleton />
+        </div>
       ) : !chart?.labels?.length ? (
         <EmptyState title={t("geo.noData")} description={t("geo.noDataDesc")} />
       ) : (
@@ -162,7 +165,7 @@ export function GeoPage() {
           </section>
 
           {/* KPI Cards */}
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             <KpiCard
               icon={Globe}
               label={t("geo.geoScore")}

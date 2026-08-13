@@ -2,7 +2,8 @@ import { useState } from "react";
 import { AlertTriangle, ExternalLink, Settings } from "lucide-react";
 import { ApprovalCard } from "../components/approval/ApprovalCard";
 import { ErrorAlert } from "../components/common/ErrorAlert";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ApprovalSkeleton } from "../components/common/Skeleton";
+import { useToast } from "../components/common/Toast";
 import { useApproveApproval, useApprovals, useRejectApproval } from "../hooks/useApprovals";
 import { ApiError } from "../api/client";
 import { useNavigate } from "react-router";
@@ -14,6 +15,7 @@ export function ApprovalsPage() {
   const rejectMutation = useRejectApproval();
   const navigate = useNavigate();
   const { t } = useI18n();
+  const toast = useToast();
 
   const [actionError, setActionError] = useState<{
     message: string;
@@ -39,7 +41,16 @@ export function ApprovalsPage() {
         </div>
       </div>
 
-      {queryError ? <div className="mb-6"><ErrorAlert message={queryError} /></div> : null}
+      {queryError ? (
+        <div className="mb-6">
+          <ErrorAlert
+            message={queryError}
+            hint={t("common.checkConnection")}
+            onRetry={() => approvalsQuery.refetch()}
+            retryLabel={t("common.tryAgain")}
+          />
+        </div>
+      ) : null}
 
       {/* Contextual error banner for auto_publish_disabled */}
       {actionError?.errorCode === "auto_publish_disabled" ? (
@@ -74,7 +85,7 @@ export function ApprovalsPage() {
 
       <div className="flex-1 flex flex-col items-center justify-center pb-20">
         {approvalsQuery.isLoading ? (
-          <LoadingSpinner className="min-h-[420px]" />
+          <ApprovalSkeleton />
         ) : (
           <ApprovalCard
             approval={currentApproval}
@@ -86,14 +97,19 @@ export function ApprovalsPage() {
                 approveMutation.mutate(
                   { id: currentApproval.id },
                   {
+                    onSuccess: () => toast.success(t("toast.approved")),
                     onError: (err) => {
                       if (err instanceof ApiError) {
                         setActionError({
                           message: err.message,
                           errorCode: err.errorCode,
                         });
+                        if (err.errorCode !== "auto_publish_disabled") {
+                          toast.error(err.message);
+                        }
                       } else {
                         setActionError({ message: String(err) });
+                        toast.error(String(err));
                       }
                     },
                   },
@@ -106,10 +122,11 @@ export function ApprovalsPage() {
                 rejectMutation.mutate(
                   { id: currentApproval.id },
                   {
+                    onSuccess: () => toast.info(t("toast.rejected")),
                     onError: (err) => {
-                      setActionError({
-                        message: err instanceof Error ? err.message : String(err),
-                      });
+                      const message = err instanceof Error ? err.message : String(err);
+                      setActionError({ message });
+                      toast.error(message);
                     },
                   },
                 );

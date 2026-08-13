@@ -40,7 +40,7 @@ export function TokenPrompt() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-700 hover:shadow-md disabled:opacity-50"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-700 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
           >
             <LogIn size={16} />
             {loading ? t("auth.loggingIn") : t("auth.login")}

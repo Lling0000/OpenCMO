@@ -198,7 +198,7 @@ export function BlogGenerateButton({
             type="button"
             onClick={handleGenerate}
             disabled={blogGenerate.isPending}
-            className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-slate-800 disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <PenLine size={12} />
             {t("blogGen.generate")}
@@ -221,7 +221,7 @@ export function BlogGenerateButton({
       type="button"
       onClick={() => setShowConfig(true)}
       disabled={blogGenerate.isPending}
-      className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:opacity-50"
+      className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50"
     >
       <PenLine size={12} />
       {t("blogGen.generate")}

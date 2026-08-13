@@ -439,7 +439,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
           <button
             onClick={handleSave}
             disabled={loading}
-            className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-700 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saved ? (
               <>

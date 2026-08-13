@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useProjectSummary } from "../hooks/useProject";
 import { useDiscussions, useCommunityChart } from "../hooks/useCommunityData";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ProjectSubpageSkeleton } from "../components/common/Skeleton";
 import { ErrorAlert } from "../components/common/ErrorAlert";
 import { EmptyState } from "../components/common/EmptyState";
 import { ProjectHeader } from "../components/project/ProjectHeader";
@@ -86,7 +86,7 @@ export function CommunityPage() {
   const { data: chart } = useCommunityChart(projectId);
   const { t } = useI18n();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <ProjectSubpageSkeleton />;
   if (!summary) return <ErrorAlert message={t("common.projectNotFound")} />;
 
   const latestHits = chart?.scan_hits?.[chart.scan_hits.length - 1] ?? 0;
@@ -205,7 +205,7 @@ export function CommunityPage() {
       <ProjectTabs projectId={projectId} />
       <div className="space-y-6">
         {/* KPI Cards */}
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           <KpiCard
             icon={Users}
             label={t("community.trackedDiscussions")}

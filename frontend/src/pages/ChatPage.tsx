@@ -6,7 +6,7 @@ import { useChatContext } from "../hooks/useChatContext";
 import { useProjects } from "../hooks/useProjects";
 import { ChatContainer } from "../components/chat/ChatContainer";
 import { ChatSidebar } from "../components/chat/ChatSidebar";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ChatSkeleton } from "../components/common/Skeleton";
 import { useI18n } from "../i18n";
 
 function parseProjectId(value: string | null): number | null {
@@ -45,7 +45,7 @@ export function ChatPage() {
     setSearchParams(nextParams, { replace: true });
   }, [chat.projectId, chat.sessionReady, searchParams, setSearchParams]);
 
-  if (!chat.sessionReady) return <LoadingSpinner />;
+  if (!chat.sessionReady) return <ChatSkeleton />;
 
   return (
     <div className="flex h-[calc(100vh-7rem)] gap-4 overflow-hidden">

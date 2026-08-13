@@ -306,7 +306,7 @@ export function RunResultsDialog({
                     <button
                       onClick={saveNotes}
                       disabled={savingNotes}
-                      className="flex items-center gap-1 rounded-lg bg-indigo-50 px-2 py-1 text-xs text-indigo-600 hover:bg-indigo-100 disabled:opacity-50"
+                      className="flex items-center gap-1 rounded-lg bg-indigo-50 px-2 py-1 text-xs text-indigo-600 hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {savingNotes ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
                       Save

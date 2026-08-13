@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useProjectSummary } from "../hooks/useProject";
 import { useSeoChart } from "../hooks/useSeoData";
-import { LoadingSpinner } from "../components/common/LoadingSpinner";
+import { ProjectSubpageSkeleton, ChartCardSkeleton } from "../components/common/Skeleton";
 import { ErrorAlert } from "../components/common/ErrorAlert";
 import { EmptyState } from "../components/common/EmptyState";
 import { ProjectHeader } from "../components/project/ProjectHeader";
@@ -34,7 +34,7 @@ export function SeoPage() {
   const { data: chart, isLoading: loadingChart } = useSeoChart(projectId);
   const { t } = useI18n();
 
-  if (loadingSummary) return <LoadingSpinner />;
+  if (loadingSummary) return <ProjectSubpageSkeleton />;
   if (!summary) return <ErrorAlert message={t("common.projectNotFound")} />;
 
   const perf = chart?.performance as (number | null)[] | undefined;
@@ -63,13 +63,20 @@ export function SeoPage() {
       <ProjectHeader project={summary.project} />
       <ProjectTabs projectId={projectId} />
       {loadingChart ? (
-        <LoadingSpinner />
+        <div className="space-y-6 mt-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <ChartCardSkeleton key={i} height={88} />
+            ))}
+          </div>
+          <ChartCardSkeleton />
+        </div>
       ) : !chart?.labels?.length ? (
         <EmptyState title={t("seo.noData")} description={t("seo.noDataDesc")} />
       ) : (
         <div className="space-y-6">
           {/* KPI Cards */}
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             <KpiCard
               icon={Gauge}
               label={t("score.seoScore")}

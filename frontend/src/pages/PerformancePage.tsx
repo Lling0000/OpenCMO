@@ -157,7 +157,7 @@ export function PerformancePage() {
                   },
                 });
               }}
-              className="rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-semibold text-white disabled:opacity-50"
+              className="rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               {addManual.isPending ? t("perf.adding") : t("perf.add")}
             </button>
