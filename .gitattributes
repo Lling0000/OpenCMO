@@ -1,1 +1,2 @@
 /scripts/qdrant-entrypoint.sh text eol=lf
+/tests/fixtures/*.pdf binary

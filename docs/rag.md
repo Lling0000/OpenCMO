@@ -169,4 +169,3 @@ Run API/parser/retrieval tests with the optional native-server check:
     OPENCMO_RAG_TEST_QDRANT=http://127.0.0.1:6333 pytest tests/test_rag.py
 
 The native-server test uses unique collections and deletes only its own collection. Its model calls are still mocked; it verifies the database engine and authorization, not embedding quality.
-

@@ -49,4 +49,3 @@ async def fetch_public_url(url: str) -> tuple[bytes, str, str]:
                         raise ValueError("file_too_large")
                 return bytes(data), mime, url
         raise ValueError("too_many_redirects")
-

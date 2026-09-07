@@ -137,4 +137,3 @@ def parse_bytes(data: bytes, mime: str, filename: str = "") -> ParsedDocument:
     elif suffix not in {"md", "markdown", "txt", ""} and mime not in {"text/plain", "text/markdown"}:
         raise ParseError("unsupported_document_type")
     return structured_text(text)
-

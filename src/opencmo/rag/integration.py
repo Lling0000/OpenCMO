@@ -120,4 +120,3 @@ async def filter_chat_history(account_id: int, session_id: str, history: list[di
                 continue
         result.append(item)
     return result
-

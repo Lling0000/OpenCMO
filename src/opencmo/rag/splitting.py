@@ -68,4 +68,3 @@ def split_document(parsed: ParsedDocument, generation_id: str, settings: RagSett
                 child_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{generation_id}:child:{child_start}:{child_end}"))
                 chunks.append(Chunk(child_id, parent_id, "child", child_start, child_end, text[child_start:child_end], block.heading, block.page, block.prefix))
     return chunks
-

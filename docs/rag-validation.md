@@ -49,4 +49,3 @@ The committed corpus contains **40 fictional documents and 120 Chinese/English q
 These synthetic scores are deliberately not used to claim Recall@20 or nDCG@10 acceptance for real models. No actual Embedding/Rerank credentials were available during this implementation. **Real model quality remains unverified.**
 
 To evaluate it, configure the provider credentials and run live evaluation as described in [the RAG guide](rag.md). Live evaluation records degradation and fails its quality gate when holdout thresholds are not met.
-

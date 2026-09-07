@@ -46,4 +46,3 @@ def lexical_terms(text: str) -> list[str]:
 def fts_query(text: str) -> str:
     terms = list(dict.fromkeys(lexical_terms(text)))[:32]
     return " OR ".join('"' + t.replace('"', '""') + '"' for t in terms)
-
