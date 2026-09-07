@@ -11,7 +11,7 @@ def test_site_stats_is_frontend_public_byok_path() -> None:
 
 
 def test_frontend_user_keys_include_gsc_and_chinese_geo_providers() -> None:
-    user_keys_ts = Path("frontend/src/api/userKeys.ts").read_text()
+    user_keys_ts = Path("frontend/src/api/userKeys.ts").read_text(encoding='utf-8')
 
     for key in (
         "GOOGLE_GSC_CREDENTIALS",

@@ -121,6 +121,12 @@ OpenCMO 已经内置正式报告系统。你可以在项目中打开 **Reports**
 - **多智能体管线**：面向人的报告使用 6 阶段管线，而不是单次 prompt。
 - **优雅降级**：深度管线失败时，会自动回退到更简单的生成路径，确保报告始终可用。
 
+## 知识库与 RAG
+
+支持把历史报告、客户资料和营销案例导入项目知识库：递归父子切分、Qdrant 语义召回、BM25 与标题召回、RRF 融合、模型重排及可定位原文的引用。聊天、报告和内容草稿共用检索服务；资料默认按项目隔离，可主动共享给同账号其他项目，对外内容另有用途开关。
+
+支持文本 PDF、DOCX、Markdown、TXT、粘贴文本和指定网页。使用 `docker compose --profile rag up -d` 启动可选的 Qdrant 服务，再到项目的“知识库 → 模型与检索设置”配置 Embedding 和 Rerank API。详见 [部署、权限、接口与评测说明](docs/rag.md)。真实模型质量需使用实际配置的服务评测。
+
 ## 快速开始
 
 OpenCMO 兼容 OpenAI 协议 API，包括 OpenAI、DeepSeek、NVIDIA NIM、Kimi 兼容网关、Ollama 等。

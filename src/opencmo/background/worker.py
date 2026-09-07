@@ -277,6 +277,7 @@ def _default_kind_concurrency() -> dict[str, int]:
         "graph_expansion": _get_positive_int_env("OPENCMO_GRAPH_EXPANSION_CONCURRENCY", 1),
         "github_enrich": _get_positive_int_env("OPENCMO_GITHUB_ENRICH_CONCURRENCY", 1),
         "blog_generation": _get_positive_int_env("OPENCMO_BLOG_GENERATION_CONCURRENCY", 1),
+        "knowledge": _get_positive_int_env("OPENCMO_KNOWLEDGE_CONCURRENCY", 1),
     }
 
 

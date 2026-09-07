@@ -21,7 +21,7 @@ async def enqueue_task(
 
     # Capture BYOK keys + active account id from current request context so
     # the worker can restore them when the task actually runs.
-    keys = llm.get_request_keys()
+    keys = {} if kind == "knowledge" else llm.get_request_keys()
     account_id = llm.get_current_account_id()
     if keys or account_id:
         payload = payload.copy()

@@ -529,6 +529,8 @@ def start_scheduler():
     _require_apscheduler()
     scheduler = get_scheduler()
     if not scheduler.running:
+        from opencmo.rag.ingestion import schedule_maintenance
+        scheduler.add_job(schedule_maintenance, 'interval', hours=6, id='knowledge-maintenance', replace_existing=True)
         scheduler.start()
 
 

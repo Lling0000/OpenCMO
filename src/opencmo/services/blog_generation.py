@@ -371,6 +371,10 @@ async def _phase_write_blog(
         f"**{marketing_skill.name}** framework to produce the requested markdown asset."
     )
 
+    from opencmo.rag.integration import section_evidence
+    evidence = await section_evidence(f"{profile.get('product_name', '')} {style} {research.get('tracked_keywords', [])}")
+    if evidence:
+        prompt_parts.append(evidence)
     user_message = "\n\n".join(prompt_parts)
 
     result = await Runner.run(agent, user_message)
@@ -575,6 +579,10 @@ async def _phase_bilingual(
 # Main entry point
 # ---------------------------------------------------------------------------
 
+from opencmo.rag.integration import finalize_generation, with_knowledge
+
+
+@with_knowledge('content')
 async def generate_promotional_blog(
     project_id: int,
     style: str,
@@ -615,6 +623,7 @@ async def generate_promotional_blog(
     )
 
     # Create primary draft record
+    content, rag_meta = await finalize_generation(content)
     draft = await storage.create_blog_draft(
         project_id=project_id,
         task_id=task_id,
@@ -627,6 +636,7 @@ async def generate_promotional_blog(
         content=content,
         product_profile=profile,
         meta={
+            **rag_meta,
             "marketing_skill": skill_meta,
             "source_commit": MARKETING_SKILLS_UPSTREAM_COMMIT,
         },
@@ -657,6 +667,7 @@ async def generate_promotional_blog(
                 break
 
         # Create paired draft
+        translated_content, translated_rag_meta = await finalize_generation(translated_content)
         paired_draft = await storage.create_blog_draft(
             project_id=project_id,
             task_id=task_id,
@@ -669,6 +680,7 @@ async def generate_promotional_blog(
             content=translated_content,
             product_profile=profile,
             meta={
+                **translated_rag_meta,
                 "marketing_skill": skill_meta,
                 "source_commit": MARKETING_SKILLS_UPSTREAM_COMMIT,
                 "translated_from_draft_id": draft["id"],

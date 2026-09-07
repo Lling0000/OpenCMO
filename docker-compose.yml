@@ -7,7 +7,26 @@ services:
       - opencmo_data:/data
     env_file:
       - .env
+    environment:
+      OPENCMO_QDRANT_URL: http://qdrant:6333
+      OPENCMO_QDRANT_API_KEY: ${OPENCMO_QDRANT_API_KEY:-}
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.19.1
+    profiles: [rag]
+    ports:
+      - "127.0.0.1:6333:6333"
+    environment:
+      OPENCMO_QDRANT_API_KEY: ${OPENCMO_QDRANT_API_KEY:-}
+      QDRANT__TELEMETRY_DISABLED: "true"
+    volumes:
+      - qdrant_data:/qdrant/storage
+      - ./scripts/qdrant-entrypoint.sh:/qdrant/opencmo-entrypoint.sh:ro
+    entrypoint: ["/bin/sh", "/qdrant/opencmo-entrypoint.sh"]
+    command: []
     restart: unless-stopped
 
 volumes:
   opencmo_data:
+  qdrant_data:

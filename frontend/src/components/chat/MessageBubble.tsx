@@ -1,8 +1,10 @@
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from "../knowledge/KnowledgeMarkdown";
+import { useI18n } from "../../i18n";
 import type { ChatMessage } from "../../types";
 import { Bot, User, CheckCircle, Loader2 } from "lucide-react";
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
+  const { t } = useI18n();
   const isUser = message.role === "user";
   const avatarClassName = isUser ? "bg-slate-200" : "bg-black";
   const containerClassName = isUser ? "text-right" : "";
@@ -27,6 +29,8 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             {message.agent}
           </span>
         )}
+        {message.rag_status === "running" && <p role="status" className="text-xs text-slate-500">{t("knowledge.searching")}</p>}
+        {message.rag_status === "degraded" && <p className="text-xs text-amber-700">{t("knowledge.degraded")}</p>}
         {message.tools && message.tools.length > 0 && (
           <div className="mb-2 flex flex-wrap gap-1">
             {message.tools.map((tool, i) => (

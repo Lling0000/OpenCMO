@@ -485,15 +485,52 @@ async def api_v1_chat(request: Request):
 
     input_items.append({"role": "user", "content": message})
 
+    from opencmo.rag.config import get_settings as get_rag_settings
+    from opencmo.rag.integration import content_request, filter_chat_history, no_evidence_message, safe_handoff_filter
+    from opencmo.rag.retrieval import evidence_prompt, retrieve, validate_output
+    from opencmo.rag.types import RetrievalRequest
+    rag_mode = body.get("rag_mode", "auto")
+    if rag_mode not in {"auto", "only", "off"}:
+        return JSONResponse({"error": "invalid_rag_mode"}, status_code=400)
+    rag_enabled = (await get_rag_settings(account_id)).enabled and rag_mode != "off"
+    rag_purpose = "content" if content_request(message) else "internal"
+    rag_history = json.loads(session['input_items'])
+    if rag_enabled:
+        rag_history = await filter_chat_history(account_id, session_id, rag_history, rag_purpose,
+                                               session.get('project_id'), project_id)
+        input_items = ([context_item] if context_item else []) + [locale_prompt] + rag_history + [{"role": "user", "content": message}]
+
     async def event_stream():
         try:
-            from agents import Runner
+            from agents import RunConfig, Runner
 
             from opencmo.agents.cmo import cmo_agent
             from opencmo.marketing_review import review_marketing_output_with_metadata
 
             selected_agent = _resolve_direct_platform_agent(message) or cmo_agent
-            result = Runner.run_streamed(selected_agent, input_items, max_turns=15)
+            knowledge = None
+            evidence_item = None
+            run_options = {}
+            if rag_enabled or rag_mode == "only":
+                yield f"data: {json.dumps({'type': 'retrieval', 'status': 'running'})}\n\n"
+                knowledge = await retrieve(RetrievalRequest(account_id, project_id, message, purpose=rag_purpose,
+                    mode=rag_mode, history=rag_history))
+                if rag_mode == "only" and not knowledge.citations:
+                    output = no_evidence_message(locale)
+                    saved = json.loads(session['input_items']) + [{"role": "user", "content": message}, {"role": "assistant", "content": output}]
+                    await chat_sessions.update_session(session_id, saved, account_id=account_id)
+                    yield f"data: {json.dumps({'type': 'done', 'final_output': output, 'citations': [], 'rag_status': knowledge.status})}\n\n"
+                    return
+                evidence_item = {"role": "user", "content": evidence_prompt(knowledge, only=rag_mode == 'only')}
+                input_items.insert(len(input_items) - 1, evidence_item)
+                safe_context = evidence_item['content'] if rag_purpose == 'content' else 'Internal source evidence is unavailable after this handoff. Do not infer private source facts.'
+                run_options['run_config'] = RunConfig(handoff_input_filter=safe_handoff_filter(message, safe_context), trace_include_sensitive_data=False)
+                if rag_purpose == 'internal' and selected_agent is cmo_agent and knowledge.citations:
+                    selected_agent = cmo_agent.clone(handoffs=[], tools=[tool for tool in cmo_agent.tools
+                        if not getattr(tool, 'name', '').startswith('generate_')])
+                if rag_mode == 'only':
+                    selected_agent = selected_agent.clone(handoffs=[], tools=[])
+            result = Runner.run_streamed(selected_agent, input_items, max_turns=15, **run_options)
             output_chunks: list[str] = []
             stream_timed_out = False
             stream = result.stream_events()
@@ -560,6 +597,11 @@ async def api_v1_chat(request: Request):
             injected_contents = {locale_prompt["content"]}
             if context_item:
                 injected_contents.add(context_item["content"])
+            if evidence_item:
+                injected_contents.add(evidence_item["content"])
+                injected_contents.add(safe_context)
+            updated_items = [item for item in updated_items if not (isinstance(item, dict)
+                and isinstance(item.get('content'), str) and item['content'] in injected_contents)]
             while (
                 updated_items
                 and isinstance(updated_items[0], dict)
@@ -598,6 +640,9 @@ async def api_v1_chat(request: Request):
                     "weak_points": [],
                 }
             final_output = review_result["final_output"]
+            citations = []
+            if knowledge:
+                final_output, citations = await validate_output(final_output, knowledge, account_id)
             assistant_updated = False
             for item in reversed(updated_items):
                 if isinstance(item, dict) and item.get("role") == "assistant":
@@ -607,6 +652,9 @@ async def api_v1_chat(request: Request):
             if final_output and not assistant_updated:
                 updated_items.append({"role": "assistant", "content": final_output})
             await chat_sessions.update_session(session_id, updated_items, account_id=account_id)
+            if knowledge and knowledge.citations:
+                from opencmo.rag.store import put_message_evidence
+                await put_message_evidence(session_id, final_output, knowledge.retrieval_id)
             await storage.record_usage_event(
                 account_id,
                 "ai_chat",
@@ -614,7 +662,7 @@ async def api_v1_chat(request: Request):
                 project_id=project_id,
                 metadata={"session_id": session_id, "agent_name": agent_name},
             )
-            yield f"data: {json.dumps({'type': 'done', 'agent_name': agent_name, 'final_output': final_output, 'review_applied': review_result['review_applied'], 'review_profile': review_result['profile'], 'review_weak_points': review_result['weak_points'], 'stream_timed_out': stream_timed_out})}\n\n"
+            yield f"data: {json.dumps({'type': 'done', 'agent_name': agent_name, 'final_output': final_output, 'review_applied': review_result['review_applied'], 'review_profile': review_result['profile'], 'review_weak_points': review_result['weak_points'], 'stream_timed_out': stream_timed_out, 'citations': citations, 'retrieval_id': knowledge.retrieval_id if knowledge else None, 'rag_status': knowledge.status if knowledge else 'disabled'})}\n\n"
         except Exception as e:
             yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
 

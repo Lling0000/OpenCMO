@@ -132,6 +132,9 @@ export function useChat(initialProjectId: number | null = null) {
             id: nextId(),
             role: m.role as "user" | "assistant",
             content: m.content,
+            citations: m.citations,
+            retrieval_id: m.retrieval_id,
+            rag_status: m.rag_status,
           })),
         );
         setCurrentAgent("CMO Agent");
@@ -195,6 +198,9 @@ export function useChat(initialProjectId: number | null = null) {
   const handleEvent = useCallback(
     (event: ChatEvent, msgId: string) => {
       switch (event.type) {
+        case "retrieval":
+          setMessages(prev => prev.map(m => m.id === msgId ? { ...m, rag_status: event.status } : m));
+          break;
         case "delta":
           setMessages((prev) =>
             prev.map((m) =>
@@ -252,6 +258,9 @@ export function useChat(initialProjectId: number | null = null) {
                     ...m,
                     agent: event.agent_name ?? m.agent,
                     content: event.final_output ?? m.content,
+                    citations: event.citations,
+                    retrieval_id: event.retrieval_id,
+                    rag_status: event.rag_status,
                   }
                 : m,
             ),
