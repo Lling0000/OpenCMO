@@ -9,12 +9,15 @@ Local verification performed on 2026-09-07/08. No production deployment was perf
 - Ruff: passed.
 - Frontend TypeScript and Vite production build: passed; the existing large-bundle advisory remains.
 - Browser: desktop and 390-pixel mobile layouts, document upload, retrieval, model configuration, source preview, centered citation dialog and Unicode/emoji source offsets passed with no page errors.
+- GitHub CI passed for Python 3.11, Python 3.12 and the frontend. A subsequent tracing hardening change also passed 123 targeted tests locally.
 
 Tests cover parent/child budgets and exact spans, PDF pages and image-only rejection, DOCX tables, HTML cleanup, URL restrictions, tenant/project isolation, sharing revocation, outbound-use restrictions, tombstones, shadow versions, profile migration failure, rebuilding a missing vector collection, account index leases, orphan reconciliation, persisted citations and non-reuse of revoked evidence.
 
 The broader suite needed test isolation fixes: asynchronous worker completion now waits for completion instead of a 50 ms sleep; route tests avoid unintended live scans; settings tests restore environment defaults. Windows file reads explicitly use UTF-8.
 
 Model calls in automated and browser tests are fixtures. An actual Qdrant engine test is not evidence that the configured embedding model meets semantic quality targets.
+
+The existing Trustabl workflow remains gated on findings in unchanged tools, including timeout detection, dynamic outbound URLs and email-report idempotency. Its file-specific findings did not point to files changed by the RAG implementation. RAG-backed generation explicitly disables hosted SDK tracing; this does not constitute a security audit of every existing tool.
 
 ## Capacity result
 

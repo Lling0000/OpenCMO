@@ -524,7 +524,7 @@ async def api_v1_chat(request: Request):
                 evidence_item = {"role": "user", "content": evidence_prompt(knowledge, only=rag_mode == 'only')}
                 input_items.insert(len(input_items) - 1, evidence_item)
                 safe_context = evidence_item['content'] if rag_purpose == 'content' else 'Internal source evidence is unavailable after this handoff. Do not infer private source facts.'
-                run_options['run_config'] = RunConfig(handoff_input_filter=safe_handoff_filter(message, safe_context), trace_include_sensitive_data=False)
+                run_options['run_config'] = RunConfig(handoff_input_filter=safe_handoff_filter(message, safe_context), tracing_disabled=True, trace_include_sensitive_data=False)
                 if rag_purpose == 'internal' and selected_agent is cmo_agent and knowledge.citations:
                     selected_agent = cmo_agent.clone(handoffs=[], tools=[tool for tool in cmo_agent.tools
                         if not getattr(tool, 'name', '').startswith('generate_')])

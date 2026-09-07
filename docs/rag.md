@@ -94,7 +94,7 @@ Candidates are deduplicated, fused with equal-weight reciprocal rank fusion, and
 
 The initial rerank threshold is 0.2 and must be calibrated for the configured model. The default retrieval deadline is 10 seconds, with at most 2 seconds for rewriting and 4 seconds for reranking. Failed lanes remain visible in diagnostics; rerank failure uses the fused ranking and marks the result degraded.
 
-Chat and report integrations keep retrieved text separate from trusted instructions. Direct quotes and citation identifiers are checked after marketing rewriting. This structural validation does not replace human review of whether an inference is actually supported.
+Chat and report integrations keep retrieved text separate from trusted instructions. Hosted SDK tracing is disabled for RAG-backed chat and content generation. Direct quotes and citation identifiers are checked after marketing rewriting. This structural validation does not replace human review of whether an inference is actually supported.
 
 ## APIs
 

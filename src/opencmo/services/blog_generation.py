@@ -377,7 +377,11 @@ async def _phase_write_blog(
         prompt_parts.append(evidence)
     user_message = "\n\n".join(prompt_parts)
 
-    result = await Runner.run(agent, user_message)
+    run_options = {}
+    if evidence:
+        from agents import RunConfig
+        run_options['run_config'] = RunConfig(tracing_disabled=True, trace_include_sensitive_data=False)
+    result = await Runner.run(agent, user_message, **run_options)
     content = result.final_output or ""
 
     # Extract title from first H1
