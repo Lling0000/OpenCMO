@@ -7,7 +7,7 @@ import socket
 import uuid
 from dataclasses import dataclass
 
-TASK_KINDS = frozenset({"scan", "report", "graph_expansion", "github_enrich", "blog_generation"})
+TASK_KINDS = frozenset({"scan", "report", "graph_expansion", "github_enrich", "blog_generation", "knowledge"})
 ACTIVE_STATUSES = frozenset({"queued", "claimed", "running", "cancel_requested"})
 TERMINAL_STATUSES = frozenset({"completed", "failed", "cancelled"})
 

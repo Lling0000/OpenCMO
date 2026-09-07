@@ -18,7 +18,7 @@ export function listSessions(): Promise<ChatSessionSummary[]> {
 
 export function getSessionMessages(
   sessionId: string,
-): Promise<{ role: string; content: string }[]> {
+): Promise<{ role: string; content: string; citations?: import("./knowledge").KnowledgeCitation[]; retrieval_id?: string; rag_status?: string }[]> {
   return apiJson(`/chat/sessions/${sessionId}/messages`);
 }
 
@@ -48,6 +48,7 @@ export async function* streamChat(
     body: JSON.stringify({
       session_id: sessionId,
       message,
+      rag_mode: localStorage.getItem("opencmo_rag_mode") || "auto",
       ...(projectId != null ? { project_id: projectId } : {}),
       ...(locale ? { locale } : {}),
     }),

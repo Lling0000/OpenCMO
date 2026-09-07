@@ -1207,6 +1207,8 @@ async def _startup_runtime_services():
     worker.register_executor("graph_expansion", run_graph_expansion_executor)
     worker.register_executor("github_enrich", run_github_enrich_executor)
     worker.register_executor("blog_generation", run_blog_generation_executor)
+    from opencmo.rag.ingestion import run_knowledge_executor
+    worker.register_executor("knowledge", run_knowledge_executor)
     await worker.start()
 
     if not scheduler.is_scheduler_enabled():
@@ -1229,6 +1231,8 @@ async def _shutdown_runtime_services():
     from opencmo.background.worker import get_background_worker
 
     await get_background_worker().stop()
+    from opencmo.rag.providers import close_clients
+    await close_clients()
     scheduler.stop_scheduler()
     logger.info("Scheduler stopped")
 
@@ -1732,6 +1736,7 @@ from opencmo.web.routers.github import router as github_router
 from opencmo.web.routers.graph import router as graph_router
 from opencmo.web.routers.insights import router as insights_router
 from opencmo.web.routers.keywords import router as keywords_router
+from opencmo.web.routers.knowledge import router as knowledge_router
 from opencmo.web.routers.legacy import router as legacy_router
 from opencmo.web.routers.monitors import router as monitors_router
 from opencmo.web.routers.performance import router as performance_router
@@ -1762,6 +1767,10 @@ app.include_router(quick_actions_router)
 app.include_router(github_router)
 app.include_router(blog_gen_router)
 app.include_router(ai_models_router)
+app.include_router(knowledge_router)
+from opencmo.rag.middleware import KnowledgeBodyLimitMiddleware
+
+app.add_middleware(KnowledgeBodyLimitMiddleware)
 
 
 # ---------------------------------------------------------------------------
@@ -1893,7 +1902,7 @@ async def spa_catchall(request: Request, full_path: str = ""):
     except Exception:
         logger.exception("Failed to record site visit counters")
 
-    rendered_html = _apply_public_route_metadata(index.read_text(), full_path)
+    rendered_html = _apply_public_route_metadata(index.read_text(encoding='utf-8'), full_path)
 
     # SPA fallback — always return index.html
     response = HTMLResponse(rendered_html)

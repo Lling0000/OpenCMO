@@ -1,6 +1,6 @@
 import { useState, useMemo, type ElementType, type ReactNode } from "react";
 import { useParams } from "react-router";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from "../components/knowledge/KnowledgeMarkdown";
 import { Bot, ChevronDown, ChevronRight, FileText, History, Info, Mail, RefreshCcw, User, Download } from "lucide-react";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { ErrorAlert } from "../components/common/ErrorAlert";

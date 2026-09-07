@@ -1,0 +1,1428 @@
+{
+  "schema_version": 1,
+  "description": "Fictional bilingual RAG regression corpus. Semantic quality must be measured with real configured models; synthetic execution is not model-quality evidence.",
+  "documents": [
+    {
+      "id": "case-01-before",
+      "title": "Atlas / 星桥 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Atlas / 星桥\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Atlas recorded activation of 18 %. 截至 2026-01-31，星桥的激活率为 18 %。\n\nThe onboarding program had not yet introduced the later intervention. 新手引导项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-01-after",
+      "title": "Atlas / 星桥 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Atlas / 星桥\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Atlas recorded activation of 27 %. 截至 2026-03-31，星桥的激活率为 27 %。\n\nThe team used guided first-project setup in its onboarding program. 团队在新手引导工作中引导用户完成首个项目。 The previous observation was 18 %, and the follow-up was 27 %. 前次观察为 18 %，后续为 27 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-02-before",
+      "title": "Mosaic / 织云 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Mosaic / 织云\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Mosaic recorded trial conversion of 8 %. 截至 2026-01-31，织云的试用转化率为 8 %。\n\nThe email lifecycle program had not yet introduced the later intervention. 生命周期邮件项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-02-after",
+      "title": "Mosaic / 织云 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Mosaic / 织云\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Mosaic recorded trial conversion of 13 %. 截至 2026-03-31，织云的试用转化率为 13 %。\n\nThe team used behavior-triggered onboarding emails in its email lifecycle program. 团队在生命周期邮件工作中按用户行为发送引导邮件。 The previous observation was 8 %, and the follow-up was 13 %. 前次观察为 8 %，后续为 13 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-03-before",
+      "title": "Harbor / 海港 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Harbor / 海港\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Harbor recorded qualified leads of 120 /month. 截至 2026-01-31，海港的有效线索为 120 /month。\n\nThe developer content program had not yet introduced the later intervention. 开发者内容项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-03-after",
+      "title": "Harbor / 海港 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Harbor / 海港\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Harbor recorded qualified leads of 186 /month. 截至 2026-03-31，海港的有效线索为 186 /month。\n\nThe team used task-oriented integration tutorials in its developer content program. 团队在开发者内容工作中围绕任务编写集成教程。 The previous observation was 120 /month, and the follow-up was 186 /month. 前次观察为 120 /month，后续为 186 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-04-before",
+      "title": "Cedar / 杉木 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Cedar / 杉木\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Cedar recorded indexed pages of 340 pages. 截至 2026-01-31，杉木的收录页面为 340 pages。\n\nThe technical SEO program had not yet introduced the later intervention. 技术SEO项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-04-after",
+      "title": "Cedar / 杉木 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Cedar / 杉木\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Cedar recorded indexed pages of 510 pages. 截至 2026-03-31，杉木的收录页面为 510 pages。\n\nThe team used repairing canonical tags and duplicate pages in its technical SEO program. 团队在技术SEO工作中修复规范链接和重复页面。 The previous observation was 340 pages, and the follow-up was 510 pages. 前次观察为 340 pages，后续为 510 pages。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-05-before",
+      "title": "Orbit / 环宇 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Orbit / 环宇\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Orbit recorded paid accounts of 210 accounts. 截至 2026-01-31，环宇的付费账号为 210 accounts。\n\nThe pricing program had not yet introduced the later intervention. 定价项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-05-after",
+      "title": "Orbit / 环宇 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Orbit / 环宇\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Orbit recorded paid accounts of 284 accounts. 截至 2026-03-31，环宇的付费账号为 284 accounts。\n\nThe team used a usage-based entry plan in its pricing program. 团队在定价工作中推出按用量计费的入门套餐。 The previous observation was 210 accounts, and the follow-up was 284 accounts. 前次观察为 210 accounts，后续为 284 accounts。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-06-before",
+      "title": "Lantern / 青灯 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Lantern / 青灯\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Lantern recorded qualified signups of 70 /month. 截至 2026-01-31，青灯的有效注册为 70 /month。\n\nThe community program had not yet introduced the later intervention. 社区项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-06-after",
+      "title": "Lantern / 青灯 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Lantern / 青灯\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Lantern recorded qualified signups of 109 /month. 截至 2026-03-31，青灯的有效注册为 109 /month。\n\nThe team used answering high-intent technical discussions in its community program. 团队在社区工作中回答高意向技术讨论。 The previous observation was 70 /month, and the follow-up was 109 /month. 前次观察为 70 /month，后续为 109 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-07-before",
+      "title": "Pebble / 石语 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Pebble / 石语\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Pebble recorded week-four retention of 24 %. 截至 2026-01-31，石语的第四周留存率为 24 %。\n\nThe retention program had not yet introduced the later intervention. 留存项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-07-after",
+      "title": "Pebble / 石语 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Pebble / 石语\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Pebble recorded week-four retention of 35 %. 截至 2026-03-31，石语的第四周留存率为 35 %。\n\nThe team used weekly usage summaries and team reminders in its retention program. 团队在留存工作中每周使用总结和团队提醒。 The previous observation was 24 %, and the follow-up was 35 %. 前次观察为 24 %，后续为 35 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-08-before",
+      "title": "Saffron / 藏红 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Saffron / 藏红\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Saffron recorded demo requests of 45 /month. 截至 2026-01-31，藏红的演示申请为 45 /month。\n\nThe landing pages program had not yet introduced the later intervention. 落地页项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-08-after",
+      "title": "Saffron / 藏红 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Saffron / 藏红\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Saffron recorded demo requests of 68 /month. 截至 2026-03-31，藏红的演示申请为 68 /month。\n\nThe team used placing customer proof next to the primary CTA in its landing pages program. 团队在落地页工作中在主要行动按钮附近展示客户证据。 The previous observation was 45 /month, and the follow-up was 68 /month. 前次观察为 45 /month，后续为 68 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-09-before",
+      "title": "Juniper / 杜松 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Juniper / 杜松\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Juniper recorded organic visits of 1400 /month. 截至 2026-01-31，杜松的自然访问为 1400 /month。\n\nThe programmatic SEO program had not yet introduced the later intervention. 程序化SEO项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-09-after",
+      "title": "Juniper / 杜松 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Juniper / 杜松\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Juniper recorded organic visits of 2150 /month. 截至 2026-03-31，杜松的自然访问为 2150 /month。\n\nThe team used publishing original benchmark data pages in its programmatic SEO program. 团队在程序化SEO工作中发布原创基准数据页面。 The previous observation was 1400 /month, and the follow-up was 2150 /month. 前次观察为 1400 /month，后续为 2150 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-10-before",
+      "title": "Quartz / 晶石 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Quartz / 晶石\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Quartz recorded referred accounts of 30 /month. 截至 2026-01-31，晶石的推荐账号为 30 /month。\n\nThe referrals program had not yet introduced the later intervention. 推荐项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-10-after",
+      "title": "Quartz / 晶石 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Quartz / 晶石\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Quartz recorded referred accounts of 57 /month. 截至 2026-03-31，晶石的推荐账号为 57 /month。\n\nThe team used team invitation rewards after first success in its referrals program. 团队在推荐工作中首次成功体验后提供团队邀请奖励。 The previous observation was 30 /month, and the follow-up was 57 /month. 前次观察为 30 /month，后续为 57 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-11-before",
+      "title": "Vela / 帆影 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Vela / 帆影\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Vela recorded largest contentful paint of 4.8 seconds. 截至 2026-01-31，帆影的最大内容绘制时间为 4.8 seconds。\n\nThe web performance program had not yet introduced the later intervention. 网站性能项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-11-after",
+      "title": "Vela / 帆影 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Vela / 帆影\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Vela recorded largest contentful paint of 2.3 seconds. 截至 2026-03-31，帆影的最大内容绘制时间为 2.3 seconds。\n\nThe team used compressing images and deferring scripts in its web performance program. 团队在网站性能工作中压缩图片并延迟脚本。 The previous observation was 4.8 seconds, and the follow-up was 2.3 seconds. 前次观察为 4.8 seconds，后续为 2.3 seconds。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-12-before",
+      "title": "Willow / 柳岸 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Willow / 柳岸\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Willow recorded comparison-page signups of 32 /month. 截至 2026-01-31，柳岸的对比页注册为 32 /month。\n\nThe comparison content program had not yet introduced the later intervention. 对比内容项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-12-after",
+      "title": "Willow / 柳岸 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Willow / 柳岸\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Willow recorded comparison-page signups of 61 /month. 截至 2026-03-31，柳岸的对比页注册为 61 /month。\n\nThe team used publishing transparent competitor comparison guides in its comparison content program. 团队在对比内容工作中发布透明的竞品对比指南。 The previous observation was 32 /month, and the follow-up was 61 /month. 前次观察为 32 /month，后续为 61 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-13-before",
+      "title": "Nimbus / 云岚 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Nimbus / 云岚\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Nimbus recorded proposal acceptance of 22 %. 截至 2026-01-31，云岚的方案接受率为 22 %。\n\nThe sales enablement program had not yet introduced the later intervention. 销售支持项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-13-after",
+      "title": "Nimbus / 云岚 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Nimbus / 云岚\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Nimbus recorded proposal acceptance of 31 %. 截至 2026-03-31，云岚的方案接受率为 31 %。\n\nThe team used industry-specific evidence packs in its sales enablement program. 团队在销售支持工作中按行业提供销售证据包。 The previous observation was 22 %, and the follow-up was 31 %. 前次观察为 22 %，后续为 31 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-14-before",
+      "title": "Pine / 松原 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Pine / 松原\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Pine recorded click-through rate of 2.1 %. 截至 2026-01-31，松原的点击率为 2.1 %。\n\nThe newsletter program had not yet introduced the later intervention. 通讯订阅项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-14-after",
+      "title": "Pine / 松原 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Pine / 松原\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Pine recorded click-through rate of 3.6 %. 截至 2026-03-31，松原的点击率为 3.6 %。\n\nThe team used segmenting newsletters by user job in its newsletter program. 团队在通讯订阅工作中按用户任务细分通讯内容。 The previous observation was 2.1 %, and the follow-up was 3.6 %. 前次观察为 2.1 %，后续为 3.6 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-15-before",
+      "title": "Reef / 珊瑚 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Reef / 珊瑚\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Reef recorded feature adoption of 19 %. 截至 2026-01-31，珊瑚的功能采用率为 19 %。\n\nThe product education program had not yet introduced the later intervention. 产品教育项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-15-after",
+      "title": "Reef / 珊瑚 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Reef / 珊瑚\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Reef recorded feature adoption of 33 %. 截至 2026-03-31，珊瑚的功能采用率为 33 %。\n\nThe team used in-app contextual examples in its product education program. 团队在产品教育工作中在产品内提供场景示例。 The previous observation was 19 %, and the follow-up was 33 %. 前次观察为 19 %，后续为 33 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-16-before",
+      "title": "Solace / 安和 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Solace / 安和\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Solace recorded acquisition cost of 96 USD. 截至 2026-01-31，安和的获客成本为 96 USD。\n\nThe paid acquisition program had not yet introduced the later intervention. 付费获客项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-16-after",
+      "title": "Solace / 安和 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Solace / 安和\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Solace recorded acquisition cost of 71 USD. 截至 2026-03-31，安和的获客成本为 71 USD。\n\nThe team used excluding low-intent keywords and adding negative matches in its paid acquisition program. 团队在付费获客工作中排除低意向关键词并加入否定匹配。 The previous observation was 96 USD, and the follow-up was 71 USD. 前次观察为 96 USD，后续为 71 USD。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-17-before",
+      "title": "Tundra / 苔原 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Tundra / 苔原\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Tundra recorded international conversion of 3.4 %. 截至 2026-01-31，苔原的国际用户转化率为 3.4 %。\n\nThe localization program had not yet introduced the later intervention. 本地化项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-17-after",
+      "title": "Tundra / 苔原 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Tundra / 苔原\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Tundra recorded international conversion of 5.2 %. 截至 2026-03-31，苔原的国际用户转化率为 5.2 %。\n\nThe team used local-language product explanations and examples in its localization program. 团队在本地化工作中使用本地语言说明产品和案例。 The previous observation was 3.4 %, and the follow-up was 5.2 %. 前次观察为 3.4 %，后续为 5.2 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-18-before",
+      "title": "Vale / 溪谷 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Vale / 溪谷\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Vale recorded sales-qualified leads of 28 /event. 截至 2026-01-31，溪谷的销售认可线索为 28 /event。\n\nThe webinars program had not yet introduced the later intervention. 网络研讨会项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-18-after",
+      "title": "Vale / 溪谷 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Vale / 溪谷\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Vale recorded sales-qualified leads of 44 /event. 截至 2026-03-31，溪谷的销售认可线索为 44 /event。\n\nThe team used live workflow demonstrations with follow-up guides in its webinars program. 团队在网络研讨会工作中演示真实工作流并提供后续指南。 The previous observation was 28 /event, and the follow-up was 44 /event. 前次观察为 28 /event，后续为 44 /event。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-19-before",
+      "title": "Zephyr / 和风 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Zephyr / 和风\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Zephyr recorded support tickets of 320 /month. 截至 2026-01-31，和风的支持工单为 320 /month。\n\nThe documentation program had not yet introduced the later intervention. 产品文档项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-19-after",
+      "title": "Zephyr / 和风 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Zephyr / 和风\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Zephyr recorded support tickets of 224 /month. 截至 2026-03-31，和风的支持工单为 224 /month。\n\nThe team used searchable troubleshooting examples in its documentation program. 团队在产品文档工作中可搜索的排障示例。 The previous observation was 320 /month, and the follow-up was 224 /month. 前次观察为 320 /month，后续为 224 /month。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-20-before",
+      "title": "Aster / 紫苑 — Baseline / 基线",
+      "date": "2026-01-31",
+      "text": "# Aster / 紫苑\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Baseline / 基线\n\nAs of 2026-01-31, Aster recorded sampled brand mentions of 12 %. 截至 2026-01-31，紫苑的抽样品牌提及率为 12 %。\n\nThe AI visibility program had not yet introduced the later intervention. AI可见度项目尚未引入后续措施。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    },
+    {
+      "id": "case-20-after",
+      "title": "Aster / 紫苑 — Outcome / 结果",
+      "date": "2026-03-31",
+      "text": "# Aster / 紫苑\n\nThis is a fictional evaluation case, not real customer evidence. 本文为虚构评测案例，不是真实客户证据。\n\n## Intervention and outcome / 措施与结果\n\nAs of 2026-03-31, Aster recorded sampled brand mentions of 21 %. 截至 2026-03-31，紫苑的抽样品牌提及率为 21 %。\n\nThe team used clear entity definitions and source-linked benchmark summaries in its AI visibility program. 团队在AI可见度工作中清晰的实体定义和附带来源的基准摘要。 The previous observation was 12 %, and the follow-up was 21 %. 前次观察为 12 %，后续为 21 %。 These observations do not establish causation. 这些观察不能单独证明因果关系。\n\nNo contract price, security certification number, individual email address or causal experiment is supplied. 未提供合同价格、安全认证编号、个人邮箱或因果实验。"
+    }
+  ],
+  "questions": [
+    {
+      "id": "case-01-q1",
+      "query": "星桥后续的激活率是多少？",
+      "relevant": [
+        "case-01-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-01-q2",
+      "query": "What was Atlas's later activation?",
+      "relevant": [
+        "case-01-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-01-q3",
+      "query": "Which approach was used by Atlas to improve onboarding?",
+      "relevant": [
+        "case-01-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-01-q4",
+      "query": "星桥采取了什么新手引导措施，原文依据是什么？",
+      "relevant": [
+        "case-01-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-01-q5",
+      "query": "Compare Atlas between 2026-01-31 and 2026-03-31 for activation.",
+      "relevant": [
+        "case-01-before",
+        "case-01-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-01-q6",
+      "query": "星桥的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-02-q1",
+      "query": "织云后续的试用转化率是多少？",
+      "relevant": [
+        "case-02-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-02-q2",
+      "query": "What was Mosaic's later trial conversion?",
+      "relevant": [
+        "case-02-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-02-q3",
+      "query": "Which approach was used by Mosaic to improve email lifecycle?",
+      "relevant": [
+        "case-02-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-02-q4",
+      "query": "织云采取了什么生命周期邮件措施，原文依据是什么？",
+      "relevant": [
+        "case-02-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-02-q5",
+      "query": "Compare Mosaic between 2026-01-31 and 2026-03-31 for trial conversion.",
+      "relevant": [
+        "case-02-before",
+        "case-02-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-02-q6",
+      "query": "织云的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-03-q1",
+      "query": "海港后续的有效线索是多少？",
+      "relevant": [
+        "case-03-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-03-q2",
+      "query": "What was Harbor's later qualified leads?",
+      "relevant": [
+        "case-03-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-03-q3",
+      "query": "Which approach was used by Harbor to improve developer content?",
+      "relevant": [
+        "case-03-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-03-q4",
+      "query": "海港采取了什么开发者内容措施，原文依据是什么？",
+      "relevant": [
+        "case-03-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-03-q5",
+      "query": "Compare Harbor between 2026-01-31 and 2026-03-31 for qualified leads.",
+      "relevant": [
+        "case-03-before",
+        "case-03-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-03-q6",
+      "query": "海港的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-04-q1",
+      "query": "杉木后续的收录页面是多少？",
+      "relevant": [
+        "case-04-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-04-q2",
+      "query": "What was Cedar's later indexed pages?",
+      "relevant": [
+        "case-04-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-04-q3",
+      "query": "Which approach was used by Cedar to improve technical SEO?",
+      "relevant": [
+        "case-04-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-04-q4",
+      "query": "杉木采取了什么技术SEO措施，原文依据是什么？",
+      "relevant": [
+        "case-04-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-04-q5",
+      "query": "Compare Cedar between 2026-01-31 and 2026-03-31 for indexed pages.",
+      "relevant": [
+        "case-04-before",
+        "case-04-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-04-q6",
+      "query": "杉木的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-05-q1",
+      "query": "环宇后续的付费账号是多少？",
+      "relevant": [
+        "case-05-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-05-q2",
+      "query": "What was Orbit's later paid accounts?",
+      "relevant": [
+        "case-05-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-05-q3",
+      "query": "Which approach was used by Orbit to improve pricing?",
+      "relevant": [
+        "case-05-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-05-q4",
+      "query": "环宇采取了什么定价措施，原文依据是什么？",
+      "relevant": [
+        "case-05-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-05-q5",
+      "query": "Compare Orbit between 2026-01-31 and 2026-03-31 for paid accounts.",
+      "relevant": [
+        "case-05-before",
+        "case-05-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-05-q6",
+      "query": "环宇的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-06-q1",
+      "query": "青灯后续的有效注册是多少？",
+      "relevant": [
+        "case-06-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-06-q2",
+      "query": "What was Lantern's later qualified signups?",
+      "relevant": [
+        "case-06-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-06-q3",
+      "query": "Which approach was used by Lantern to improve community?",
+      "relevant": [
+        "case-06-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-06-q4",
+      "query": "青灯采取了什么社区措施，原文依据是什么？",
+      "relevant": [
+        "case-06-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-06-q5",
+      "query": "Compare Lantern between 2026-01-31 and 2026-03-31 for qualified signups.",
+      "relevant": [
+        "case-06-before",
+        "case-06-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-06-q6",
+      "query": "青灯的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-07-q1",
+      "query": "石语后续的第四周留存率是多少？",
+      "relevant": [
+        "case-07-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-07-q2",
+      "query": "What was Pebble's later week-four retention?",
+      "relevant": [
+        "case-07-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-07-q3",
+      "query": "Which approach was used by Pebble to improve retention?",
+      "relevant": [
+        "case-07-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-07-q4",
+      "query": "石语采取了什么留存措施，原文依据是什么？",
+      "relevant": [
+        "case-07-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-07-q5",
+      "query": "Compare Pebble between 2026-01-31 and 2026-03-31 for week-four retention.",
+      "relevant": [
+        "case-07-before",
+        "case-07-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-07-q6",
+      "query": "石语的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-08-q1",
+      "query": "藏红后续的演示申请是多少？",
+      "relevant": [
+        "case-08-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-08-q2",
+      "query": "What was Saffron's later demo requests?",
+      "relevant": [
+        "case-08-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-08-q3",
+      "query": "Which approach was used by Saffron to improve landing pages?",
+      "relevant": [
+        "case-08-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-08-q4",
+      "query": "藏红采取了什么落地页措施，原文依据是什么？",
+      "relevant": [
+        "case-08-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-08-q5",
+      "query": "Compare Saffron between 2026-01-31 and 2026-03-31 for demo requests.",
+      "relevant": [
+        "case-08-before",
+        "case-08-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-08-q6",
+      "query": "藏红的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-09-q1",
+      "query": "杜松后续的自然访问是多少？",
+      "relevant": [
+        "case-09-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-09-q2",
+      "query": "What was Juniper's later organic visits?",
+      "relevant": [
+        "case-09-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-09-q3",
+      "query": "Which approach was used by Juniper to improve programmatic SEO?",
+      "relevant": [
+        "case-09-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-09-q4",
+      "query": "杜松采取了什么程序化SEO措施，原文依据是什么？",
+      "relevant": [
+        "case-09-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-09-q5",
+      "query": "Compare Juniper between 2026-01-31 and 2026-03-31 for organic visits.",
+      "relevant": [
+        "case-09-before",
+        "case-09-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-09-q6",
+      "query": "杜松的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-10-q1",
+      "query": "晶石后续的推荐账号是多少？",
+      "relevant": [
+        "case-10-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-10-q2",
+      "query": "What was Quartz's later referred accounts?",
+      "relevant": [
+        "case-10-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-10-q3",
+      "query": "Which approach was used by Quartz to improve referrals?",
+      "relevant": [
+        "case-10-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-10-q4",
+      "query": "晶石采取了什么推荐措施，原文依据是什么？",
+      "relevant": [
+        "case-10-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-10-q5",
+      "query": "Compare Quartz between 2026-01-31 and 2026-03-31 for referred accounts.",
+      "relevant": [
+        "case-10-before",
+        "case-10-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-10-q6",
+      "query": "晶石的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-11-q1",
+      "query": "帆影后续的最大内容绘制时间是多少？",
+      "relevant": [
+        "case-11-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-11-q2",
+      "query": "What was Vela's later largest contentful paint?",
+      "relevant": [
+        "case-11-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-11-q3",
+      "query": "Which approach was used by Vela to improve web performance?",
+      "relevant": [
+        "case-11-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-11-q4",
+      "query": "帆影采取了什么网站性能措施，原文依据是什么？",
+      "relevant": [
+        "case-11-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-11-q5",
+      "query": "Compare Vela between 2026-01-31 and 2026-03-31 for largest contentful paint.",
+      "relevant": [
+        "case-11-before",
+        "case-11-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-11-q6",
+      "query": "帆影的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-12-q1",
+      "query": "柳岸后续的对比页注册是多少？",
+      "relevant": [
+        "case-12-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-12-q2",
+      "query": "What was Willow's later comparison-page signups?",
+      "relevant": [
+        "case-12-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-12-q3",
+      "query": "Which approach was used by Willow to improve comparison content?",
+      "relevant": [
+        "case-12-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-12-q4",
+      "query": "柳岸采取了什么对比内容措施，原文依据是什么？",
+      "relevant": [
+        "case-12-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-12-q5",
+      "query": "Compare Willow between 2026-01-31 and 2026-03-31 for comparison-page signups.",
+      "relevant": [
+        "case-12-before",
+        "case-12-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-12-q6",
+      "query": "柳岸的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-13-q1",
+      "query": "云岚后续的方案接受率是多少？",
+      "relevant": [
+        "case-13-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-13-q2",
+      "query": "What was Nimbus's later proposal acceptance?",
+      "relevant": [
+        "case-13-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-13-q3",
+      "query": "Which approach was used by Nimbus to improve sales enablement?",
+      "relevant": [
+        "case-13-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-13-q4",
+      "query": "云岚采取了什么销售支持措施，原文依据是什么？",
+      "relevant": [
+        "case-13-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-13-q5",
+      "query": "Compare Nimbus between 2026-01-31 and 2026-03-31 for proposal acceptance.",
+      "relevant": [
+        "case-13-before",
+        "case-13-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-13-q6",
+      "query": "云岚的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-14-q1",
+      "query": "松原后续的点击率是多少？",
+      "relevant": [
+        "case-14-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-14-q2",
+      "query": "What was Pine's later click-through rate?",
+      "relevant": [
+        "case-14-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "development"
+    },
+    {
+      "id": "case-14-q3",
+      "query": "Which approach was used by Pine to improve newsletter?",
+      "relevant": [
+        "case-14-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "development"
+    },
+    {
+      "id": "case-14-q4",
+      "query": "松原采取了什么通讯订阅措施，原文依据是什么？",
+      "relevant": [
+        "case-14-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "development"
+    },
+    {
+      "id": "case-14-q5",
+      "query": "Compare Pine between 2026-01-31 and 2026-03-31 for click-through rate.",
+      "relevant": [
+        "case-14-before",
+        "case-14-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "development"
+    },
+    {
+      "id": "case-14-q6",
+      "query": "松原的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "development"
+    },
+    {
+      "id": "case-15-q1",
+      "query": "珊瑚后续的功能采用率是多少？",
+      "relevant": [
+        "case-15-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-15-q2",
+      "query": "What was Reef's later feature adoption?",
+      "relevant": [
+        "case-15-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-15-q3",
+      "query": "Which approach was used by Reef to improve product education?",
+      "relevant": [
+        "case-15-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "holdout"
+    },
+    {
+      "id": "case-15-q4",
+      "query": "珊瑚采取了什么产品教育措施，原文依据是什么？",
+      "relevant": [
+        "case-15-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "holdout"
+    },
+    {
+      "id": "case-15-q5",
+      "query": "Compare Reef between 2026-01-31 and 2026-03-31 for feature adoption.",
+      "relevant": [
+        "case-15-before",
+        "case-15-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "holdout"
+    },
+    {
+      "id": "case-15-q6",
+      "query": "珊瑚的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "holdout"
+    },
+    {
+      "id": "case-16-q1",
+      "query": "安和后续的获客成本是多少？",
+      "relevant": [
+        "case-16-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-16-q2",
+      "query": "What was Solace's later acquisition cost?",
+      "relevant": [
+        "case-16-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-16-q3",
+      "query": "Which approach was used by Solace to improve paid acquisition?",
+      "relevant": [
+        "case-16-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "holdout"
+    },
+    {
+      "id": "case-16-q4",
+      "query": "安和采取了什么付费获客措施，原文依据是什么？",
+      "relevant": [
+        "case-16-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "holdout"
+    },
+    {
+      "id": "case-16-q5",
+      "query": "Compare Solace between 2026-01-31 and 2026-03-31 for acquisition cost.",
+      "relevant": [
+        "case-16-before",
+        "case-16-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "holdout"
+    },
+    {
+      "id": "case-16-q6",
+      "query": "安和的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "holdout"
+    },
+    {
+      "id": "case-17-q1",
+      "query": "苔原后续的国际用户转化率是多少？",
+      "relevant": [
+        "case-17-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-17-q2",
+      "query": "What was Tundra's later international conversion?",
+      "relevant": [
+        "case-17-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-17-q3",
+      "query": "Which approach was used by Tundra to improve localization?",
+      "relevant": [
+        "case-17-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "holdout"
+    },
+    {
+      "id": "case-17-q4",
+      "query": "苔原采取了什么本地化措施，原文依据是什么？",
+      "relevant": [
+        "case-17-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "holdout"
+    },
+    {
+      "id": "case-17-q5",
+      "query": "Compare Tundra between 2026-01-31 and 2026-03-31 for international conversion.",
+      "relevant": [
+        "case-17-before",
+        "case-17-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "holdout"
+    },
+    {
+      "id": "case-17-q6",
+      "query": "苔原的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "holdout"
+    },
+    {
+      "id": "case-18-q1",
+      "query": "溪谷后续的销售认可线索是多少？",
+      "relevant": [
+        "case-18-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-18-q2",
+      "query": "What was Vale's later sales-qualified leads?",
+      "relevant": [
+        "case-18-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-18-q3",
+      "query": "Which approach was used by Vale to improve webinars?",
+      "relevant": [
+        "case-18-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "holdout"
+    },
+    {
+      "id": "case-18-q4",
+      "query": "溪谷采取了什么网络研讨会措施，原文依据是什么？",
+      "relevant": [
+        "case-18-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "holdout"
+    },
+    {
+      "id": "case-18-q5",
+      "query": "Compare Vale between 2026-01-31 and 2026-03-31 for sales-qualified leads.",
+      "relevant": [
+        "case-18-before",
+        "case-18-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "holdout"
+    },
+    {
+      "id": "case-18-q6",
+      "query": "溪谷的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "holdout"
+    },
+    {
+      "id": "case-19-q1",
+      "query": "和风后续的支持工单是多少？",
+      "relevant": [
+        "case-19-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-19-q2",
+      "query": "What was Zephyr's later support tickets?",
+      "relevant": [
+        "case-19-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-19-q3",
+      "query": "Which approach was used by Zephyr to improve documentation?",
+      "relevant": [
+        "case-19-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "holdout"
+    },
+    {
+      "id": "case-19-q4",
+      "query": "和风采取了什么产品文档措施，原文依据是什么？",
+      "relevant": [
+        "case-19-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "holdout"
+    },
+    {
+      "id": "case-19-q5",
+      "query": "Compare Zephyr between 2026-01-31 and 2026-03-31 for support tickets.",
+      "relevant": [
+        "case-19-before",
+        "case-19-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "holdout"
+    },
+    {
+      "id": "case-19-q6",
+      "query": "和风的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "holdout"
+    },
+    {
+      "id": "case-20-q1",
+      "query": "紫苑后续的抽样品牌提及率是多少？",
+      "relevant": [
+        "case-20-after"
+      ],
+      "language": "zh",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-20-q2",
+      "query": "What was Aster's later sampled brand mentions?",
+      "relevant": [
+        "case-20-after"
+      ],
+      "language": "en",
+      "category": "exact",
+      "split": "holdout"
+    },
+    {
+      "id": "case-20-q3",
+      "query": "Which approach was used by Aster to improve AI visibility?",
+      "relevant": [
+        "case-20-after"
+      ],
+      "language": "en",
+      "category": "paraphrase",
+      "split": "holdout"
+    },
+    {
+      "id": "case-20-q4",
+      "query": "紫苑采取了什么AI可见度措施，原文依据是什么？",
+      "relevant": [
+        "case-20-after"
+      ],
+      "language": "zh",
+      "category": "evidence",
+      "split": "holdout"
+    },
+    {
+      "id": "case-20-q5",
+      "query": "Compare Aster between 2026-01-31 and 2026-03-31 for sampled brand mentions.",
+      "relevant": [
+        "case-20-before",
+        "case-20-after"
+      ],
+      "language": "en",
+      "category": "temporal",
+      "split": "holdout"
+    },
+    {
+      "id": "case-20-q6",
+      "query": "紫苑的安全认证编号是多少？",
+      "relevant": [],
+      "language": "zh",
+      "category": "unanswerable",
+      "split": "holdout"
+    }
+  ]
+}

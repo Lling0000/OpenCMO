@@ -78,10 +78,18 @@ export function ChatContainer({
 }) {
   const { t } = useI18n();
   const projectName = projectContext?.project.brand_name ?? null;
+  const [ragMode, setRagMode] = useState(() => localStorage.getItem("opencmo_rag_mode") || "auto");
 
   return (
     <div className="flex flex-1 min-h-0 flex-col">
       {/* Agent badge */}
+      <label className="mb-3 flex items-center gap-2 text-xs text-slate-500">
+        {t("knowledge.mode")}
+        <select value={ragMode} disabled={isStreaming} className="rounded-lg border border-slate-200 bg-white px-2 py-1"
+          onChange={e => { setRagMode(e.target.value); localStorage.setItem("opencmo_rag_mode", e.target.value); }}>
+          <option value="auto">{t("knowledge.auto")}</option><option value="only">{t("knowledge.only")}</option><option value="off">{t("knowledge.off")}</option>
+        </select>
+      </label>
       <div className="mb-3 shrink-0">
         <p className="text-xs text-slate-400">
           {t("chat.agent", { name: currentAgent })}

@@ -25,7 +25,8 @@ scheduler = ["apscheduler>=3.11"]
 web = ["fastapi>=0.115", "uvicorn>=0.34", "jinja2>=3.1"]
 publish = ["praw>=7.7", "tweepy>=4.14"]
 tavily = ["tavily-python>=0.5"]
-all = ["opencmo[geo-premium,scheduler,web,publish,tavily]"]
+rag = ["qdrant-client>=1.19,<1.20", "tiktoken>=0.9", "jieba>=0.42", "pdfplumber>=0.11", "python-docx>=1.1", "markdown-it-py>=3", "beautifulsoup4>=4.12", "python-multipart>=0.0.20"]
+all = ["opencmo[geo-premium,scheduler,web,publish,tavily,rag]"]
 
 [project.scripts]
 opencmo = "opencmo.cli:main"

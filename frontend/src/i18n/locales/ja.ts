@@ -1,6 +1,9 @@
 import type { TranslationKey } from "./en";
 
+import { knowledgeJA } from "../knowledge";
+
 export const ja: Partial<Record<TranslationKey, string>> = {
+  ...knowledgeJA,
   // Common
   "common.cancel": "キャンセル",
   "common.confirm": "確認",
