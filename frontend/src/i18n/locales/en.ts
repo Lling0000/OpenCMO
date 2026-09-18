@@ -1,4 +1,7 @@
+import { knowledgeEN } from "../knowledge";
+
 export const en = {
+  ...knowledgeEN,
   // Common
   "common.cancel": "Cancel",
   "common.confirm": "Confirm",

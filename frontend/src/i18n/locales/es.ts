@@ -1,6 +1,9 @@
 import type { TranslationKey } from "./en";
 
+import { knowledgeES } from "../knowledge";
+
 export const es: Partial<Record<TranslationKey, string>> = {
+  ...knowledgeES,
   "common.cancel": "Cancelar",
   "common.confirm": "Confirmar",
   "common.logout": "Cerrar sesión",

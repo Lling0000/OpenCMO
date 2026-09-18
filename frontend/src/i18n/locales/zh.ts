@@ -1,6 +1,9 @@
 import type { TranslationKey } from "./en";
 
+import { knowledgeZH } from "../knowledge";
+
 export const zh: Partial<Record<TranslationKey, string>> = {
+  ...knowledgeZH,
   // Common
   "common.cancel": "取消",
   "common.confirm": "确认",

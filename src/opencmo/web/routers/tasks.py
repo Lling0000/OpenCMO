@@ -23,6 +23,9 @@ _SCAN_STAGE_ORDER = [
 
 
 async def _task_visible(task: dict, account_id: int) -> bool:
+    if task.get("kind") == "knowledge":
+        from opencmo.rag.store import one
+        return await one("SELECT 1 FROM rag_task_owners WHERE task_id=? AND account_id=?", (task["task_id"], account_id)) is not None
     project_id = task.get("project_id")
     if project_id is None:
         return False

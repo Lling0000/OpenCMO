@@ -1207,6 +1207,10 @@ async def _generate_report_record(
     }
 
 
+from opencmo.rag.integration import finalize_generation, section_evidence, with_knowledge
+
+
+@with_knowledge('internal')
 async def _persist_bundle(
     *,
     project_id: int,
@@ -1222,6 +1226,9 @@ async def _persist_bundle(
     locale = _normalize_report_locale(locale)
     meta = {**meta, "locale": locale}
     previous_human = await storage.get_latest_report(project_id, kind, "human", locale=locale)
+    knowledge_context = await section_evidence(f"{facts.get('project', {}).get('brand_name', '')} {kind} report: historical results, customer evidence, marketing case studies")
+    if knowledge_context:
+        facts = {**facts, 'knowledge_evidence': knowledge_context}
     records = {
         "human": await _generate_report_record(
             kind=kind,
@@ -1241,6 +1248,12 @@ async def _persist_bundle(
             locale=locale,
         ),
     }
+    for record in records.values():
+        content, evidence_meta = await finalize_generation(record.get('content', ''))
+        if evidence_meta:
+            record['content'] = content
+            record['content_html'] = _simple_markdown_to_html(content)
+            record['meta'] = {**record.get('meta', {}), **evidence_meta}
     created = await storage.create_report_bundle(
         project_id=project_id,
         kind=kind,
@@ -1252,6 +1265,12 @@ async def _persist_bundle(
     )
     payload = {"kind": kind, "locale": locale}
     payload.update({item["audience"]: item for item in created})
+    try:
+        from opencmo.rag.ingestion import import_report
+        for item in created:
+            await import_report(item)
+    except Exception:
+        logger.warning('Knowledge indexing could not be queued for report bundle')
     return payload
 
 

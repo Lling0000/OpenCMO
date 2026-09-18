@@ -1366,6 +1366,8 @@ async def ensure_db() -> None:
             await _backfill_account_settings(db)
             await _ensure_dedupe_indexes(db)
             await _ensure_report_locale_indexes(db)
+            from opencmo.rag.schema import SCHEMA as rag_schema
+            await db.executescript(rag_schema)
             await db.commit()
 
             _SCHEMA_READY_FOR = _DB_PATH

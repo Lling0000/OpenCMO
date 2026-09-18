@@ -612,6 +612,10 @@ async def _phase_write_section(
             + "\n".join(f"- {s}" for s in completed_summaries)
         )
 
+    from opencmo.rag.integration import section_evidence
+    evidence = await section_evidence(f"{section.get('title', '')} {section.get('thesis', '')}")
+    if evidence:
+        user += '\n\n' + evidence
     return await _llm_text_call(_WRITE_SECTION_SYSTEM, user)
 
 

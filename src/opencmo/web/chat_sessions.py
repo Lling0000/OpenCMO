@@ -75,7 +75,11 @@ async def get_session_messages(session_id: str, account_id: int | None = None) -
                     p.get("text", "") for p in content if isinstance(p, dict)
                 )
             if content:
-                messages.append({"role": role, "content": content})
+                evidence = {}
+                if role == 'assistant' and account_id is not None:
+                    from opencmo.rag.store import message_evidence
+                    evidence = await message_evidence(account_id, session_id, content)
+                messages.append({"role": role, "content": content, **evidence})
     return messages
 
 

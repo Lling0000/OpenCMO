@@ -121,6 +121,12 @@ OpenCMO includes a report system inside each project workspace. Open the **Repor
 - **Multi-agent pipeline**: human-facing reports use a 6-phase pipeline instead of a single prompt.
 - **Graceful fallback**: if the deep pipeline fails, OpenCMO falls back to simpler generation paths so reports stay available.
 
+## Knowledge library (RAG)
+
+Project documents and account-shared cases can now be indexed with recursive parent/child splitting, Qdrant dense retrieval, BM25/title recall, RRF fusion and model reranking. Chat, reports and content drafts share the retrieval service and persist source citations. Supported inputs include historical reports, text PDFs, DOCX, Markdown, TXT and public web pages.
+
+Enable the optional Qdrant service with `docker compose --profile rag up -d`, then configure your account's embedding and rerank APIs under the project's Knowledge library. See [RAG setup, permissions, APIs and evaluation](docs/rag.md). Real model quality must be evaluated with your configured providers.
+
 ## Quick Start
 
 OpenCMO works with OpenAI-compatible APIs, including OpenAI, DeepSeek, NVIDIA NIM, Kimi-compatible gateways, and Ollama.

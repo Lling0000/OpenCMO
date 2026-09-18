@@ -399,6 +399,7 @@ export interface CommunityChartData {
 
 export interface ChatEvent {
   type:
+    | "retrieval"
     | "delta"
     | "agent"
     | "tool_call"
@@ -419,6 +420,10 @@ export interface ChatEvent {
   review_applied?: boolean;
   review_profile?: string;
   review_weak_points?: string[];
+  status?: string;
+  citations?: import("../api/knowledge").KnowledgeCitation[];
+  retrieval_id?: string;
+  rag_status?: string;
   message?: string;
 }
 
@@ -428,6 +433,9 @@ export interface ChatMessage {
   content: string;
   agent?: string;
   tools?: ToolStatus[];
+  citations?: import("../api/knowledge").KnowledgeCitation[];
+  retrieval_id?: string;
+  rag_status?: string;
 }
 
 export interface ToolStatus {

@@ -32,7 +32,13 @@ def client(tmp_path):
         # Clear in-memory state
         asyncio.run(chat_sessions.clear_all())
         task_registry.clear_all()
-        with TestClient(app) as test_client:
+        # Route contracts must not start real browser/network scans while their
+        # fixtures are being torn down. Monitoring execution has its own suite.
+        async def route_scan(ctx):
+            await ctx.complete({'run_id': None, 'summary': 'Route test scan', 'findings_count': 0, 'recommendations_count': 0})
+
+        with patch('opencmo.background.executors.run_scan_executor', side_effect=route_scan), \
+             TestClient(app) as test_client:
             yield test_client
 
 

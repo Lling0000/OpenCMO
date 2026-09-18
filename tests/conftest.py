@@ -1,5 +1,7 @@
 """Shared test isolation fixtures."""
 
+import os
+
 import pytest
 
 EXTERNAL_PROVIDER_KEYS = (
@@ -20,9 +22,18 @@ def _isolate_external_provider_keys(monkeypatch):
     from opencmo import llm
 
     token = llm.set_request_keys({})
+    # Settings endpoints intentionally update these defaults; restore them even
+    # when a test changes os.environ directly rather than through monkeypatch.
+    runtime_defaults = {name: os.environ.get(name) for name in
+                        ('OPENAI_API_KEY', 'OPENAI_BASE_URL', 'OPENCMO_MODEL_DEFAULT')}
     for key in EXTERNAL_PROVIDER_KEYS:
         monkeypatch.delenv(key, raising=False)
     try:
         yield
     finally:
         llm.reset_request_keys(token)
+        for name, value in runtime_defaults.items():
+            if value is None:
+                os.environ.pop(name, None)
+            else:
+                os.environ[name] = value

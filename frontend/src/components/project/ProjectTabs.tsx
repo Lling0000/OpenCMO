@@ -34,6 +34,7 @@ const TAB_GROUPS: Array<{
     activeBg: "bg-amber-600 text-white shadow-sm shadow-amber-200",
     tabs: [
       { path: "/reports", labelKey: "project.reports" },
+      { path: "/knowledge", labelKey: "knowledge.title" },
       { path: "/performance", labelKey: "project.performance" },
     ],
   },

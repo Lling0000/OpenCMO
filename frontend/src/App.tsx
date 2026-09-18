@@ -26,6 +26,7 @@ import { BrandKitPage } from "./pages/BrandKitPage";
 import { ProjectMonitorsPage } from "./pages/ProjectMonitorsPage";
 import { GitHubLeadsPage } from "./pages/GitHubLeadsPage";
 import { ContentPage } from "./pages/ContentPage";
+import { KnowledgePage } from "./pages/KnowledgePage";
 import { useAuth } from "./components/auth/useAuth";
 
 // Heavy pages lazy-loaded: Three.js graph, react-markdown reports/chat, recharts performance
@@ -152,6 +153,7 @@ function AppRoutes() {
                   <Route path="/projects/:id" element={<ProjectPage />} />
                   <Route path="/projects/:id/reports" element={<ReportsPage />} />
                   <Route path="/projects/:id/content" element={<ContentPage />} />
+                  <Route path="/projects/:id/knowledge" element={<KnowledgePage />} />
                   <Route path="/projects/:id/brand-kit" element={<BrandKitPage />} />
                   <Route
                     path="/projects/:id/performance"

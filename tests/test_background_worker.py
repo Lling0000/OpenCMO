@@ -27,15 +27,20 @@ async def test_worker_claims_and_completes_executor_task(tmp_path, monkeypatch):
         dedupe_key=f"scan:monitor:{project_id}",
     )
 
+    completed = asyncio.Event()
+
     async def _executor(ctx):
         await ctx.complete({"ok": True})
+        completed.set()
 
     worker = BackgroundWorker(poll_interval=0.01, stale_after_seconds=60)
     worker.register_executor("scan", _executor)
 
     await worker.start()
-    await asyncio.sleep(0.05)
-    await worker.stop()
+    try:
+        await asyncio.wait_for(completed.wait(), timeout=3.0)
+    finally:
+        await worker.stop()
 
     updated = await bg_service.get_task(task["task_id"])
     assert updated["status"] == "completed"
@@ -432,6 +437,7 @@ def test_get_background_worker_uses_env_backed_limits(monkeypatch):
             "graph_expansion": 4,
             "github_enrich": 5,
             "blog_generation": 1,
+            "knowledge": 1,
         }
     finally:
         worker_module._default_worker = original_worker
