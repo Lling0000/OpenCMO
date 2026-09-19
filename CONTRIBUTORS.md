@@ -5,6 +5,7 @@ This file complements GitHub's default Contributors graph and makes project cred
 ## Maintainer
 
 - [study8677](https://github.com/study8677) - Creator, maintainer, and product lead
+- [Lling0000](https://github.com/Lling0000) - Current repository owner; built the knowledge RAG module (hybrid dense/BM25/entity retrieval with RRF and reranking, parent-chunk expansion, source citations, bilingual evaluation set) via [#41](https://github.com/Lling0000/OpenCMO/pull/41)
 
 ## Recognized contributors
 
