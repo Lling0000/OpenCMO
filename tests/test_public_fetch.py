@@ -68,9 +68,10 @@ async def test_dns_pinning_preserves_host_and_sni(network):
 
 
 @pytest.mark.asyncio
-async def test_mixed_public_private_dns_rejected(network, monkeypatch):
+@pytest.mark.parametrize("blocked_ip", ["127.0.0.1", "224.0.0.1", "ff0e::1"])
+async def test_mixed_public_private_dns_rejected(network, monkeypatch, blocked_ip):
     async def resolve(*args, **kwargs):
-        return [(2, 1, 6, "", (ip, 443)) for ip in ("93.184.216.34", "127.0.0.1")]
+        return [(2, 1, 6, "", (ip, 443)) for ip in ("93.184.216.34", blocked_ip)]
     monkeypatch.setattr(asyncio.get_running_loop(), "getaddrinfo", resolve)
     with pytest.raises(ValueError, match="private_url"):
         await public_fetch.fetch_public_text("https://example.com")

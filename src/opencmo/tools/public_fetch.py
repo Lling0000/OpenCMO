@@ -27,7 +27,7 @@ async def _public_target(url: str) -> tuple[httpx.URL, str]:
         host, parsed.port or (443 if parsed.scheme == "https" else 80), type=socket.SOCK_STREAM,
     )
     addresses = list(dict.fromkeys(row[4][0] for row in rows))
-    if not addresses or any(not ipaddress.ip_address(ip).is_global for ip in addresses):
+    if not addresses or any(not ipaddress.ip_address(ip).is_global or ipaddress.ip_address(ip).is_multicast for ip in addresses):
         raise ValueError("private_url_not_allowed")
     return httpx.URL(url).copy_with(host=addresses[0]), host
 

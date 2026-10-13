@@ -17,15 +17,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Match only each optional library, rather than absorbing its shared
-        // React/ReactDOM dependencies into a vendor chunk needed by the entry.
+        // Keep chart libraries isolated without absorbing their shared React
+        // dependencies. Markdown and graph libraries follow their lazy route
+        // chunks so their transitive dependencies cannot create chunk cycles.
         onlyExplicitManualChunks: true,
         manualChunks(id) {
-          if (/\/node_modules\/(three|react-force-graph-3d|react-force-graph-2d)\//.test(id)) {
-            return "vendor-graph";
-          }
           if (id.includes("/node_modules/recharts/")) return "vendor-charts";
-          if (id.includes("/node_modules/react-markdown/")) return "vendor-markdown";
         },
       },
     },
