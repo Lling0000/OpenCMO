@@ -1,218 +1,171 @@
 <div align="center">
-  <img src="assets/logo.png" alt="OpenCMO Logo" width="120" />
+  <img src="assets/logo.png" alt="OpenCMO" width="80" />
+  <h1>OpenCMO</h1>
+  <p><strong>オープンソースの AI グロースワークスペース。</strong></p>
+  <p>プロダクトがどこで見つけられ、何が語られているかを把握し、<br />次に取り組むべき成長施策を見極めます。</p>
+  <p>
+    <a href="README.md">English</a> · <a href="README_zh.md">中文</a> · <a href="README_ja.md">日本語</a> · <a href="README_ko.md">한국어</a> · <a href="README_es.md">Español</a>
+  </p>
+  <p>
+    <a href="https://github.com/Lling0000/OpenCMO/actions/workflows/ci.yml"><img src="https://github.com/Lling0000/OpenCMO/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+    <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&amp;logoColor=white" alt="Python 3.10+" />
+    <img src="https://img.shields.io/badge/React-19-149ECA?logo=react&amp;logoColor=white" alt="React 19" />
+    <img src="https://img.shields.io/badge/Models-BYOK-7C3AED" alt="自分のモデル API キーを利用" />
+  </p>
+  <p><a href="#opencmo-でできること">概要</a> · <a href="#クイックスタート">クイックスタート</a> · <a href="docs/rag.md">ナレッジと RAG</a> · <a href="docs/configuration.md">設定</a></p>
 </div>
-
-<h1 align="center">OpenCMO</h1>
 
 <p align="center">
-  <strong>URLを貼るだけ → AI CMOの戦略判断、継続監視、Agent Brief をすぐ取得。</strong><br/>
-  <sub>Founder と少人数チーム向けのオープンソース AI CMO。SEO、GEO、SERP、コミュニティ、競合文脈、レポート、承認、公開を1つのワークスペースに集約します。</sub>
+  <img src="assets/readme-overview.svg" alt="OpenCMO のワークフロー：プロジェクト、モニタリング、共有コンテキスト、AI 分析、人によるレビュー" width="100%" />
 </p>
 
-<div align="center">
-  <a href="README.md">English</a> | <a href="README_zh.md">中文</a> | <a href="README_ja.md">日本語</a> | <a href="README_ko.md">한국어</a> | <a href="README_es.md">Español</a>
-</div>
+## OpenCMO でできること
 
-<p align="center">
-  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-green.svg?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/Lling0000/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/Lling0000/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
-  <img src="https://img.shields.io/badge/react-SPA-61DAFB.svg?style=for-the-badge&logo=react" alt="React SPA">
-</p>
+OpenCMO は、創業者、オープンソースのメンテナー、小規模なプロダクトチーム向けの、セルフホスト型 AI CMO（最高マーケティング責任者）です。検索での可視性、コミュニティの会話、競合調査、自社の資料を、一つのプロジェクトワークスペースにまとめます。
 
-<div align="center">
-  <h3>
-    <a href="https://www.aidcmo.com/">ライブデモ</a> · <a href="https://www.aidcmo.com/static/demo.mp4">動画を見る</a>
-  </h3>
-</div>
+プロダクトの URL から始められます。OpenCMO はプロジェクトのコンテキストを構築し、シグナルを収集します。専門エージェントがそれらをレポート、コンテンツの下書き、優先順位付きの提案に変換します。定期スキャンで変化を追跡でき、承認キューを通じて公開の判断を自分で行えます。
 
-<div align="center">
-  <a href="https://www.aidcmo.com/">
-    <img src="assets/screenshots/demo-cover.png" alt="OpenCMO 実演" width="850" />
-  </a>
-  <p><i>監視、レポート、承認、競合文脈を1つの画面で確認できます。</i></p>
-</div>
+| 機能 | できること |
+| --- | --- |
+| **SEO と検索順位** | サイトの技術的な健全性を監査し、AI クローラーのアクセス可否を確認し、キーワード順位の推移を追跡します。 |
+| **AI 検索での可視性（GEO）** | 対応する AI プロバイダーを通じてブランドへの言及や引用を調べます。対象範囲は設定済みの連携によって異なります。 |
+| **コミュニティと競合** | 関連する会話を見つけ、言及を追跡し、ナレッジグラフで競合、キーワード、会話の関係を調べます。 |
+| **ナレッジライブラリ（RAG）** | 資料や過去のレポートを検索し、チャット、レポート、下書きに出典を付けて活用します。 |
+| **レポートと AI チャット** | 戦略レポートや週次サマリー、Human Readout と Agent Brief を生成し、プロジェクトを理解したエージェントと結果を議論します。 |
+| **コンテンツと承認** | コンテンツやアウトリーチの下書きを作成し、提案されたアクションを確認して、準備が整ったら対応する公開連携を有効にします。 |
 
-<div align="center">
-  <h3>OpenCMO コミュニティに参加</h3>
-  <img src="assets/community-qr.png" alt="OpenCMO WeChat グループQRコード" width="240" />
-  <p><i>ご質問・ご意見・フィードバックは、WeChat でQRを読み取ってグループにご参加ください。</i></p>
-</div>
+**自分のモデルを利用できます。** OpenAI または OpenAI 互換のエンドポイント、ツール呼び出しに対応したモデル、API キーを設定します。検索、コミュニティ、公開の連携は、必要に応じて追加できます。
 
----
+プラットフォームの認証情報と `OPENCMO_AUTO_PUBLISH=1` を設定すると、Reddit と Twitter/X への直接公開を利用できます。その他のアウトリーチは、レビュー用の下書きとして保存されます。
 
-## 本番環境の実例
+## 一つの URL から実行計画へ
 
-OpenCMO は実際のプロジェクトで日々動いています。2 つのライブスキャンから、URL 1 つを入力すると何が生成されるかを示します。
+1. **コンテキストを構築** — プロダクトの URL をクロールし、ブランド、カテゴリ、キーワード、競合を分析します。
+2. **シグナルを収集** — 利用可能なプロバイダーを通じて、SEO、AI 検索、キーワード順位、コミュニティのデータを集めます。
+3. **結果をまとめて確認** — 結果を正規化し、専門エージェントが各領域を分析して優先順位を整理します。
+4. **成果物を作成** — 調査結果を保存し、レポートやブリーフを生成して、レビュー対象のアクションを準備します。
+5. **継続的にモニタリング** — 日次、週次、月次のスキャンを設定し、新しい結果を過去の実行結果と比較します。
 
-### Coze — グローバル AI エージェントプラットフォームのモニタリング
-
-- **自動検出された競合**: Dify、FastGPT、OpenAI GPTs
-- **50 キーワード**を追跡（例: `coze 和 dify 哪个好用`、`coze vs chatgpt custom gpts`）
-- 監視期間中に **326 SERP スナップショット**
-- **100 件のコミュニティ議論** — Hacker News 61、Bilibili 29、Dev.to 10
-- 関連リポジトリから **153 名の GitHub 開発者**を潜在ユーザーとして特定
-- 検出: *「Citability スコアが 24 ポイント低下」* — AI 検索の可視性回帰を次回の定期スキャンで自動検知
-
-### DigiGrow — Checkatrade と Wix と競合する英国の SaaS
-
-- **54 キーワード**追跡、**672 SERP ランクチェック**
-- **100 件のコミュニティ議論**（Hacker News、Dev.to、Bilibili、V2EX）
-- エンドツーエンドで **34 件のアクション可能なインサイト**を生成
-- 検出（critical）: `digigrow.uk online marketing solutions` が 24 時間で **#2 から #16 に下落**（5/2 → 5/3）— ダッシュボードを誰もポーリングせずにアクション可能なインサイトとしてプッシュ
-
-> [パブリックデモ](https://www.aidcmo.com/) で自分の URL を試す — 1 スキャン、フルパイプライン、リアルな数値。
-
----
-
-## OpenCMO が分かりやすい理由
-
-- **URL から始める**: full scan のあとに、まず CMO レベルの市場判断が返ってきます。
-- **シグナルを一か所で回す**: SEO、GEO、SERP、コミュニティ変化を同時に監視します。
-- **判断を実行に渡す**: レポート、Agent Brief、承認キュー、公開ドラフトまでつながっています。
-
-## 何が手に入るか
-
-- **戦略判断**: ポジショニング、強み、弱み、競争環境、CMO 提案。
-- **継続監視**: SEO 健全性、AI 検索可視性、キーワード順位、コミュニティ言及。
-- **競合文脈**: 競合、キーワード、コミュニティをつなぐ 3D ナレッジグラフ。
-- **実行面**: AI Chat、承認フロー、公開可能なドラフト。
-
-## AI CMO レポート
-
-OpenCMO にはプロジェクトごとの正式なレポート機能があります。**Reports** タブ、または `/projects/<id>/reports` から確認できます。
-
-### マルチエージェント深層レポートパイプライン
-
-人間向けレポートは、単一プロンプトの代わりに **6 段階のマルチエージェントパイプライン**（約 14 回の LLM 呼び出し）で生成されます。
-
-| 段階 | 役割 | 機能 |
-| :--- | :--- | :--- |
-| 1. Reflection Agent | 品質監査官 | 全 Agent データを交差検証し、異常とギャップを検出 |
-| 2. Insight Distiller | アナリスト | 次元横断の分析的洞察を抽出 |
-| 3. Outline Planner | 編集長 | 論旨と証拠マッピングで物語構成を設計 |
-| 4. Section Writers | 著者（並列） | 各セクションを並列執筆 |
-| 5. Section Grader | 査読者 | 各セクションを 1-5 で採点、閾値未満は再執筆 |
-| 6. Report Synthesizer | 総編集 | エグゼクティブサマリー、序論、戦略提案を執筆 |
-
-- **Strategic Report**: full scan 後に生成 — 深層競合分析、リスク評価、CMO レベルの戦略提案。
-- **Weekly Report**: 直近 7 日の監視ウィンドウ — トレンド分析、リスク/成果、次週アクション計画。
-- **二層出力**: **Human Readout**（深層分析）と **Agent Brief**（簡潔なアクション項目）。
-- **PDF エクスポート**: ブランドロゴ入りヘッダー/フッター付きの PDF をダウンロード。
-- **バージョン履歴**: latest と履歴の両方を参照できます。
-- **メール配信**: 週次メールは、画面上と同じ保存済みレポートを再利用します。
-- **グレースフル・フォールバック**: パイプライン障害時は自動的にシングルコール → テンプレート生成に降格。
-
-## 「モニタリング開始」を押すと何が起きるか
-
-1つのURLで6段階AIパイプラインが起動し、完全なグロース分析を構築します：
-
-| 段階 | 名前 | 内容 |
-|:----:|------|------|
-| 1/6 | **Context Build** | URLをクロール。3人のAI専門家（プロダクトアナリスト、SEOストラテジスト、コミュニティストラテジスト）が3ラウンドの議論でブランド名・カテゴリ・キーワード・競合を抽出。 |
-| 2/6 | **Signal Collect** | SEO監査、GEO可視性チェック、コミュニティ検索（Reddit、HN、Dev.to等）、SERPキーワード追跡を並行実行。 |
-| 3/6 | **Signal Normalize** | 生データをクリーニング・標準化：ディスカッションの重複排除、スコア正規化、キーワード・競合レコードの整合。 |
-| 4/6 | **Domain Review** | 4人のAIアナリストがシグナルを独立レビュー：SEO・GEO・コミュニティ・競合アナリスト。 |
-| 5/6 | **Strategy Synthesis** | AI戦略ディレクターが全レビューを統合し、優先順位付きの発見事項と実行可能な提案を生成。 |
-| 6/6 | **Persist & Publish** | 結果をDBに保存、戦略レポートを生成、ダッシュボードにインサイトを表示。 |
-
-> 初回スキャン後、**毎日・毎週・毎月**の再スキャンをスケジュールして変化を継続追跡できます。
-
-## コア機能
-
-- **SEO Audit**: Core Web Vitals、llms.txt、AI crawler 検出、技術健全性。
-- **GEO Visibility**: ChatGPT、Claude、Gemini、Perplexity、You.com などでの見え方を追跡。
-- **SERP Tracking**: キーワード順位の推移を監視。
-- **Community Monitoring**: Reddit、Hacker News、Dev.to、YouTube、Bluesky、Twitter/X を監視。
-- **AI Chat**: 25 以上の専門エージェントとプロジェクト文脈付きで対話。
-- **Approval Queue**: 公開前に内容を確認。
-- **3D Knowledge Graph**: 競合、キーワード、コミュニティを可視化。
+モニタリングパイプラインは、コンテキスト構築 → シグナル収集 → 正規化 → 領域別レビュー → 戦略の統合 → 永続化の 6 段階です。レポート、チャット、下書きでプロジェクトのコンテキストを再利用するため、毎回プロダクトを説明する必要はありません。
 
 ## クイックスタート
 
-OpenAI 互換 API を利用できます。OpenAI、DeepSeek、NVIDIA NIM、Kimi 互換ゲートウェイ、Ollama などに対応します。
+### Docker Compose
+
+Docker は Web インターフェースとバックエンドをまとめてビルドします。Compose を含む Docker をインストールし、次を実行します。
 
 ```bash
 git clone https://github.com/Lling0000/OpenCMO.git
 cd OpenCMO
-pip install -e ".[all]"
-crawl4ai-setup
-
 cp .env.example .env
-opencmo-web
 ```
 
-その後 `http://localhost:8080` を開きます。
+`.env` を編集し、`OPENAI_API_KEY` にモデルプロバイダーのキーを設定します。互換プロバイダーを使う場合は、`OPENAI_BASE_URL` と `OPENCMO_MODEL_DEFAULT` も設定してください。[設定ガイド](docs/configuration.md)に例があります。
 
-ホームページで URL を入力してスキャンを開始してください。LLM API キーが未設定の場合、Settings アイコンの赤いドットがセットアップパネルへ案内します。
+```bash
+docker compose up -d --build
+```
 
-> ヒント: API キーは Web ダッシュボードの **Settings** からも設定できます（`.env` 不要）。
+**[http://localhost:8080](http://localhost:8080)** を開き、URL からプロジェクトを作成して最初のスキャンを実行します。モデル設定は Web インターフェースからも変更できます。
 
 <details>
-<summary>フロントエンド開発（任意）</summary>
+<summary><strong>ソースから実行</strong> — Python 3.10+ と Node.js 20+</summary>
+
+```bash
+git clone https://github.com/Lling0000/OpenCMO.git
+cd OpenCMO
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[all]"
+crawl4ai-setup
+cp .env.example .env
+```
+
+`.env` にモデルの API キーを設定し、フロントエンドをビルドしてサーバーを起動します。
 
 ```bash
 cd frontend
-npm install
-npm run dev
+npm ci
 npm run build
+cd ..
+opencmo-web
 ```
 
-開発用アプリは `http://localhost:5173` で動作し、API は `:8080` にプロキシされます。
+`http://localhost:8080` を開きます。Web インターフェースを使うには、フロントエンドのビルドが必要です。
 
 </details>
 
-## 連携
+### 最初のプロジェクト
 
-| 機能 | プラットフォーム | 認証 |
-| :--- | :--- | :--- |
-| 監視 | SEO、GEO、SERP、Community | 任意の provider key |
-| コミュニティソース | Reddit、HN、Dev.to、Bluesky、YouTube、Twitter/X | 任意 |
-| 公開 | Reddit、Twitter/X | 必須 |
-| レポート | Web + Email + PDF | メールは SMTP 必須 |
-| LLM | OpenAI 互換 API | 必須 |
+- プロダクトまたはリポジトリの URL を追加し、検出されたプロジェクトのコンテキストを確認します。
+- スキャンを実行し、検索、コミュニティ、競合の調査結果を確認します。
+- AI チャットに結果の説明や戦略レポートの生成を依頼します。
+- 自分の資料に基づく回答が必要なら、ソース資料を追加します。
+- 下書きと提案をレビューし、次のスキャンを設定します。
 
-## ロードマップ
+## 自分の資料に基づくナレッジ活用
 
-- [x] AI CMO 戦略スキャン
-- [x] SEO / GEO / SERP / コミュニティ監視
-- [x] バージョン管理された戦略レポートと週報
-- [x] マルチエージェント深層レポートパイプライン（6 段階）
-- [x] ブランド付き PDF エクスポート
-- [x] 3D ナレッジグラフ
-- [x] 承認フローと制御付き公開
-- [x] 中国プラットフォームのコミュニティ監視（V2EX、Weibo、Bilibili、XueQiu）
-- [x] 完全な i18n 対応（英語、中国語、日本語、韓国語、スペイン語）
-- [x] ロケール対応 AI 応答（LLM が UI 言語設定に追従）
-- [x] 不安定なプロバイダー向け LLM 指数バックオフリトライ
-- [x] オンボーディング簡略化：ホームページで URL を入力するだけで開始可能
-- [ ] 公開先の追加
-- [ ] ブランドボイス制御
-- [ ] より深い企業向け SEO クロール
+任意で使えるナレッジライブラリは、テキストを含む PDF、DOCX、Markdown、TXT、貼り付けたテキスト、公開 Web ページ、過去のレポートに対応します。**Qdrant による密ベクトル検索、BM25、タイトル・エンティティに基づく候補検索、順位融合、リランキング**を組み合わせ、周辺のコンテキストと出典を生成結果に取り込みます。
 
-## Contributors
+```bash
+# アプリと任意のベクトルデータベースを有効にします。
+docker compose --profile rag up -d --build
+```
 
-- [Lling0000](https://github.com/Lling0000) - 現在のリポジトリ所有者・メンテナー、ナレッジ RAG モジュールの作者
-- [study8677](https://github.com/study8677) - プロジェクトの初期作成と過去の貢献
-- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration ([#2](https://github.com/Lling0000/OpenCMO/pull/2), [#3](https://github.com/Lling0000/OpenCMO/pull/3))
-- [BBear0115](https://github.com/BBear0115) - BYOKキー分離、base_url正規化、レポートのバグ修正 ([#9](https://github.com/Lling0000/OpenCMO/pull/9))
-- 詳細は [CONTRIBUTORS.md](CONTRIBUTORS.md) を参照
+**ナレッジライブラリ → モデルと検索**で、埋め込みとリランキングのプロバイダーを設定し、接続をテストして検索を有効にします。ソースをアップロードしたら、インデックス作成が完了してから検索してください。
 
-## Acknowledgments
+資料は既定でプロジェクト内に限定されます。アカウント間の共有と、公開コンテンツでの利用許可は別々の設定です。セットアップ、権限、API、プロバイダー評価については、[RAG ガイド](docs/rag.md)を参照してください。
 
-- [geo-seo-claude](https://github.com/zubair-trabzada/geo-seo-claude) by [@zubair-trabzada](https://github.com/zubair-trabzada)
-- [last30days-skill](https://github.com/mvanhorn/last30days-skill) by [@mvanhorn](https://github.com/mvanhorn)
+## アーキテクチャと開発
 
-## Star History
+| レイヤー | 技術スタック |
+| --- | --- |
+| Web インターフェース | React 19 · TypeScript · Vite · TanStack Query |
+| API とオーケストレーション | FastAPI · OpenAI Agents SDK |
+| バックグラウンド処理 | スキャン、レポート、グラフ拡張、ナレッジのインデックス作成ワーカー |
+| 保存と検索 | SQLite / FTS5 · 任意の Qdrant |
+| データ収集 | Crawl4AI · 検索およびプラットフォーム別のプロバイダー |
 
-<a href="https://star-history.com/#Lling0000/OpenCMO&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" width="100%" />
- </picture>
-</a>
+```text
+frontend/src/              Web インターフェース、プロジェクト画面、設定
+src/opencmo/agents/         CMO と専門エージェント
+src/opencmo/tools/          クロール、検索、監査、プラットフォーム連携
+src/opencmo/services/       プロジェクト分析と承認ワークフロー
+src/opencmo/background/     タスク実行と進捗
+src/opencmo/rag/            取り込み、ハイブリッド検索、出典
+src/opencmo/storage/        SQLite による永続化
+src/opencmo/web/            API ルートと認証
+```
 
-## リンク
+<details>
+<summary><strong>開発用コマンド</strong></summary>
 
-- [LINUX DO](https://linux.do/) — 技術愛好家が集まるコミュニティ
+ソースの依存関係をインストールした後に実行します。
+
+```bash
+pip install pytest pytest-asyncio ruff
+pytest tests/
+ruff check src/ tests/
+
+cd frontend
+npm ci
+npm run dev
+```
+
+Vite 開発サーバーは `http://localhost:5173` で動作し、API リクエストをポート `8080` のバックエンドへプロキシします。
+
+</details>
+
+## ドキュメント
+
+- [設定](docs/configuration.md) — モデルプロバイダーと任意の連携。
+- [デプロイ](docs/deployment.md) — ホスティング、永続ストレージ、バックアップ。
+- [ナレッジと RAG](docs/rag.md) — 資料の取り込み、検索、出典。
+- [RAG 検証](docs/rag-validation.md) — テスト範囲、容量測定、評価状況。
+- [貢献ガイド](CONTRIBUTING.md) — 開発フローと貢献者のクレジット。
+
+メンテナーは **[Ling (`Lling0000`)](https://github.com/Lling0000)** です。過去の貢献は [CONTRIBUTORS.md](CONTRIBUTORS.md) に記録しています。
+
+## コミュニティ
+
+[LINUX DO](https://linux.do/) — 技術好きが集まるコミュニティ

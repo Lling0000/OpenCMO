@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="348" viewBox="0 0 1200 348" role="img" aria-labelledby="title desc">
+  <title id="title">OpenCMO growth workflow</title>
+  <desc id="desc">A project URL flows through monitoring, shared context, AI analysis and human review to produce reports and actions.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 L7 3.5 L0 7" fill="none" stroke="#64748b" stroke-width="1.3"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="348" rx="24" fill="url(#background)"/>
+  <path d="M0 300 Q420 180 1200 290 M0 340 Q570 195 1200 330" fill="none" stroke="#334155" stroke-opacity=".38"/>
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="48" y="52" fill="#93c5fd" font-size="12" font-weight="600" letter-spacing="2.4">THE OPENCMO WORKFLOW</text>
+    <text x="48" y="94" fill="#f8fafc" font-size="29" font-weight="650">From project signals to growth decisions.</text>
+    <rect x="48" y="112" width="70" height="3" rx="1.5" fill="url(#accent)"/>
+    <g fill="#111e36" stroke="#334155">
+      <rect x="48" y="150" width="196" height="112" rx="14"/>
+      <rect x="275" y="150" width="196" height="112" rx="14"/>
+      <rect x="502" y="150" width="196" height="112" rx="14"/>
+      <rect x="729" y="150" width="196" height="112" rx="14"/>
+      <rect x="956" y="150" width="196" height="112" rx="14" stroke="#818cf8"/>
+    </g>
+    <g fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)">
+      <path d="M252 206 H265"/><path d="M479 206 H492"/><path d="M706 206 H719"/><path d="M933 206 H946"/>
+    </g>
+    <g font-size="11" fill="#7dd3fc" font-weight="600" letter-spacing="1.2">
+      <text x="68" y="177">01 / START</text><text x="295" y="177">02 / OBSERVE</text><text x="522" y="177">03 / CONNECT</text><text x="749" y="177">04 / UNDERSTAND</text><text x="976" y="177">05 / DECIDE</text>
+    </g>
+    <g font-size="18" fill="#f1f5f9" font-weight="600">
+      <text x="68" y="211">Your project</text><text x="295" y="211">Monitoring</text><text x="522" y="211">Shared context</text><text x="749" y="211">AI analysis</text><text x="976" y="211">Review &amp; act</text>
+    </g>
+    <g font-size="12" fill="#a8b6cc">
+      <text x="68" y="238">URL · Brand · Competitors</text><text x="295" y="238">Search · AI · Communities</text><text x="522" y="238">Graph · Documents · RAG</text><text x="749" y="238">Reports · Briefs · Drafts</text><text x="976" y="238">Approvals · Next actions</text>
+    </g>
+    <text x="48" y="312" fill="#94a3b8" font-size="12">SELF-HOSTED</text>
+    <circle cx="157" cy="308" r="2" fill="#475569"/>
+    <text x="172" y="312" fill="#94a3b8" font-size="12">BRING YOUR OWN MODEL</text>
+    <circle cx="351" cy="308" r="2" fill="#475569"/>
+    <text x="366" y="312" fill="#94a3b8" font-size="12">HUMAN REVIEW</text>
+    <text x="1152" y="312" text-anchor="end" fill="#c7d2fe" font-size="12">Maintained by Ling / Lling0000</text>
+  </g>
+</svg>
