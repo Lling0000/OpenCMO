@@ -82,6 +82,7 @@ BM25 和标题/实体查询原本在 async 函数内直接执行分词；现在�
 | P1 | [rag/integration.py](../src/opencmo/rag/integration.py) 的聊天用途依赖英/中文关键词，`Create a LinkedIn campaign using Acme customer results` 未匹配 content | 为聊天生成增加显式用途契约，跨语言约束对外来源使用；不要仅追加词表后声称解决权限 | 中/英/日/韩/西对外生成不能引用 `external_use=false`；内部分析仍可访问授权私有来源 |
 | P1 | [scheduler.py](../src/opencmo/scheduler.py) 直接执行定时扫描，绕过 Worker 的租约/并发与账号上下文恢复 | 统一扫描入口，同时审查账号凭据、配额与多实例重复触发；保留知识维护入队语义 | 手动/定时扫描共享额度、事件和取消契约，不重复调度、不混用账号配置 |
 | P1 | Worker 的同 kind 待执行任务已经占全局槽；外部发送不属于数据库事务 | 按可执行 kind 公平领取；在发布/邮件等副作用边界加幂等键与明确恢复规则 | 长任务类型不会饿死其他类型；故障重试不重复发送 |
+| P1 | [AI crawler 工具](../src/opencmo/tools/ai_crawler_check.py)与 [llms.txt 工具](../src/opencmo/tools/llmstxt.py)直接请求动态 URL 并自动重定向 | 定义公开扫描的域名/协议、DNS/IP 与逐跳策略，限制响应体并设置整个工具 deadline；与已加固的 RAG URL 获取逻辑一致评审 | 内网/保留地址及重定向链被按策略拒绝；慢响应与大响应有整体界限 |
 | P1 | [health](../src/opencmo/web/app.py) 返回 `ok: true` 与 scheduler 状态，不核验 Worker loop/DB readiness | 分离 liveness/readiness，报告队列年龄、Worker 状态、数据库可用性；模型配置错误单列 | Worker 退出/DB 不可用时 readiness 失败，但外部 provider 暂时失败不误判存活 |
 | P2 | [rag/retrieval.py](../src/opencmo/rag/retrieval.py) 在检索成功后直接 await usage 写入 | 明确非关键遥测与权威引用持久化的不同失败策略 | 注入遥测写失败时仍返回已持久化的合法检索；引用保存失败仍可解释 |
 | P2 | [rag/providers.py](../src/opencmo/rag/providers.py) 按 `(base,key)` 缓存 HTTP client 到 shutdown | 设容量和闲置回收；维持账号状态隔离，避免简单按 base 混用 | 多账号/密钥轮换时资源有界；关闭与并发调用无竞态 |
@@ -105,9 +106,21 @@ BM25 和标题/实体查询原本在 async 函数内直接执行分词；现在�
 | RAG 新增回归 | 慢分词不直接堵塞事件循环、拼接上下文精确预算与引用可回读 |
 | workflow 故障注入 | 模拟 Python 退出 42，pipefail 正确传播，诊断产物保留 |
 | 架构文档与图 | 基于实际模块/注册/存储关系，SVG 可编辑，PNG 预览已生成 |
+| GitHub 功能 CI | [代码提交 `71f8588` 的 CI](https://github.com/Lling0000/OpenCMO/actions/runs/38368559671)：frontend、backend Python 3.11/3.12 均 success |
 | Docker / 生产 | Docker daemon 不可用，镜像构建未验收；未部署生产、未调用真实模型或发布/发信 |
 
 模型质量、真实 Qdrant server、生产运行版本和线上性能需要各自的验收，不由 fixture、静态 preview 或 GitHub 推送替代。四个跳过项包含真实 server Qdrant 与历史页面用例。
+
+### GitHub 安全扫描：仍有既有告警
+
+[代码提交 `71f8588` 的 Trustabl 扫描](https://github.com/Lling0000/OpenCMO/actions/runs/38368559850)仍为 failure：**44 条规则告警，3 high、4 medium、36 low、1 info**。与 [基线 `49f0c3c` 的扫描](https://github.com/Lling0000/OpenCMO/actions/runs/38356425445)对比 `(rule_id, severity, file_path, tool_name, start_line)`，告警集合相同。未降低扫描门槛或关闭规则。
+
+- 3 条 high 的 OAI-005 指向 `check_llms_txt`、`validate_llmstxt`、`generate_llmstxt`。代码实际已在 `httpx.AsyncClient(timeout=15)` 设置客户端超时，不能把扫描标签直接当作“完全无网络超时”。仍应补整个工具的总 deadline、响应体上限，并核对规则是否识别客户端级配置。
+- 3 条 medium 的 OAI-018 是上述工具的动态 URL。代码仍需审查公开地址/DNS/IP/自动重定向策略；RAG 的公开 URL 加固不能自动覆盖这些工具。
+- 1 条 medium 的 OAI-009 指向 `send_email_report`。当前发送路径无报告发送幂等键；这已纳入副作用幂等优化，未以多发邮件的方式测试。
+- 其余以 tool 错误恢复契约和配置可分析性提示为主，仍需按业务语义逐条评审，不能将 44 条规则报告等同于 44 个已利用漏洞。
+
+功能 CI 通过与安全 gate 通过是两件事。本次优化并未解决全部既有安全告警，也未把静态标签作为生产受攻击证据。
 
 ## 6. 复现与跟进
 
