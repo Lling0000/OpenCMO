@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from dataclasses import dataclass
 from typing import Iterable
@@ -56,6 +57,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--read-timeout", type=float, default=60.0)
     parser.add_argument("--platform", action="append", help="Run only the named platform(s)")
     parser.add_argument("--json", action="store_true", help="Emit JSON lines only")
+    parser.add_argument("--auth-token-env", default="OPENCMO_WEB_TOKEN", help="Environment variable containing the bearer token")
+    parser.add_argument("--require-auth", action="store_true", help="Fail before requests when the bearer token is missing")
     parser.add_argument("--fail-on-incomplete", action="store_true", help="Exit non-zero when any case is incomplete")
     return parser.parse_args(argv)
 
@@ -67,12 +70,14 @@ def select_cases(platform_filters: list[str] | None) -> list[PlatformCase]:
     return [case for case in DEFAULT_CASES if case.platform.lower() in requested]
 
 
-def make_session(session: requests.Session | None = None) -> requests.Session:
+def make_session(session: requests.Session | None = None, *, token: str = "") -> requests.Session:
     sess = session or requests.Session()
     retry = Retry(total=2, backoff_factor=1, status_forcelist=[502, 503, 504], allowed_methods=None)
     adapter = HTTPAdapter(max_retries=retry)
     sess.mount("http://", adapter)
     sess.mount("https://", adapter)
+    if token:
+        sess.headers["Authorization"] = f"Bearer {token}"
     return sess
 
 
@@ -136,6 +141,7 @@ def run_case(
         return result
 
     try:
+        response.raise_for_status()
         for event in _iter_sse_payloads(response):
             event_type = event.get("type")
             if event_type == "agent":
@@ -179,13 +185,23 @@ def _emit(result: dict, *, as_json: bool) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv or sys.argv[1:])
+    args = parse_args(sys.argv[1:] if argv is None else argv)
     cases = select_cases(args.platform)
     if not cases:
         print("No matching platforms selected.", file=sys.stderr)
         return 2
 
-    session = make_session()
+    token = os.environ.get(args.auth_token_env, "").strip()
+    if args.require_auth and not token:
+        for case in cases:
+            _emit({
+                "platform": case.platform, "expected_agent": case.expected_agent,
+                "agent": None, "done": False, "stream_timed_out": None,
+                "error": "authentication_not_configured: required bearer token environment variable is empty",
+                "final_preview": "",
+            }, as_json=args.json)
+        return 2
+    session = make_session(token=token)
     results = []
     for case in cases:
         result = run_case(
@@ -204,7 +220,7 @@ def main(argv: list[str] | None = None) -> int:
         failed = [
             item
             for item in results
-            if item["agent"] != item["expected_agent"] or not item["done"] or item["error"]
+            if item["agent"] != item["expected_agent"] or not item["done"] or item["error"] or item["stream_timed_out"]
         ]
         if failed:
             return 1

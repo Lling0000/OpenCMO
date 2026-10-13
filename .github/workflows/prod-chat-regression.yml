@@ -2,6 +2,10 @@ name: Production Chat Regression
 
 on:
   workflow_call:
+    secrets:
+      OPENCMO_WEB_TOKEN:
+        description: "Production workspace bearer token"
+        required: true
     inputs:
       base_url:
         description: "Production API base URL"
@@ -63,12 +67,19 @@ jobs:
           BASE_URL: ${{ inputs.base_url || github.event.inputs.base_url || env.DEFAULT_BASE_URL }}
           PROJECT_ID: ${{ inputs.project_id || github.event.inputs.project_id || env.DEFAULT_PROJECT_ID }}
           LOCALE: ${{ inputs.locale || github.event.inputs.locale || env.DEFAULT_LOCALE }}
+          OPENCMO_WEB_TOKEN: ${{ secrets.OPENCMO_WEB_TOKEN }}
         run: |
+          # Never send the production credential to a dispatch-supplied host.
+          if [[ "$BASE_URL" != "$DEFAULT_BASE_URL" ]]; then
+            echo '{"platform":"configuration","done":false,"error":"base_url must match the production API URL"}' | tee prod-chat-regression.jsonl
+            exit 2
+          fi
           python -m opencmo.ops.chat_platform_regression \
             --base-url "$BASE_URL" \
             --project-id "$PROJECT_ID" \
             --locale "$LOCALE" \
             --json \
+            --require-auth \
             --fail-on-incomplete | tee prod-chat-regression.jsonl
 
       - name: Build workflow summary

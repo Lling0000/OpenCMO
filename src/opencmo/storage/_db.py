@@ -511,6 +511,23 @@ CREATE TABLE IF NOT EXISTS reports (
 -- Report indexes are created in _ensure_report_locale_indexes() after
 -- migrations/reconciliation add locale on legacy databases.
 
+-- Delivery claims survive retries and restarts. Bootstrap runs this additive,
+-- idempotent DDL for both new and existing databases.
+CREATE TABLE IF NOT EXISTS report_email_deliveries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+    project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    report_id INTEGER NOT NULL,
+    recipient TEXT NOT NULL,
+    locale TEXT NOT NULL,
+    resend_key TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'sending' CHECK(status IN ('sending', 'sent', 'uncertain')),
+    result_json TEXT NOT NULL DEFAULT '{}',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE(account_id, project_id, report_id, recipient, locale, resend_key)
+);
+
 CREATE TABLE IF NOT EXISTS brand_kits (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     project_id INTEGER NOT NULL UNIQUE REFERENCES projects(id),

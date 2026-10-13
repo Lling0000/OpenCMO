@@ -8,11 +8,13 @@ an llms.txt file exists.
 from __future__ import annotations
 
 import logging
+import time
 import urllib.robotparser
 from urllib.parse import urlparse
 
-import httpx
 from agents import function_tool
+
+from opencmo.tools.public_fetch import FETCH_TIMEOUT, fetch_public_text
 
 logger = logging.getLogger(__name__)
 
@@ -142,39 +144,39 @@ async def _ai_crawler_impl(url: str) -> dict:
     llms_found: bool | None = None
     llms_content = ""
 
-    async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
-        # Fetch robots.txt
-        try:
-            resp = await client.get(robots_url)
-            if resp.status_code == 200 and resp.text.strip():
-                robots_found = True
-                crawler_results = _parse_robots_for_crawlers(resp.text)
-            else:
-                robots_found = False
-                # No robots.txt = all crawlers allowed by default
-                for crawler in AI_CRAWLERS:
-                    crawler_results[crawler] = {
-                        "label": _CRAWLER_LABELS.get(crawler, crawler),
-                        "status": "ALLOWED_BY_DEFAULT",
-                        "directive": "No robots.txt found",
-                    }
-        except Exception as exc:
-            logger.warning("Failed to fetch robots.txt for %s: %s", url, exc)
+    deadline = time.monotonic() + FETCH_TIMEOUT
+    # Fetch robots.txt
+    try:
+        resp = await fetch_public_text(robots_url, deadline=deadline)
+        if resp.status_code == 200 and resp.text.strip():
+            robots_found = True
+            crawler_results = _parse_robots_for_crawlers(resp.text)
+        else:
+            robots_found = False
+            # No robots.txt = all crawlers allowed by default
             for crawler in AI_CRAWLERS:
                 crawler_results[crawler] = {
                     "label": _CRAWLER_LABELS.get(crawler, crawler),
-                    "status": "UNKNOWN",
-                    "directive": f"Error: {exc}",
+                    "status": "ALLOWED_BY_DEFAULT",
+                    "directive": "No robots.txt found",
                 }
+    except Exception as exc:
+        logger.warning("Failed to fetch robots.txt for %s: %s", url, exc)
+        for crawler in AI_CRAWLERS:
+            crawler_results[crawler] = {
+                "label": _CRAWLER_LABELS.get(crawler, crawler),
+                "status": "UNKNOWN",
+                "directive": f"Error: {exc}",
+            }
 
-        # Fetch llms.txt
-        try:
-            resp = await client.get(llms_url)
-            llms_found = resp.status_code == 200 and len(resp.text.strip()) > 10
-            if llms_found:
-                llms_content = resp.text[:2000]
-        except Exception:
-            llms_found = None
+    # Fetch llms.txt
+    try:
+        resp = await fetch_public_text(llms_url, deadline=deadline)
+        llms_found = resp.status_code == 200 and len(resp.text.strip()) > 10
+        if llms_found:
+            llms_content = resp.text[:2000]
+    except Exception:
+        llms_found = None
 
     blocked = sum(1 for v in crawler_results.values() if v["status"] in ("BLOCKED", "BLOCKED_BY_WILDCARD"))
     partial = sum(1 for v in crawler_results.values() if v["status"] == "PARTIALLY_BLOCKED")
@@ -259,11 +261,11 @@ async def check_llms_txt(url: str) -> str:
     origin = f"{urlparse(url).scheme or 'https'}://{urlparse(url).netloc}"
     llms_url = f"{origin}/llms.txt"
 
-    async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
-        try:
-            resp = await client.get(llms_url)
-            if resp.status_code == 200 and len(resp.text.strip()) > 10:
-                return f"## llms.txt Found\n\n```\n{resp.text[:3000]}\n```"
-            return f"## llms.txt Not Found\n\nNo llms.txt file at `{llms_url}`. Consider creating one to guide AI crawlers."
-        except Exception as exc:
-            return f"Error checking llms.txt: {exc}"
+    deadline = time.monotonic() + FETCH_TIMEOUT
+    try:
+        resp = await fetch_public_text(llms_url, deadline=deadline)
+        if resp.status_code == 200 and len(resp.text.strip()) > 10:
+            return f"## llms.txt Found\n\n```\n{resp.text[:3000]}\n```"
+        return f"## llms.txt Not Found\n\nNo llms.txt file at `{llms_url}`. Consider creating one to guide AI crawlers."
+    except Exception as exc:
+        return f"Error checking llms.txt: {exc}"

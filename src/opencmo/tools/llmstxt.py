@@ -9,10 +9,12 @@ from __future__ import annotations
 
 import logging
 import re
+import time
 from urllib.parse import urljoin, urlparse
 
-import httpx
 from agents import function_tool
+
+from opencmo.tools.public_fetch import FETCH_TIMEOUT, fetch_public_text
 
 logger = logging.getLogger(__name__)
 
@@ -98,57 +100,57 @@ def _validate_content(content: str) -> dict:
     }
 
 
-async def _discover_pages(url: str, max_pages: int = 30) -> list[dict]:
+async def _discover_pages(url: str, max_pages: int = 30, *, deadline: float | None = None) -> list[dict]:
     """Discover site pages via sitemap or homepage links."""
     origin = f"{urlparse(url).scheme or 'https'}://{urlparse(url).netloc}"
     pages: list[dict] = []
     seen: set[str] = set()
 
-    async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
-        # Try sitemap.xml first
-        try:
-            resp = await client.get(f"{origin}/sitemap.xml")
-            if resp.status_code == 200 and "<loc>" in resp.text:
-                locs = re.findall(r'<loc>(.*?)</loc>', resp.text)
-                for loc in locs[:max_pages]:
-                    parsed = urlparse(loc)
-                    if parsed.netloc == urlparse(origin).netloc and loc not in seen:
-                        seen.add(loc)
-                        pages.append({"url": loc, "title": None, "description": None})
-                if pages:
-                    return pages
-        except Exception:
-            pass
+    deadline = deadline if deadline is not None else time.monotonic() + FETCH_TIMEOUT
+    # Try sitemap.xml first
+    try:
+        resp = await fetch_public_text(f"{origin}/sitemap.xml", deadline=deadline)
+        if resp.status_code == 200 and "<loc>" in resp.text:
+            locs = re.findall(r'<loc>(.*?)</loc>', resp.text)
+            for loc in locs[:max_pages]:
+                parsed = urlparse(loc)
+                if parsed.netloc == urlparse(origin).netloc and loc not in seen:
+                    seen.add(loc)
+                    pages.append({"url": loc, "title": None, "description": None})
+            if pages:
+                return pages
+    except Exception:
+        pass
 
-        # Fallback: crawl homepage for internal links
-        try:
-            resp = await client.get(origin)
-            if resp.status_code == 200:
-                # Extract title
-                title_match = re.search(r'<title[^>]*>(.*?)</title>', resp.text, re.I | re.S)
-                _site_title = title_match.group(1).strip() if title_match else ""
+    # Fallback: crawl homepage for internal links
+    try:
+        resp = await fetch_public_text(origin, deadline=deadline)
+        if resp.status_code == 200:
+            # Extract title
+            title_match = re.search(r'<title[^>]*>(.*?)</title>', resp.text, re.I | re.S)
+            _site_title = title_match.group(1).strip() if title_match else ""
 
-                # Extract internal links
-                links = re.findall(r'href=["\']([^"\']+)["\']', resp.text)
-                for link in links:
-                    full_url = urljoin(origin, link)
-                    parsed = urlparse(full_url)
+            # Extract internal links
+            links = re.findall(r'href=["\']([^"\']+)["\']', resp.text)
+            for link in links:
+                full_url = urljoin(origin, link)
+                parsed = urlparse(full_url)
 
-                    # Filter: same domain, no anchors, no skip extensions
-                    if parsed.netloc != urlparse(origin).netloc:
-                        continue
-                    if parsed.fragment:
-                        full_url = full_url.split("#")[0]
-                    if any(full_url.lower().endswith(ext) for ext in _SKIP_EXTENSIONS):
-                        continue
-                    if full_url not in seen:
-                        seen.add(full_url)
-                        pages.append({"url": full_url, "title": None, "description": None})
+                # Filter: same domain, no anchors, no skip extensions
+                if parsed.netloc != urlparse(origin).netloc:
+                    continue
+                if parsed.fragment:
+                    full_url = full_url.split("#")[0]
+                if any(full_url.lower().endswith(ext) for ext in _SKIP_EXTENSIONS):
+                    continue
+                if full_url not in seen:
+                    seen.add(full_url)
+                    pages.append({"url": full_url, "title": None, "description": None})
 
-                    if len(pages) >= max_pages:
-                        break
-        except Exception as exc:
-            logger.debug("Homepage crawl failed: %s", exc)
+                if len(pages) >= max_pages:
+                    break
+    except Exception as exc:
+        logger.debug("Homepage crawl failed: %s", exc)
 
     return pages
 
@@ -206,11 +208,11 @@ async def validate_llmstxt(url: str) -> str:
     """Validate a website's /llms.txt file against the llms.txt standard. Checks for title, description, sections, and link format."""
     origin = f"{urlparse(url).scheme or 'https'}://{urlparse(url).netloc}"
 
-    async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
-        try:
-            resp = await client.get(f"{origin}/llms.txt")
-        except Exception as exc:
-            return f"Error fetching llms.txt: {exc}"
+    deadline = time.monotonic() + FETCH_TIMEOUT
+    try:
+        resp = await fetch_public_text(f"{origin}/llms.txt", deadline=deadline)
+    except Exception as exc:
+        return f"Error fetching llms.txt: {exc}"
 
     if resp.status_code != 200 or len(resp.text.strip()) < 10:
         return (
@@ -257,27 +259,27 @@ async def generate_llmstxt(url: str) -> str:
     site_name = urlparse(url).netloc.split(".")[0].title()
     description = ""
 
-    async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
-        try:
-            resp = await client.get(origin)
-            if resp.status_code == 200:
-                title_match = re.search(r'<title[^>]*>(.*?)</title>', resp.text, re.I | re.S)
-                if title_match:
-                    raw_title = title_match.group(1).strip()
-                    site_name = re.split(r'\s*[|\-–—]\s*', raw_title)[0].strip()
+    deadline = time.monotonic() + FETCH_TIMEOUT
+    try:
+        resp = await fetch_public_text(origin, deadline=deadline)
+        if resp.status_code == 200:
+            title_match = re.search(r'<title[^>]*>(.*?)</title>', resp.text, re.I | re.S)
+            if title_match:
+                raw_title = title_match.group(1).strip()
+                site_name = re.split(r'\s*[|\-–—]\s*', raw_title)[0].strip()
 
-                desc_match = re.search(
-                    r'<meta\s+(?:name=["\']description["\']\s+content=["\']([^"\']*)["\']|'
-                    r'content=["\']([^"\']*)["\'].*?name=["\']description["\'])',
-                    resp.text, re.I,
-                )
-                if desc_match:
-                    description = (desc_match.group(1) or desc_match.group(2) or "").strip()
-        except Exception:
-            pass
+            desc_match = re.search(
+                r'<meta\s+(?:name=["\']description["\']\s+content=["\']([^"\']*)["\']|'
+                r'content=["\']([^"\']*)["\'].*?name=["\']description["\'])',
+                resp.text, re.I,
+            )
+            if desc_match:
+                description = (desc_match.group(1) or desc_match.group(2) or "").strip()
+    except Exception:
+        pass
 
     # Discover pages
-    pages = await _discover_pages(url, max_pages=30)
+    pages = await _discover_pages(url, max_pages=30, deadline=deadline)
 
     if not pages:
         return (

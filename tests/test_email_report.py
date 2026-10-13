@@ -3,6 +3,7 @@
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+import pytest_asyncio
 
 
 def test_smtp_config_missing(monkeypatch):
@@ -143,3 +144,140 @@ async def test_maybe_send_cron_full_only(tmp_path, monkeypatch):
 
         await _maybe_send_email_report(1, "seo", "cron")
         assert mock_send.call_count == 0
+
+
+@pytest_asyncio.fixture
+async def delivery_context(tmp_path, monkeypatch):
+    from opencmo import llm, storage
+
+    monkeypatch.setattr(storage, "_DB_PATH", tmp_path / "delivery.db")
+    monkeypatch.setenv("OPENCMO_SMTP_HOST", "smtp.test.com")
+    monkeypatch.setenv("OPENCMO_SMTP_USER", "user@test.com")
+    monkeypatch.setenv("OPENCMO_SMTP_PASS", "pass")
+    monkeypatch.setenv("OPENCMO_REPORT_EMAIL", "report@test.com")
+    # Context keys make this fixture independent of process/account defaults.
+    token = llm.set_request_keys({"OPENCMO_SMTP_PASS": "pass"})
+    project_id = await storage.ensure_project("Delivery", "https://example.com", "saas")
+    report = {"id": 100, "kind": "periodic", "audience": "human", "locale": "zh",
+              "generation_status": "completed", "content": "# Weekly Brief", "content_html": "<h1>Brief</h1>"}
+    monkeypatch.setattr(storage, "get_latest_report", AsyncMock(return_value=report))
+    try:
+        yield project_id, report
+    finally:
+        llm.reset_request_keys(token)
+
+
+@pytest.mark.asyncio
+async def test_delivery_retry_is_durable_and_schema_upgrade_is_idempotent(delivery_context, monkeypatch):
+    from opencmo import storage
+    from opencmo.tools import email_report
+
+    pid, _ = delivery_context
+    sender = AsyncMock(return_value={"ok": True})
+    monkeypatch.setattr(email_report, "send_mail", sender)
+    first = await email_report.send_report_impl(pid)
+    # Simulate a fresh process boot against the same on-disk database twice.
+    for _ in range(2):
+        monkeypatch.setattr(storage, "_SCHEMA_READY_FOR", None)
+        await storage.ensure_db()
+    second = await email_report.send_report_impl(pid)
+    assert first["ok"] and second["ok"] and second["deduplicated"]
+    assert sender.await_count == 1
+
+
+@pytest.mark.asyncio
+async def test_concurrent_delivery_has_one_smtp_operation(delivery_context, monkeypatch):
+    import asyncio
+
+    from opencmo.tools import email_report
+
+    pid, _ = delivery_context
+    started, finish = asyncio.Event(), asyncio.Event()
+
+    async def sender(*args, **kwargs):
+        started.set()
+        await finish.wait()
+        return {"ok": True}
+
+    mocked = AsyncMock(side_effect=sender)
+    monkeypatch.setattr(email_report, "send_mail", mocked)
+    task = asyncio.create_task(email_report.send_report_impl(pid))
+    await started.wait()
+    second = await email_report.send_report_impl(pid)
+    assert not second["ok"] and not second["retryable"]
+    finish.set()
+    assert (await task)["ok"]
+    assert mocked.await_count == 1
+
+
+@pytest.mark.asyncio
+async def test_failed_or_crashed_delivery_never_automatically_retries(delivery_context, monkeypatch):
+    import asyncio
+
+    from opencmo.tools import email_report
+
+    pid, _ = delivery_context
+    sender = AsyncMock(return_value={"ok": False, "error": "Disconnected after DATA"})
+    monkeypatch.setattr(email_report, "send_mail", sender)
+    first = await email_report.send_report_impl(pid)
+    second = await email_report.send_report_impl(pid)
+    assert first["delivery_state"] == second["delivery_state"] == "uncertain"
+    assert not first["retryable"] and sender.await_count == 1
+
+    sender.side_effect = asyncio.CancelledError()
+    with pytest.raises(asyncio.CancelledError):
+        await email_report.send_report_impl(pid, idempotency_key="cancelled-resend")
+    sender.side_effect = None
+    third = await email_report.send_report_impl(pid, idempotency_key="cancelled-resend")
+    assert third["delivery_state"] == "uncertain" and sender.await_count == 2
+
+
+@pytest.mark.asyncio
+async def test_new_report_recipient_locale_and_explicit_resend_are_distinct(delivery_context, monkeypatch):
+    from opencmo.tools import email_report
+
+    pid, report = delivery_context
+    sender = AsyncMock(return_value={"ok": True})
+    monkeypatch.setattr(email_report, "send_mail", sender)
+    assert (await email_report.send_report_impl(pid))["ok"]
+    assert (await email_report.send_report_impl(pid, idempotency_key="resend-1"))["ok"]
+    assert (await email_report.send_report_impl(pid, idempotency_key="resend-1"))["deduplicated"]
+    report["id"] += 1
+    assert (await email_report.send_report_impl(pid))["ok"]
+    monkeypatch.setenv("OPENCMO_REPORT_EMAIL", "another@test.com")
+    assert (await email_report.send_report_impl(pid))["ok"]
+    report["locale"] = "en"
+    assert (await email_report.send_report_impl(pid, locale="en"))["ok"]
+    assert sender.await_count == 5
+
+
+@pytest.mark.asyncio
+async def test_dev_mode_does_not_claim_real_delivery(delivery_context, monkeypatch):
+    from opencmo.tools import email_report
+
+    pid, _ = delivery_context
+    sender = AsyncMock(return_value={"ok": True})
+    monkeypatch.setattr(email_report, "send_mail", sender)
+    monkeypatch.delenv("OPENCMO_SMTP_HOST")
+    assert (await email_report.send_report_impl(pid))["delivery_state"] == "simulated"
+    sender.assert_not_awaited()
+    monkeypatch.setenv("OPENCMO_SMTP_HOST", "smtp.test.com")
+    assert (await email_report.send_report_impl(pid))["delivery_state"] == "sent"
+    sender.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_delivery_rejects_foreign_account(delivery_context, monkeypatch):
+    from opencmo import llm, storage
+    from opencmo.tools import email_report
+
+    pid, _ = delivery_context
+    project = await storage.get_project(pid)
+    sender = AsyncMock(return_value={"ok": True})
+    monkeypatch.setattr(email_report, "send_mail", sender)
+    token = llm.set_current_account_id(project["account_id"] + 100)
+    try:
+        assert not (await email_report.send_report_impl(pid))["ok"]
+        sender.assert_not_awaited()
+    finally:
+        llm.reset_current_account_id(token)
