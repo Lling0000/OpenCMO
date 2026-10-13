@@ -160,7 +160,7 @@ Blog → /blog
 - **主页有一段** `LandingPage.tsx:363-402` 标题:"OpenCMO stays as the open-source growth system behind the method"
 - **/open-source 整页** 已经存在,标题:"OpenCMO is the technical support behind our growth method"
 - **Footer** 有 GitHub 卡片、tagline 写 "By OpenCMO technical support"
-- **Header** "Source Code" 按钮直链 https://github.com/study8677/OpenCMO
+- **Header** "Source Code" 按钮直链 https://github.com/Lling0000/OpenCMO
 
 **所以现状不是「OpenCMO 没出现」**,而是「OpenCMO 被定位成 B2B 数据生意的技术背书」。新定位需要把主从关系反过来。
 
@@ -178,14 +178,14 @@ Blog → /blog
 
 ---
 
-## 四、给你的三个待确认事项
+## 四、历史待确认事项与归属更新
 
-请在动 `new-positioning.md` 之前回我一下:
+以下是原阶段的待确认事项；第 3 项归属已于 2026-10-13 核验并统一。
 
 1. **托管版怎么办?** 接受我上面的「先做 waitlist、不做产品」建议?还是要 task.md 第二步原样输出三层结构?(后者我会在 Phase 2 / Phase 3 显式列出 4-6 周的多租户工程量)
 
 2. **未提交的 ProjectHero / AppShell 改动** 要保留还是丢掉?这些是 dashboard 内部的样式重构,跟公开站重新定位是两条线。我建议先 stash 起来,Phase 1 完成后再回来收。
 
-3. **GitHub repo 真实状况**:task.md 引用 OpenCMO 是 `study8677/OpenCMO`,代码里 footer / header 也都指向这个 repo。但 GitHub stars 徽章那一类社会证明,**今天 stars / forks 是多少?需要真实数字才能放在主页**,不能写「1k+ stars」之类编出来的话。请确认一下 stars 量级,我才能在 new-positioning.md 里给出诚实的 social proof 文案。
+3. **GitHub 归属已确认**：OpenCMO 当前仓库为 `Lling0000/OpenCMO`，所有者与维护者是 Ling（`Lling0000`），本目录使用 Ling 的 `gh` 配置操作。该归属无需重复确认。主页 Stars / Forks 社会证明应读取当前仓库的真实数据，不使用编造数字。
 
-确认完这三件事我就写 `new-positioning.md`。
+仓库归属不再列为待确认项；其余事项仅保留为原阶段的历史记录。

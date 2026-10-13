@@ -2,6 +2,8 @@
 
 Thanks for improving OpenCMO.
 
+OpenCMO is currently owned and maintained by [Ling (`Lling0000`)](https://github.com/Lling0000). The canonical repository is [Lling0000/OpenCMO](https://github.com/Lling0000/OpenCMO).
+
 This project values focused contributions, clear verification, and explicit credit. This document explains how to contribute changes and how to make sure your work is correctly attributed on GitHub and in the repository.
 
 ## Ways to contribute
@@ -14,7 +16,7 @@ This project values focused contributions, clear verification, and explicit cred
 ## Local setup
 
 ```bash
-git clone https://github.com/study8677/OpenCMO.git
+git clone https://github.com/Lling0000/OpenCMO.git
 cd OpenCMO
 pip install -e ".[all]"
 crawl4ai-setup

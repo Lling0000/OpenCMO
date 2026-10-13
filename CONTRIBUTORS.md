@@ -4,13 +4,13 @@ This file complements GitHub's default Contributors graph and makes project cred
 
 ## Maintainer
 
-- [study8677](https://github.com/study8677) - Creator, maintainer, and product lead
-- [Lling0000](https://github.com/Lling0000) - Current repository owner; built the knowledge RAG module (hybrid dense/BM25/entity retrieval with RRF and reranking, parent-chunk expansion, source citations, bilingual evaluation set) via [#41](https://github.com/Lling0000/OpenCMO/pull/41)
+- [Lling0000](https://github.com/Lling0000) - Current repository owner and maintainer; built the knowledge RAG module (hybrid dense/BM25/entity retrieval with RRF and reranking, parent-chunk expansion, source citations, bilingual evaluation set) via [#41](https://github.com/Lling0000/OpenCMO/pull/41)
 
 ## Recognized contributors
 
-- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration work merged via [#2](https://github.com/study8677/OpenCMO/pull/2) and [#3](https://github.com/study8677/OpenCMO/pull/3)
-- [BBear0115](https://github.com/BBear0115) - BYOK key propagation to background tasks, base_url normalization, report hang fix via [#9](https://github.com/study8677/OpenCMO/pull/9)
+- [study8677](https://github.com/study8677) - Original project creation and earlier contributions
+- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration work merged via [#2](https://github.com/Lling0000/OpenCMO/pull/2) and [#3](https://github.com/Lling0000/OpenCMO/pull/3)
+- [BBear0115](https://github.com/BBear0115) - BYOK key propagation to background tasks, base_url normalization, report hang fix via [#9](https://github.com/Lling0000/OpenCMO/pull/9)
 
 ## How this file is used
 

@@ -247,7 +247,7 @@ function Outro() {
             fontFamily: "Inter, system-ui, sans-serif",
           }}
         >
-          github.com/study8677/OpenCMO
+          github.com/Lling0000/OpenCMO
         </span>
       </div>
     </AbsoluteFill>

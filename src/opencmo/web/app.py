@@ -81,9 +81,9 @@ _HOME_STATIC_SITE_COPY_BY_LOCALE = {
       reports, and follow-up decisions while keeping each user's projects private.
     </p>
     <ul>
-      <li>GitHub repository: https://github.com/study8677/OpenCMO</li>
+      <li>GitHub repository: https://github.com/Lling0000/OpenCMO</li>
       <li>OpenCMO console: https://www.aidcmo.com/console</li>
-      <li>License: Apache 2.0 — https://github.com/study8677/OpenCMO/blob/main/LICENSE</li>
+      <li>License: Apache 2.0 — https://github.com/Lling0000/OpenCMO/blob/main/LICENSE</li>
       <li>Machine-readable summary: https://www.aidcmo.com/llms.txt</li>
     </ul>
   </section>
@@ -129,9 +129,9 @@ _HOME_STATIC_SITE_COPY_BY_LOCALE = {
       同时让每个用户只看到自己的项目界面。
     </p>
     <ul>
-      <li>GitHub 仓库: https://github.com/study8677/OpenCMO</li>
+      <li>GitHub 仓库: https://github.com/Lling0000/OpenCMO</li>
       <li>OpenCMO 增长控制台: https://www.aidcmo.com/console</li>
-      <li>许可证: Apache 2.0 — https://github.com/study8677/OpenCMO/blob/main/LICENSE</li>
+      <li>许可证: Apache 2.0 — https://github.com/Lling0000/OpenCMO/blob/main/LICENSE</li>
       <li>机器可读摘要: https://www.aidcmo.com/llms.txt</li>
     </ul>
   </section>
@@ -767,7 +767,7 @@ def _build_service_json_ld(route: str, page: dict[str, object], locale: str | No
                 "@type": "Organization",
                 "name": "aidCMO",
                 "url": _public_url("/", locale),
-                "sameAs": ["https://github.com/study8677/OpenCMO"],
+                "sameAs": ["https://github.com/Lling0000/OpenCMO"],
             },
             "areaServed": "International",
             "serviceType": _localized_service_value(page, "heading", localized),
@@ -800,7 +800,7 @@ def _build_home_json_ld(locale: str | None = None) -> str:
             ],
             "areaServed": "International",
             "sameAs": [
-                "https://github.com/study8677/OpenCMO",
+                "https://github.com/Lling0000/OpenCMO",
             ],
             "hasOfferCatalog": {
                 "@type": "OfferCatalog",

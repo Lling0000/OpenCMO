@@ -16,7 +16,7 @@
 <p align="center">
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-green.svg?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/study8677/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/study8677/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
+  <a href="https://github.com/Lling0000/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/Lling0000/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
   <img src="https://img.shields.io/badge/react-SPA-61DAFB.svg?style=for-the-badge&logo=react" alt="React SPA">
 </p>
 
@@ -133,7 +133,7 @@ Una URL activa un pipeline de IA de 6 etapas que construye un panorama completo 
 Compatible con APIs tipo OpenAI, incluyendo OpenAI, DeepSeek, NVIDIA NIM, gateways compatibles con Kimi y Ollama.
 
 ```bash
-git clone https://github.com/study8677/OpenCMO.git
+git clone https://github.com/Lling0000/OpenCMO.git
 cd OpenCMO
 pip install -e ".[all]"
 crawl4ai-setup
@@ -192,10 +192,10 @@ La app de desarrollo corre en `http://localhost:5173` y proxya la API a `:8080`.
 
 ## Contributors
 
-- [study8677](https://github.com/study8677) - Creador y maintainer
-- [Lling0000](https://github.com/Lling0000) - Principal contribuyente
-- [ParakhJaggi](https://github.com/ParakhJaggi) - Integración Tavily ([#2](https://github.com/study8677/OpenCMO/pull/2), [#3](https://github.com/study8677/OpenCMO/pull/3))
-- [BBear0115](https://github.com/BBear0115) - Corrección de bugs en aislamiento de claves BYOK, normalización de base_url e informes ([#9](https://github.com/study8677/OpenCMO/pull/9))
+- [Lling0000](https://github.com/Lling0000) - Propietario y mantenedor actual del repositorio; autor del módulo RAG
+- [study8677](https://github.com/study8677) - Creación inicial del proyecto y contribuciones anteriores
+- [ParakhJaggi](https://github.com/ParakhJaggi) - Integración Tavily ([#2](https://github.com/Lling0000/OpenCMO/pull/2), [#3](https://github.com/Lling0000/OpenCMO/pull/3))
+- [BBear0115](https://github.com/BBear0115) - Corrección de bugs en aislamiento de claves BYOK, normalización de base_url e informes ([#9](https://github.com/Lling0000/OpenCMO/pull/9))
 - Ver [CONTRIBUTORS.md](CONTRIBUTORS.md) para la lista completa
 
 ## Acknowledgments
@@ -205,11 +205,11 @@ La app de desarrollo corre en `http://localhost:5173` y proxya la API a `:8080`.
 
 ## Star History
 
-<a href="https://star-history.com/#study8677/OpenCMO&Date">
+<a href="https://star-history.com/#Lling0000/OpenCMO&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" width="100%" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" width="100%" />
  </picture>
 </a>
 

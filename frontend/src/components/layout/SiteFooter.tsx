@@ -6,7 +6,7 @@ import { usePublicSeoLocale } from "../../hooks/usePublicSeoLocale";
 import { useI18n } from "../../i18n";
 import { getSeoLocaleFromLocale } from "../../utils/publicRoutes";
 
-const GITHUB_REPO = "https://github.com/study8677/OpenCMO";
+const GITHUB_REPO = "https://github.com/Lling0000/OpenCMO";
 const CONTACT_EMAIL = "hello@aidcmo.com";
 const FRIEND_LINKS = [
   {

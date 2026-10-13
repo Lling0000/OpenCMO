@@ -3,7 +3,7 @@
   <!-- Dialog -->
   <rect x="120" y="30" width="560" height="440" rx="16" fill="white"/>
   <text x="148" y="66" font-family="system-ui" font-size="16" font-weight="600" fill="#0f172a">AI Strategy Analysis</text>
-  <text x="148" y="86" font-family="system-ui" font-size="10" fill="#94a3b8">https://github.com/study8677/OpenCMO</text>
+  <text x="148" y="86" font-family="system-ui" font-size="10" fill="#94a3b8">https://github.com/Lling0000/OpenCMO</text>
   <line x1="136" y1="100" x2="664" y2="100" stroke="#f1f5f9"/>
   <!-- Round 1 label -->
   <line x1="148" y1="120" x2="250" y2="120" stroke="#e2e8f0"/>

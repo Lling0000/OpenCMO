@@ -130,7 +130,7 @@
 
 ### Hero 区(主页第一屏)
 
-**只放**:`<a href="https://github.com/study8677/OpenCMO" />` + Star 图标 + 文案 "View on GitHub"
+**只放**:`<a href="https://github.com/Lling0000/OpenCMO" />` + Star 图标 + 文案 "View on GitHub"
 **不放**:数字。原因 task.md 已说明 —— 73 stars 在 hero 里太小,放了反而劝退。
 
 ### "Built in the open" 区块(主页第二屏)
@@ -166,9 +166,9 @@
 1. 内存 + SQLite 缓存层,TTL = 24h
 2. 缓存命中:直接返回
 3. 缓存未命中:并发请求两个 GitHub API
-   a. https://api.github.com/repos/study8677/OpenCMO
+   a. https://api.github.com/repos/Lling0000/OpenCMO
       → 取 stargazers_count / forks_count / open_issues_count / pushed_at
-   b. https://api.github.com/repos/study8677/OpenCMO/contributors?per_page=1&anon=true
+   b. https://api.github.com/repos/Lling0000/OpenCMO/contributors?per_page=1&anon=true
       → 解析 Link header 的 last page,得到贡献者总数
 4. 异常处理:任一 API 失败 → 返回 { stars: null, contributors: null, last_commit: null }
    前端检测到 null → 整个 stat card 区域不渲染,只渲染 "View on GitHub" 链接

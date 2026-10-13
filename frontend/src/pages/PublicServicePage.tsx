@@ -25,7 +25,7 @@ import { useI18n } from "../i18n";
 import type { TranslationKey } from "../i18n";
 import { getLocalizedPublicPath } from "../utils/publicRoutes";
 
-const GITHUB_REPO_URL = "https://github.com/study8677/OpenCMO";
+const GITHUB_REPO_URL = "https://github.com/Lling0000/OpenCMO";
 
 // Reduced from 6 kinds to 2 in Phase 1 repositioning. The legacy kinds
 // (b2b-leads / seo-geo / sample-data / data-policy) are gone; users

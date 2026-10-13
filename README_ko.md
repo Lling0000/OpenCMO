@@ -16,7 +16,7 @@
 <p align="center">
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-green.svg?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/study8677/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/study8677/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
+  <a href="https://github.com/Lling0000/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/Lling0000/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
   <img src="https://img.shields.io/badge/react-SPA-61DAFB.svg?style=for-the-badge&logo=react" alt="React SPA">
 </p>
 
@@ -133,7 +133,7 @@ OpenCMO에는 프로젝트별 정식 리포트 시스템이 있습니다. **Repo
 OpenAI 호환 API를 지원합니다. OpenAI, DeepSeek, NVIDIA NIM, Kimi 호환 게이트웨이, Ollama 등을 사용할 수 있습니다.
 
 ```bash
-git clone https://github.com/study8677/OpenCMO.git
+git clone https://github.com/Lling0000/OpenCMO.git
 cd OpenCMO
 pip install -e ".[all]"
 crawl4ai-setup
@@ -192,10 +192,10 @@ npm run build
 
 ## Contributors
 
-- [study8677](https://github.com/study8677) - Creator and maintainer
-- [Lling0000](https://github.com/Lling0000) - 가장 주요한 기여자
-- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration ([#2](https://github.com/study8677/OpenCMO/pull/2), [#3](https://github.com/study8677/OpenCMO/pull/3))
-- [BBear0115](https://github.com/BBear0115) - BYOK 키 격리, base_url 정규화 및 리포트 버그 수정 ([#9](https://github.com/study8677/OpenCMO/pull/9))
+- [Lling0000](https://github.com/Lling0000) - 현재 저장소 소유자 및 유지보수 담당자, 지식 RAG 모듈 작성자
+- [study8677](https://github.com/study8677) - 프로젝트 초기 제작 및 이전 기여
+- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration ([#2](https://github.com/Lling0000/OpenCMO/pull/2), [#3](https://github.com/Lling0000/OpenCMO/pull/3))
+- [BBear0115](https://github.com/BBear0115) - BYOK 키 격리, base_url 정규화 및 리포트 버그 수정 ([#9](https://github.com/Lling0000/OpenCMO/pull/9))
 - 전체 목록은 [CONTRIBUTORS.md](CONTRIBUTORS.md) 참고
 
 ## Acknowledgments
@@ -205,11 +205,11 @@ npm run build
 
 ## Star History
 
-<a href="https://star-history.com/#study8677/OpenCMO&Date">
+<a href="https://star-history.com/#Lling0000/OpenCMO&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" width="100%" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" width="100%" />
  </picture>
 </a>
 

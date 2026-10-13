@@ -29,7 +29,7 @@ teams that want full control of the engine.
 - Sample audit walkthrough (EN): https://www.aidcmo.com/en/sample-audit
 - Public blog (EN): https://www.aidcmo.com/en/blog
 - Public blog (ZH): https://www.aidcmo.com/zh/blog
-- Source code: https://github.com/study8677/OpenCMO
+- Source code: https://github.com/Lling0000/OpenCMO
 - Sitemap: https://www.aidcmo.com/sitemap.xml
 
 ## Core capabilities

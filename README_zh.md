@@ -16,7 +16,7 @@
 <p align="center">
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-green.svg?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/study8677/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/study8677/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
+  <a href="https://github.com/Lling0000/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/Lling0000/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
   <img src="https://img.shields.io/badge/react-SPA-61DAFB.svg?style=for-the-badge&logo=react" alt="React SPA">
 </p>
 
@@ -132,7 +132,7 @@ OpenCMO 已经内置正式报告系统。你可以在项目中打开 **Reports**
 OpenCMO 兼容 OpenAI 协议 API，包括 OpenAI、DeepSeek、NVIDIA NIM、Kimi 兼容网关、Ollama 等。
 
 ```bash
-git clone https://github.com/study8677/OpenCMO.git
+git clone https://github.com/Lling0000/OpenCMO.git
 cd OpenCMO
 pip install -e ".[all]"
 crawl4ai-setup
@@ -193,10 +193,10 @@ npm run build
 
 ## 贡献者
 
-- [study8677](https://github.com/study8677) - 创建者与维护者
-- [Lling0000](https://github.com/Lling0000) - 最主要贡献者
-- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily 集成 ([#2](https://github.com/study8677/OpenCMO/pull/2), [#3](https://github.com/study8677/OpenCMO/pull/3))
-- [BBear0115](https://github.com/BBear0115) - BYOK 密钥隔离、base_url 规范化及报告相关 Bug 修复 ([#9](https://github.com/study8677/OpenCMO/pull/9))
+- [Lling0000](https://github.com/Lling0000) - 当前仓库所有者与维护者；知识库 RAG 模块作者
+- [study8677](https://github.com/study8677) - 项目早期创建与历史贡献
+- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily 集成 ([#2](https://github.com/Lling0000/OpenCMO/pull/2), [#3](https://github.com/Lling0000/OpenCMO/pull/3))
+- [BBear0115](https://github.com/BBear0115) - BYOK 密钥隔离、base_url 规范化及报告相关 Bug 修复 ([#9](https://github.com/Lling0000/OpenCMO/pull/9))
 - 完整名单见 [CONTRIBUTORS.md](CONTRIBUTORS.md)
 
 ## 致谢
@@ -207,11 +207,11 @@ npm run build
 
 ## Star History
 
-<a href="https://star-history.com/#study8677/OpenCMO&Date">
+<a href="https://star-history.com/#Lling0000/OpenCMO&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" width="100%" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" width="100%" />
  </picture>
 </a>
 

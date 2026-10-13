@@ -8,7 +8,7 @@ Use Docker Compose for the first production deployment. It keeps the frontend bu
 
 ## Required Inputs
 
-- GitHub repository: `https://github.com/study8677/OpenCMO.git`
+- GitHub repository: `https://github.com/Lling0000/OpenCMO.git`
 - Server SSH host, user, and key path
 - Public domain name and DNS A/AAAA records pointing to the server
 - Production environment file stored on the server, not in Git
@@ -31,7 +31,7 @@ Use Docker Compose for the first production deployment. It keeps the frontend bu
 3. On the server, clone or pull the repository:
 
    ```bash
-   git clone https://github.com/study8677/OpenCMO.git
+   git clone https://github.com/Lling0000/OpenCMO.git
    cd OpenCMO
    ```
 

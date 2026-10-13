@@ -27,7 +27,7 @@ import { usePublicSeoLocale } from "../hooks/usePublicSeoLocale";
 import { useI18n } from "../i18n";
 import { normalizeWebsiteUrl } from "../utils/url";
 
-const GITHUB_REPO_URL = "https://github.com/study8677/OpenCMO";
+const GITHUB_REPO_URL = "https://github.com/Lling0000/OpenCMO";
 const CONTACT_EMAIL = "hello@aidcmo.com";
 
 // Neutral signal lanes (kept from old landing — no B2B baggage).

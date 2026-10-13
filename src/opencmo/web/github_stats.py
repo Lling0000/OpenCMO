@@ -20,7 +20,7 @@ from opencmo.storage import get_cached_github_stats, set_cached_github_stats
 # done inside ``github_get_with_headers``. Importing it would trip Ruff F401.
 from opencmo.tools.github_api import github_get_with_headers
 
-_REPO = "study8677/OpenCMO"
+_REPO = "Lling0000/OpenCMO"
 _CACHE_KEY = f"repo:{_REPO}"
 _CACHE_TTL_SEC = 24 * 3600
 

@@ -414,7 +414,7 @@ from opencmo.storage import get_cached_github_stats, set_cached_github_stats
 # 不要 import 进来(否则 Ruff F401 报未用)。
 from opencmo.tools.github_api import github_get_with_headers
 
-_REPO = "study8677/OpenCMO"
+_REPO = "Lling0000/OpenCMO"
 _CACHE_KEY = f"repo:{_REPO}"
 _CACHE_TTL_SEC = 24 * 3600
 _TIMEOUT = httpx.Timeout(8.0, connect=4.0)
@@ -732,7 +732,7 @@ export function useGitHubStats() {
 - H2 + sub
 - 3 列 stat cards(stars / last commit / contributors)
 - **任一 stat 为 null → 整个 stats 区域不渲染**,只显示 fallback「View on GitHub」link(Codex round 2 修订:首版 `allNull` 只检查 stars + contributors,漏掉 last_commit_iso,与文案不一致)
-- 全部 null / 任一 null 时 fallback 都是单 anchor 到 `https://github.com/study8677/OpenCMO`
+- 全部 null / 任一 null 时 fallback 都是单 anchor 到 `https://github.com/Lling0000/OpenCMO`
 - "Last commit" 时间用 `utcDate()` from `utils/time.ts` 转本地 + relative format(`Intl.RelativeTimeFormat` 或现有 helper)
 
 ```tsx
@@ -799,7 +799,7 @@ export default function HostedWaitlistPage() {
 
 替换 hero copy 引用的 i18n key — `landing.heroTitle/Subtitle/Eyebrow` 已在 B.1.3 改值,组件代码不需要改;但要更新 CTA 按钮目标:
 - 主 CTA `landing.navPrimaryCta`("Get a growth audit") → `/contact`
-- 次 CTA "View on GitHub" → `https://github.com/study8677/OpenCMO`(外链)
+- 次 CTA "View on GitHub" → `https://github.com/Lling0000/OpenCMO`(外链)
 
 #### B.8.2 在 LandingPage.tsx 中
 

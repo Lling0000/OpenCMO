@@ -19,7 +19,7 @@ import { usePublicPageMetadata } from "../hooks/usePublicPageMetadata";
 import { PUBLIC_HOME_NAV } from "../content/marketing";
 
 const CONTACT_EMAIL = "hello@aidcmo.com";
-const GITHUB_REPO_URL = "https://github.com/study8677/OpenCMO";
+const GITHUB_REPO_URL = "https://github.com/Lling0000/OpenCMO";
 
 type ServiceCard = {
   icon: LucideIcon;

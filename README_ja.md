@@ -16,7 +16,7 @@
 <p align="center">
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge&logo=python" alt="Python 3.10+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-green.svg?style=for-the-badge" alt="License"></a>
-  <a href="https://github.com/study8677/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/study8677/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
+  <a href="https://github.com/Lling0000/OpenCMO/stargazers"><img src="https://img.shields.io/github/stars/Lling0000/OpenCMO?style=for-the-badge&color=yellow&logo=github" alt="Stars"></a>
   <img src="https://img.shields.io/badge/react-SPA-61DAFB.svg?style=for-the-badge&logo=react" alt="React SPA">
 </p>
 
@@ -133,7 +133,7 @@ OpenCMO にはプロジェクトごとの正式なレポート機能がありま
 OpenAI 互換 API を利用できます。OpenAI、DeepSeek、NVIDIA NIM、Kimi 互換ゲートウェイ、Ollama などに対応します。
 
 ```bash
-git clone https://github.com/study8677/OpenCMO.git
+git clone https://github.com/Lling0000/OpenCMO.git
 cd OpenCMO
 pip install -e ".[all]"
 crawl4ai-setup
@@ -192,10 +192,10 @@ npm run build
 
 ## Contributors
 
-- [study8677](https://github.com/study8677) - Creator and maintainer
-- [Lling0000](https://github.com/Lling0000) - 主要コントリビューター
-- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration ([#2](https://github.com/study8677/OpenCMO/pull/2), [#3](https://github.com/study8677/OpenCMO/pull/3))
-- [BBear0115](https://github.com/BBear0115) - BYOKキー分離、base_url正規化、レポートのバグ修正 ([#9](https://github.com/study8677/OpenCMO/pull/9))
+- [Lling0000](https://github.com/Lling0000) - 現在のリポジトリ所有者・メンテナー、ナレッジ RAG モジュールの作者
+- [study8677](https://github.com/study8677) - プロジェクトの初期作成と過去の貢献
+- [ParakhJaggi](https://github.com/ParakhJaggi) - Tavily integration ([#2](https://github.com/Lling0000/OpenCMO/pull/2), [#3](https://github.com/Lling0000/OpenCMO/pull/3))
+- [BBear0115](https://github.com/BBear0115) - BYOKキー分離、base_url正規化、レポートのバグ修正 ([#9](https://github.com/Lling0000/OpenCMO/pull/9))
 - 詳細は [CONTRIBUTORS.md](CONTRIBUTORS.md) を参照
 
 ## Acknowledgments
@@ -205,11 +205,11 @@ npm run build
 
 ## Star History
 
-<a href="https://star-history.com/#study8677/OpenCMO&Date">
+<a href="https://star-history.com/#Lling0000/OpenCMO&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=study8677/OpenCMO&type=Date" width="100%" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Lling0000/OpenCMO&type=Date" width="100%" />
  </picture>
 </a>
 

@@ -69,7 +69,7 @@ export function SignupPage() {
             ))}
           </div>
           <a
-            href="https://github.com/study8677/OpenCMO"
+            href="https://github.com/Lling0000/OpenCMO"
             target="_blank"
             rel="noreferrer"
             className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-700"

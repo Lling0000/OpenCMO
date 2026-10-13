@@ -3,7 +3,7 @@ import { useI18n } from "../../i18n";
 import { useGitHubStats } from "../../hooks/useGitHubStats";
 import { utcDate } from "../../utils/time";
 
-const GITHUB_REPO = "https://github.com/study8677/OpenCMO";
+const GITHUB_REPO = "https://github.com/Lling0000/OpenCMO";
 
 function relativeTimeFrom(iso: string, locale: string): string {
   try {

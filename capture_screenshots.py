@@ -63,7 +63,7 @@ def seed_demo_data():
         c.execute(
             "INSERT INTO seo_scans (project_id, url, scanned_at, report_json, score_performance, score_lcp, score_cls, score_tbt, has_robots_txt, has_sitemap, has_schema_org) "
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 1, 1)",
-            (pid, "https://github.com/study8677/OpenCMO", ts, report, perf, lcp, cls, tbt),
+            (pid, "https://github.com/Lling0000/OpenCMO", ts, report, perf, lcp, cls, tbt),
         )
 
     # --- GEO scans (7 data points) ---
@@ -120,7 +120,7 @@ def seed_demo_data():
     for kw, positions in keywords:
         for i, pos in enumerate(positions):
             ts = (now - timedelta(days=len(positions) - 1 - i)).strftime("%Y-%m-%d %H:%M:%S")
-            url_found = "https://github.com/study8677/OpenCMO" if pos and pos <= 20 else None
+            url_found = "https://github.com/Lling0000/OpenCMO" if pos and pos <= 20 else None
             c.execute(
                 "INSERT INTO serp_snapshots (project_id, keyword, position, url_found, provider, error, checked_at) "
                 "VALUES (?, ?, ?, ?, 'crawl', NULL, ?)",

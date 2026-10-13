@@ -1,5 +1,15 @@
 # AGENTS.md
 
+## Repository ownership and GitHub identity
+
+- Current repository owner and maintainer: **Ling (`Lling0000`)**.
+- Canonical repository: **https://github.com/Lling0000/OpenCMO**. Use this owner for GitHub API calls, issues, PRs, badges, source links and GitHub statistics.
+- This checkout is intentionally operated with the `Lling0000` GitHub account. When working under `/Users/fanjingwen/Projects/Lling0000`, use that directory's `.gh-config`, not the default GitHub account. Source `../use-gh.sh` from this repo before Git/GitHub operations, or invoke `../use-gh.sh <gh arguments>`.
+- Commit identity for this checkout: `Lling0000 <263957495+Lling0000@users.noreply.github.com>`. Verify the active GitHub login and Git author before writing commits or PRs.
+- The repository ownership and this account choice are established. Do not reopen ownership questions merely because older commits or historical contributor credits name another account.
+- Preserve historical commits and individual contributor credit. Historical authorship does not change the current repository owner or maintainer.
+- For complex tasks, use subagents with medium reasoning effort.
+
 ## Architecture at a Glance
 
 ```
