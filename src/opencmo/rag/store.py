@@ -1,6 +1,7 @@
 """SQLite is authoritative for access, active versions and citation provenance."""
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 from contextlib import asynccontextmanager
@@ -71,7 +72,9 @@ async def hydrate(ids: list[str], request: RetrievalRequest) -> list[dict]:
                       " AND c.id IN (" + ",".join("?" for _ in ids) + ")", params + ids)
 
 async def lexical_search(query: str, request: RetrievalRequest, limit: int) -> list[dict]:
-    match = fts_query(query)
+    # Jieba's initial dictionary load and query segmentation are synchronous.
+    # Keep them off the request loop so other searches and timeouts can progress.
+    match = await asyncio.to_thread(fts_query, query)
     if not match:
         return []
     acl, params = visibility(request)
@@ -80,7 +83,7 @@ async def lexical_search(query: str, request: RetrievalRequest, limit: int) -> l
                       " AND rag_fts MATCH ? ORDER BY score LIMIT ?", params + [match, limit])
 
 async def entity_search(query: str, request: RetrievalRequest, limit: int) -> list[dict]:
-    match = fts_query(query)
+    match = await asyncio.to_thread(fts_query, query)
     if not match:
         return []
     acl, params = visibility(request)

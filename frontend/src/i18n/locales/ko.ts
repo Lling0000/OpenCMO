@@ -3,6 +3,10 @@ import type { TranslationKey } from "./en";
 import { knowledgeKO } from "../knowledge";
 
 export const ko: Partial<Record<TranslationKey, string>> = {
+  "route.loadError": "페이지를 불러오지 못했습니다",
+  "route.loadErrorHint": "새로고침하여 다시 시도하거나 최신 버전을 불러오세요.",
+  "route.reload": "페이지 새로고침",
+
   ...knowledgeKO,
   "common.cancel": "취소",
   "common.confirm": "확인",

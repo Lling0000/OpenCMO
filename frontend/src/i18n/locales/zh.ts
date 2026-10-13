@@ -3,6 +3,10 @@ import type { TranslationKey } from "./en";
 import { knowledgeZH } from "../knowledge";
 
 export const zh: Partial<Record<TranslationKey, string>> = {
+  "route.loadError": "页面加载失败",
+  "route.loadErrorHint": "请重新加载以重试或获取最新版本。",
+  "route.reload": "重新加载页面",
+
   ...knowledgeZH,
   // Common
   "common.cancel": "取消",

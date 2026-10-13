@@ -9,7 +9,6 @@ remain safe.
 from __future__ import annotations
 
 import asyncio
-import contextlib
 import logging
 import os
 from collections.abc import Awaitable, Callable
@@ -130,7 +129,12 @@ class BackgroundWorker:
 
     async def _run_loop(self) -> None:
         while not self._stop.is_set():
-            await bg_service.recover_stale_tasks(stale_after_seconds=self.stale_after_seconds)
+            try:
+                await bg_service.recover_stale_tasks(stale_after_seconds=self.stale_after_seconds)
+            except Exception:
+                logger.exception("Stale-task recovery failed — retrying on next poll")
+                await asyncio.sleep(self.poll_interval)
+                continue
 
             if self._global_sem is None:
                 await asyncio.sleep(self.poll_interval)
@@ -141,7 +145,13 @@ class BackgroundWorker:
             except asyncio.TimeoutError:
                 continue
 
-            task = await bg_service.claim_next_task(worker_id=self.worker_id)
+            try:
+                task = await bg_service.claim_next_task(worker_id=self.worker_id)
+            except Exception:
+                self._global_sem.release()
+                logger.exception("Task claim failed — retrying on next poll")
+                await asyncio.sleep(self.poll_interval)
+                continue
             if task is None:
                 self._global_sem.release()
                 await asyncio.sleep(self.poll_interval)
@@ -177,10 +187,7 @@ class BackgroundWorker:
         finally:
             heartbeat_task.cancel()
             cancel_watch_task.cancel()
-            with contextlib.suppress(asyncio.CancelledError):
-                await heartbeat_task
-            with contextlib.suppress(asyncio.CancelledError):
-                await cancel_watch_task
+            await asyncio.gather(heartbeat_task, cancel_watch_task, return_exceptions=True)
             if acquired_kind_sem and kind_sem is not None:
                 kind_sem.release()
             if self._global_sem is not None:
@@ -241,17 +248,30 @@ class BackgroundWorker:
             return
         while True:
             await asyncio.sleep(min(1.0, self.heartbeat_interval))
-            current = await bg_service.get_task(task_id)
-            if current is None or current["status"] in {"completed", "failed", "cancelled"}:
+            try:
+                current = await bg_service.get_task(task_id)
+            except Exception:
+                logger.exception("Task ownership check failed for %s — retrying", task_id)
+                continue
+            # A recovered task may already belong to another worker. Request
+            # cooperative cancellation so the old executor stops doing work.
+            if current is None or current.get("worker_id") != self.worker_id:
+                task.cancel()
                 return
-            if current["status"] == "cancel_requested":
+            if current["status"] in {"completed", "failed", "cancelled"}:
+                return
+            if current["status"] in {"cancel_requested", "queued"}:
                 task.cancel()
                 return
 
     async def _heartbeat_loop(self, task_id: str) -> None:
         while True:
             await asyncio.sleep(self.heartbeat_interval)
-            ok = await bg_service.heartbeat(task_id, worker_id=self.worker_id)
+            try:
+                ok = await bg_service.heartbeat(task_id, worker_id=self.worker_id)
+            except Exception:
+                logger.exception("Task heartbeat failed for %s — retrying", task_id)
+                continue
             if not ok:
                 return
 

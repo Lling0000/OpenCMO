@@ -509,3 +509,47 @@ async def test_provider_usage_metadata_and_invalid_vectors(library, monkeypatch)
     event = await store.one("SELECT metadata FROM usage_events WHERE account_id=? AND event_type='rag_embedding' ORDER BY id DESC LIMIT 1",
                             (library["account"],))
     assert event is not None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('search', [store.lexical_search, store.entity_search])
+async def test_lexical_analysis_does_not_block_other_requests(monkeypatch, search):
+    import asyncio
+    import threading
+
+    heartbeat = threading.Event()
+    observed = []
+
+    def analyze(query):
+        # A slow tokenizer must allow another request on the event loop to run.
+        observed.append(heartbeat.wait(timeout=0.3))
+        return '"Acme"'
+
+    monkeypatch.setattr(store, 'fts_query', analyze)
+    monkeypatch.setattr(store, 'rows', AsyncMock(return_value=[]))
+    pending = asyncio.create_task(search('Acme', RetrievalRequest(1, None, 'Acme'), 5))
+    await asyncio.sleep(0.01)
+    heartbeat.set()
+    assert await pending == []
+    assert observed == [True]
+
+
+@pytest.mark.asyncio
+async def test_context_budget_counts_joined_passage_separators(library, monkeypatch):
+    from opencmo.rag import retrieval
+
+    for name in ('alpha', 'beta'):
+        await add(library, f'Acme {name} evidence. ' * 65 + 'a', title=name)
+    request = RetrievalRequest(library['account'], library['project'], 'Acme', use_reranker=False)
+    full = await retrieve(request)
+    assert len(full.citations) == 2
+    # Both passages fit individually, but their separator adds a token here.
+    budget = sum(tokens(block) for block in full.context.split('\n\n'))
+    assert budget >= 512 and tokens(full.context) > budget
+    monkeypatch.setattr(retrieval, 'get_settings', AsyncMock(return_value=
+        library['settings'].model_copy(update={'context_tokens': budget})))
+    result = await retrieve(request)
+    assert result.citations
+    assert tokens(result.context) <= budget
+    for ref in result.citations:
+        assert await store.citation(library['account'], ref.id)

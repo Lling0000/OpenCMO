@@ -118,6 +118,8 @@ docker compose --profile rag up -d --build
 
 ## アーキテクチャと開発
 
+![OpenCMO のソフトウェア構成](docs/assets/architecture.png)
+
 | レイヤー | 技術スタック |
 | --- | --- |
 | Web インターフェース | React 19 · TypeScript · Vite · TanStack Query |
@@ -158,6 +160,8 @@ Vite 開発サーバーは `http://localhost:5173` で動作し、API リクエ�
 
 ## ドキュメント
 
+- [アーキテクチャ](docs/architecture.md) — コンポーネント図とデータフロー（中国語）。
+- [最適化レビュー](docs/optimization-review.md) — 実装した改善、測定結果、今後の優先順位（中国語）。
 - [設定](docs/configuration.md) — モデルプロバイダーと任意の連携。
 - [デプロイ](docs/deployment.md) — ホスティング、永続ストレージ、バックアップ。
 - [ナレッジと RAG](docs/rag.md) — 資料の取り込み、検索、出典。

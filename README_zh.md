@@ -118,6 +118,8 @@ docker compose --profile rag up -d --build
 
 ## 架构与开发
 
+![OpenCMO 软件架构](docs/assets/architecture.png)
+
 | 层级 | 技术栈 |
 | --- | --- |
 | 网页界面 | React 19 · TypeScript · Vite · TanStack Query |
@@ -158,6 +160,8 @@ Vite 开发服务运行在 `http://localhost:5173`，API 请求代理到后端�
 
 ## 文档导航
 
+- [架构说明](docs/architecture.md)：组件图、请求链路与数据边界。
+- [优化审查](docs/optimization-review.md)：已实施改进、测量结果与后续优先级。
 - [配置指南](docs/configuration.md)：模型服务与可选集成。
 - [部署说明](docs/deployment.md)：服务托管、持久化与备份。
 - [知识库与 RAG](docs/rag.md)：文档入库、检索与引用。

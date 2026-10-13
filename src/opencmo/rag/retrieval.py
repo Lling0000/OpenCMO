@@ -161,7 +161,7 @@ async def retrieve(request: RetrievalRequest) -> RetrievalResult:
     selected = [{**fresh[r["id"]], "lanes": r["lanes"], "fusion_score": r["fusion_score"],
                  "rerank_score": r.get("rerank_score")} for r in selected if r["id"] in fresh]
     parents = {r["id"]: r for r in await store.hydrate(list({r["parent_id"] for r in selected if r["parent_id"]}), request)}
-    blocks, used_parents, budget = [], set(), settings.context_tokens
+    blocks, used_parents = [], set()
     for row in selected:
         parent_id = row["parent_id"] or row["id"]
         parent = parents.get(parent_id, row)
@@ -169,14 +169,17 @@ async def retrieve(request: RetrievalRequest) -> RetrievalResult:
             continue
         label = f"K{len(result.citations) + 1}"
         header = f"[{label}] {row['title']} | {row['heading']} | page={row['page']} | date={row['created_at']} | generated={bool(row['generated'])}\n"
-        needed = tokens(header + parent["text"])
-        if needed > budget:
+        # Token counts are not additive at passage boundaries. Count the actual
+        # packed context, including separators, before accepting each passage.
+        packed = "\n\n".join([*blocks, header + parent["text"]])
+        packed_tokens = tokens(packed)
+        if packed_tokens > settings.context_tokens:
             # Keep a complete hit with its original offsets; do not fabricate a truncated quote.
             parent = row
-            needed = tokens(header + row["text"])
-        if needed > budget:
+            packed = "\n\n".join([*blocks, header + row["text"]])
+            packed_tokens = tokens(packed)
+        if packed_tokens > settings.context_tokens:
             continue
-        budget -= needed
         used_parents.add(parent_id)
         citation_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{result.retrieval_id}:{row['id']}"))
         result.citations.append(Citation(citation_id, label, row["document_id"], row["version_id"], row["id"],

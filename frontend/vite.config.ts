@@ -17,13 +17,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          /* Heavy 3D / graph lib — only loaded by GraphPage */
-          "vendor-graph": ["three", "react-force-graph-3d", "react-force-graph-2d"],
-          /* Chart lib — loaded by SEO / GEO / SERP / Community pages */
-          "vendor-charts": ["recharts"],
-          /* Markdown renderer — loaded by Reports + Chat */
-          "vendor-markdown": ["react-markdown"],
+        // Match only each optional library, rather than absorbing its shared
+        // React/ReactDOM dependencies into a vendor chunk needed by the entry.
+        onlyExplicitManualChunks: true,
+        manualChunks(id) {
+          if (/\/node_modules\/(three|react-force-graph-3d|react-force-graph-2d)\//.test(id)) {
+            return "vendor-graph";
+          }
+          if (id.includes("/node_modules/recharts/")) return "vendor-charts";
+          if (id.includes("/node_modules/react-markdown/")) return "vendor-markdown";
         },
       },
     },

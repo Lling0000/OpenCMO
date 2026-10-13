@@ -3,6 +3,10 @@ import type { TranslationKey } from "./en";
 import { knowledgeJA } from "../knowledge";
 
 export const ja: Partial<Record<TranslationKey, string>> = {
+  "route.loadError": "ページを読み込めませんでした",
+  "route.loadErrorHint": "再読み込みして再試行するか、最新バージョンを取得してください。",
+  "route.reload": "ページを再読み込み",
+
   ...knowledgeJA,
   // Common
   "common.cancel": "キャンセル",

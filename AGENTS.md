@@ -12,6 +12,8 @@
 
 ## Architecture at a Glance
 
+See [architecture.md](docs/architecture.md) for the component diagram, runtime boundaries and data flows, and [optimization-review.md](docs/optimization-review.md) for implemented improvements and remaining priorities.
+
 ```
 Frontend (React 19 + Vite)  ←→  FastAPI /api/v1/  ←→  SQLite (WAL)
                                       ↓
@@ -101,6 +103,7 @@ CREATE TABLE github_stats_cache (
 | `src/opencmo/tools/` | Crawl, search, SEO audit, GEO detection, community providers, SERP tracking |
 | `src/opencmo/services/` | Domain services: intelligence (AI debate), approval, monitoring |
 | `src/opencmo/background/` | Worker + executor registry (scan, report, graph expansion) |
+| `src/opencmo/rag/` | Account/project knowledge ingestion, hybrid retrieval, context budgets and source citations. |
 | `src/opencmo/storage/` | Async SQLite, 30+ tables, no ORM |
 | `src/opencmo/web/` | FastAPI app, routers, SSE chat, BYOK middleware |
 | `src/opencmo/llm.py` | Centralized LLM client: ContextVar isolation, retry + backoff, model resolution |

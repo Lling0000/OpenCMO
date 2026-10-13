@@ -1,0 +1,42 @@
+{
+  "baseline_commit": "49f0c3c",
+  "measured_at": "2026-10-13",
+  "method": "HTML initial script/modulepreload static dependency closure; gzip.compress per file, summed",
+  "toolchain": {
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "python": "3.14.3"
+  },
+  "baseline": {
+    "html_initial_js": [
+      {
+        "file": "/assets/index-BCSdmMq4.js",
+        "raw_bytes": 1433535,
+        "gzip_bytes": 407938
+      },
+      {
+        "file": "/assets/vendor-markdown-rQw-Q9N8.js",
+        "raw_bytes": 126464,
+        "gzip_bytes": 39117
+      },
+      {
+        "file": "/assets/vendor-charts-D4m5di-m.js",
+        "raw_bytes": 409022,
+        "gzip_bytes": 110620
+      }
+    ],
+    "initial_js_raw_bytes": 1969021,
+    "initial_js_gzip_bytes": 557675
+  },
+  "optimized": {
+    "html_initial_js": [
+      {
+        "file": "/assets/index-Cwdrz56L.js",
+        "raw_bytes": 1125329,
+        "gzip_bytes": 339801
+      }
+    ],
+    "initial_js_raw_bytes": 1125329,
+    "initial_js_gzip_bytes": 339801
+  }
+}

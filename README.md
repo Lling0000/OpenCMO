@@ -118,6 +118,8 @@ Documents are private to a project by default. Account sharing and permission to
 
 ## Architecture & development
 
+![Software architecture](docs/assets/architecture.png)
+
 | Layer | Stack |
 | --- | --- |
 | Web interface | React 19 · TypeScript · Vite · TanStack Query |
@@ -158,6 +160,8 @@ The Vite development server runs at `http://localhost:5173` and proxies API requ
 
 ## Documentation
 
+- [Architecture](docs/architecture.md) — component diagram and request/data flows (Chinese).
+- [Optimization review](docs/optimization-review.md) — implemented changes, measurements and remaining priorities (Chinese).
 - [Configuration](docs/configuration.md) — model providers and optional integrations.
 - [Deployment](docs/deployment.md) — hosting, persistent storage and backups.
 - [Knowledge & RAG](docs/rag.md) — document ingestion, retrieval and citations.

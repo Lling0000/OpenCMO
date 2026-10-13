@@ -17,7 +17,7 @@ COPY src/ ./src/
 RUN pip install --no-cache-dir -e ".[all]"
 # Install system deps for Chromium (used by crawl4ai), then set up crawl4ai
 RUN playwright install-deps chromium \
-    && crawl4ai-setup || true
+    && crawl4ai-setup
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 VOLUME ["/data"]
 ENV OPENCMO_DB_PATH=/data/data.db

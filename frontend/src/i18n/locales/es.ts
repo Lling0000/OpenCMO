@@ -3,6 +3,10 @@ import type { TranslationKey } from "./en";
 import { knowledgeES } from "../knowledge";
 
 export const es: Partial<Record<TranslationKey, string>> = {
+  "route.loadError": "No se pudo cargar la página",
+  "route.loadErrorHint": "Recarga para volver a intentarlo u obtener la versión más reciente.",
+  "route.reload": "Recargar página",
+
   ...knowledgeES,
   "common.cancel": "Cancelar",
   "common.confirm": "Confirmar",

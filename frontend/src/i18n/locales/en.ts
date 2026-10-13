@@ -1,6 +1,10 @@
 import { knowledgeEN } from "../knowledge";
 
 export const en = {
+  "route.loadError": "This page could not be loaded",
+  "route.loadErrorHint": "Reload to try again or get the latest version.",
+  "route.reload": "Reload page",
+
   ...knowledgeEN,
   // Common
   "common.cancel": "Cancel",

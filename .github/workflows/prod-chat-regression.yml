@@ -58,6 +58,7 @@ jobs:
         run: pip install -e . requests
 
       - name: Run production platform regression
+        shell: bash
         env:
           BASE_URL: ${{ inputs.base_url || github.event.inputs.base_url || env.DEFAULT_BASE_URL }}
           PROJECT_ID: ${{ inputs.project_id || github.event.inputs.project_id || env.DEFAULT_PROJECT_ID }}
@@ -71,27 +72,41 @@ jobs:
             --fail-on-incomplete | tee prod-chat-regression.jsonl
 
       - name: Build workflow summary
+        if: ${{ always() }}
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           path = Path("prod-chat-regression.jsonl")
-          rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+          rows = []
+          for line in path.read_text().splitlines() if path.is_file() else []:
+              if not line.strip():
+                  continue
+              try:
+                  row = json.loads(line)
+              except json.JSONDecodeError:
+                  continue
+              if isinstance(row, dict) and "platform" in row:
+                  rows.append(row)
           with Path.cwd().joinpath("summary.md").open("w", encoding="utf-8") as fh:
               fh.write("## Production Chat Regression\n\n")
               fh.write("| Platform | Agent | Done | Timeout | Error |\n")
               fh.write("| --- | --- | --- | --- | --- |\n")
+              if not rows:
+                  fh.write("No valid result rows. Check the regression step log.\n")
               for row in rows:
                   error = (row.get("error") or "").replace("\n", " ")[:120]
                   fh.write(
-                      f"| {row['platform']} | {row.get('agent') or ''} | {row['done']} | "
+                      f"| {row['platform']} | {row.get('agent') or ''} | {row.get('done', False)} | "
                       f"{row.get('stream_timed_out')} | {error} |\n"
                   )
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload regression artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: prod-chat-regression
           path: prod-chat-regression.jsonl
+          if-no-files-found: ignore

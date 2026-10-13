@@ -1,6 +1,6 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { BrowserRouter, Navigate, Routes, Route, useLocation } from "react-router";
-import { AppShell } from "./components/layout/AppShell";
+import { RouteErrorBoundary } from "./components/common/RouteErrorBoundary";
 import { FloatingContactQR } from "./components/FloatingContactQR";
 import { PublicLocaleSync } from "./components/marketing/PublicLocaleSync";
 import { isPublicRoutePath } from "./utils/publicRoutes";
@@ -11,25 +11,57 @@ import { HostedWaitlistPage } from "./pages/HostedWaitlistPage";
 import { SignupPage } from "./pages/SignupPage";
 import { LoginPage } from "./pages/LoginPage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
-import { AdminPage } from "./pages/AdminPage";
 import { BlogPage } from "./pages/BlogPage";
 import { BlogArticlePage } from "./pages/BlogArticlePage";
-import { DashboardPage } from "./pages/DashboardPage";
-import { ProjectPage } from "./pages/ProjectPage";
 import { SampleAuditPage } from "./pages/SampleAuditPage";
-import { SeoPage } from "./pages/SeoPage";
-import { GeoPage } from "./pages/GeoPage";
-import { SerpPage } from "./pages/SerpPage";
-import { CommunityPage } from "./pages/CommunityPage";
-import { ApprovalsPage } from "./pages/ApprovalsPage";
-import { BrandKitPage } from "./pages/BrandKitPage";
-import { ProjectMonitorsPage } from "./pages/ProjectMonitorsPage";
-import { GitHubLeadsPage } from "./pages/GitHubLeadsPage";
-import { ContentPage } from "./pages/ContentPage";
-import { KnowledgePage } from "./pages/KnowledgePage";
 import { useAuth } from "./components/auth/useAuth";
 
-// Heavy pages lazy-loaded: Three.js graph, react-markdown reports/chat, recharts performance
+// Keep public pages eager for their metadata and locale effects. Console modules
+// are imported only after RequireAuth permits rendering; declarations stay at
+// module scope so navigation never creates new lazy component identities.
+const AppShell = lazy(() =>
+  import("./components/layout/AppShell").then((m) => ({ default: m.AppShell }))
+);
+const AdminPage = lazy(() =>
+  import("./pages/AdminPage").then((m) => ({ default: m.AdminPage }))
+);
+const DashboardPage = lazy(() =>
+  import("./pages/DashboardPage").then((m) => ({ default: m.DashboardPage }))
+);
+const ProjectPage = lazy(() =>
+  import("./pages/ProjectPage").then((m) => ({ default: m.ProjectPage }))
+);
+const SeoPage = lazy(() =>
+  import("./pages/SeoPage").then((m) => ({ default: m.SeoPage }))
+);
+const GeoPage = lazy(() =>
+  import("./pages/GeoPage").then((m) => ({ default: m.GeoPage }))
+);
+const SerpPage = lazy(() =>
+  import("./pages/SerpPage").then((m) => ({ default: m.SerpPage }))
+);
+const CommunityPage = lazy(() =>
+  import("./pages/CommunityPage").then((m) => ({ default: m.CommunityPage }))
+);
+const ApprovalsPage = lazy(() =>
+  import("./pages/ApprovalsPage").then((m) => ({ default: m.ApprovalsPage }))
+);
+const BrandKitPage = lazy(() =>
+  import("./pages/BrandKitPage").then((m) => ({ default: m.BrandKitPage }))
+);
+const ProjectMonitorsPage = lazy(() =>
+  import("./pages/ProjectMonitorsPage").then((m) => ({ default: m.ProjectMonitorsPage }))
+);
+const GitHubLeadsPage = lazy(() =>
+  import("./pages/GitHubLeadsPage").then((m) => ({ default: m.GitHubLeadsPage }))
+);
+const ContentPage = lazy(() =>
+  import("./pages/ContentPage").then((m) => ({ default: m.ContentPage }))
+);
+const KnowledgePage = lazy(() =>
+  import("./pages/KnowledgePage").then((m) => ({ default: m.KnowledgePage }))
+);
+// Heavy graph, markdown and chart pages retain their own chunks.
 const GraphPage = lazy(() =>
   import("./pages/GraphPage").then((m) => ({ default: m.GraphPage }))
 );
@@ -143,33 +175,35 @@ function AppRoutes() {
         path="*"
         element={(
           <RequireAuth>
-            <AppShell>
-              <Suspense fallback={<LazyFallback />}>
-                <Routes>
-                  <Route path="/console" element={<DashboardPage />} />
-                  <Route path="/admin" element={<RequireAuth adminOnly><AdminPage /></RequireAuth>} />
-                  <Route path="/workspace" element={<LegacyWorkspaceRedirect />} />
-                  <Route path="/approvals" element={<ApprovalsPage />} />
-                  <Route path="/projects/:id" element={<ProjectPage />} />
-                  <Route path="/projects/:id/reports" element={<ReportsPage />} />
-                  <Route path="/projects/:id/content" element={<ContentPage />} />
-                  <Route path="/projects/:id/knowledge" element={<KnowledgePage />} />
-                  <Route path="/projects/:id/brand-kit" element={<BrandKitPage />} />
-                  <Route
-                    path="/projects/:id/performance"
-                    element={<PerformancePage />}
-                  />
-                  <Route path="/projects/:id/seo" element={<SeoPage />} />
-                  <Route path="/projects/:id/geo" element={<GeoPage />} />
-                  <Route path="/projects/:id/serp" element={<SerpPage />} />
-                  <Route path="/projects/:id/community" element={<CommunityPage />} />
-                  <Route path="/projects/:id/graph" element={<GraphPage />} />
-                  <Route path="/projects/:id/monitors" element={<ProjectMonitorsPage />} />
-                  <Route path="/projects/:id/github-leads" element={<GitHubLeadsPage />} />
-                  <Route path="/chat" element={<ChatPage />} />
-                </Routes>
-              </Suspense>
-            </AppShell>
+            <Suspense fallback={<AuthLoading />}>
+              <AppShell>
+                <Suspense fallback={<LazyFallback />}>
+                  <Routes>
+                    <Route path="/console" element={<DashboardPage />} />
+                    <Route path="/admin" element={<RequireAuth adminOnly><AdminPage /></RequireAuth>} />
+                    <Route path="/workspace" element={<LegacyWorkspaceRedirect />} />
+                    <Route path="/approvals" element={<ApprovalsPage />} />
+                    <Route path="/projects/:id" element={<ProjectPage />} />
+                    <Route path="/projects/:id/reports" element={<ReportsPage />} />
+                    <Route path="/projects/:id/content" element={<ContentPage />} />
+                    <Route path="/projects/:id/knowledge" element={<KnowledgePage />} />
+                    <Route path="/projects/:id/brand-kit" element={<BrandKitPage />} />
+                    <Route
+                      path="/projects/:id/performance"
+                      element={<PerformancePage />}
+                    />
+                    <Route path="/projects/:id/seo" element={<SeoPage />} />
+                    <Route path="/projects/:id/geo" element={<GeoPage />} />
+                    <Route path="/projects/:id/serp" element={<SerpPage />} />
+                    <Route path="/projects/:id/community" element={<CommunityPage />} />
+                    <Route path="/projects/:id/graph" element={<GraphPage />} />
+                    <Route path="/projects/:id/monitors" element={<ProjectMonitorsPage />} />
+                    <Route path="/projects/:id/github-leads" element={<GitHubLeadsPage />} />
+                    <Route path="/chat" element={<ChatPage />} />
+                  </Routes>
+                </Suspense>
+              </AppShell>
+            </Suspense>
           </RequireAuth>
         )}
       />
@@ -180,7 +214,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter basename="/">
-      <AppRoutes />
+      <RouteErrorBoundary>
+        <AppRoutes />
+      </RouteErrorBoundary>
       <PublicFloatingWidgets />
     </BrowserRouter>
   );

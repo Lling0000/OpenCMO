@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import sqlite3
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -9,6 +10,82 @@ from opencmo.background import service as bg_service
 from opencmo.background import storage as bg_storage
 from opencmo.background.executors.report import run_report_executor
 from opencmo.background.worker import BackgroundWorker
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("operation", ["recover_stale_tasks", "claim_next_task"])
+async def test_worker_survives_transient_queue_storage_failure(tmp_path, monkeypatch, operation):
+    from opencmo import storage
+
+    monkeypatch.setattr(storage, "_DB_PATH", tmp_path / "test.db", raising=False)
+    await storage.ensure_db()
+    task = await bg_service.enqueue_task(kind="scan", project_id=None, payload={}, dedupe_key=None)
+    original = getattr(bg_service, operation)
+    calls = 0
+
+    async def flaky_storage(**kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise sqlite3.OperationalError("database is locked")
+        return await original(**kwargs)
+
+    monkeypatch.setattr(bg_service, operation, flaky_storage)
+    completed = asyncio.Event()
+
+    async def executor(ctx):
+        await ctx.complete({"ok": True})
+        completed.set()
+
+    # A leaked claim permit would prevent all subsequent work with one slot.
+    worker = BackgroundWorker(poll_interval=0.01, max_concurrency=1)
+    worker.register_executor("scan", executor)
+    await worker.start()
+    try:
+        await asyncio.wait_for(completed.wait(), timeout=2)
+    finally:
+        await worker.stop()
+    assert calls >= 2
+    assert (await bg_service.get_task(task["task_id"]))["status"] == "completed"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("replacement_worker", [None, "replacement-worker"])
+async def test_worker_stops_executor_after_lease_is_recovered(tmp_path, monkeypatch, replacement_worker):
+    from opencmo import storage
+
+    monkeypatch.setattr(storage, "_DB_PATH", tmp_path / "test.db", raising=False)
+    await storage.ensure_db()
+    queued = await bg_service.enqueue_task(kind="scan", project_id=None, payload={}, dedupe_key=None)
+    worker = BackgroundWorker(heartbeat_interval=0.02)
+    claimed = await bg_service.claim_next_task(worker_id=worker.worker_id)
+    started = asyncio.Event()
+    cancelled = asyncio.Event()
+
+    async def executor(_ctx):
+        started.set()
+        try:
+            await asyncio.Future()
+        finally:
+            cancelled.set()
+
+    worker.register_executor("scan", executor)
+    execution = asyncio.create_task(worker._run_claimed_task(claimed))
+    try:
+        await asyncio.wait_for(started.wait(), timeout=1)
+        assert await bg_storage.requeue_task(queued["task_id"], worker_id=worker.worker_id)
+        if replacement_worker:
+            assert await bg_service.claim_next_task(worker_id=replacement_worker)
+        await asyncio.wait_for(cancelled.wait(), timeout=1)
+        with pytest.raises(asyncio.CancelledError):
+            await execution
+        current = await bg_service.get_task(queued["task_id"])
+        assert current["worker_id"] == replacement_worker
+        assert current["status"] == ("claimed" if replacement_worker else "queued")
+        assert current["attempt_count"] == 1
+    finally:
+        execution.cancel()
+        await asyncio.gather(execution, return_exceptions=True)
 
 
 @pytest.mark.asyncio

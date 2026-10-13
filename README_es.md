@@ -118,6 +118,8 @@ Los documentos son privados para cada proyecto de forma predeterminada. Comparti
 
 ## Arquitectura y desarrollo
 
+![Arquitectura de software de OpenCMO](docs/assets/architecture.png)
+
 | Capa | Tecnologías |
 | --- | --- |
 | Interfaz web | React 19 · TypeScript · Vite · TanStack Query |
@@ -158,6 +160,8 @@ El servidor de desarrollo de Vite se ejecuta en `http://localhost:5173` y rediri
 
 ## Documentación
 
+- [Arquitectura](docs/architecture.md) — componentes y flujos de datos (en chino).
+- [Revisión de optimización](docs/optimization-review.md) — mejoras, mediciones y prioridades pendientes (en chino).
 - [Configuración](docs/configuration.md) — proveedores de modelos e integraciones opcionales.
 - [Despliegue](docs/deployment.md) — alojamiento, almacenamiento persistente y copias de seguridad.
 - [Conocimiento y RAG](docs/rag.md) — ingesta de documentos, recuperación y citas.
