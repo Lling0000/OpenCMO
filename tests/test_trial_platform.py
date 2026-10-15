@@ -36,6 +36,7 @@ def trial_db(tmp_path, monkeypatch):
     monkeypatch.setenv("OPENCMO_COOKIE_SECRET", "test-cookie-secret")
     monkeypatch.setenv("OPENCMO_SIGNUP_MODE", "open")
     monkeypatch.setenv("OPENCMO_ADMIN_EMAIL", "admin@example.test")
+    monkeypatch.setenv("OPENCMO_EMAIL_VERIFICATION_ENABLED", "1")
     db_path = tmp_path / "trial.db"
     web_app._AUTH_RATE_BUCKETS.clear()
     _CAPTURED_VERIFICATION_CODES.clear()
@@ -281,6 +282,7 @@ def test_legacy_project_global_unique_is_reconciled(tmp_path, monkeypatch):
     monkeypatch.setenv("OPENCMO_COOKIE_SECRET", "test-cookie-secret")
     monkeypatch.setenv("OPENCMO_SIGNUP_MODE", "open")
     monkeypatch.setenv("OPENCMO_ADMIN_EMAIL", "admin@example.test")
+    monkeypatch.setenv("OPENCMO_EMAIL_VERIFICATION_ENABLED", "1")
     db_path = tmp_path / "legacy.db"
     with sqlite3.connect(db_path) as db:
         db.execute("CREATE TABLE schema_version (version INTEGER NOT NULL)")

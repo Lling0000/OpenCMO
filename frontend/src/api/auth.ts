@@ -18,6 +18,8 @@ export interface SignupResponse {
   dev_mode?: boolean;
 }
 
+export type SignupResult = SignupResponse | AuthPayload;
+
 export interface ResendCodeResponse {
   ok: boolean;
   dev_mode?: boolean;
@@ -34,8 +36,8 @@ export function signup(data: {
   password: string;
   name?: string;
   locale?: string;
-}): Promise<SignupResponse> {
-  return apiJson<SignupResponse>("/auth/signup", {
+}): Promise<SignupResult> {
+  return apiJson<SignupResult>("/auth/signup", {
     method: "POST",
     body: JSON.stringify(data),
   });

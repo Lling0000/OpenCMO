@@ -54,6 +54,7 @@ def verification_db(tmp_path, monkeypatch):
     monkeypatch.setenv("OPENCMO_COOKIE_SECRET", "test-cookie-secret")
     monkeypatch.setenv("OPENCMO_SIGNUP_MODE", "open")
     monkeypatch.setenv("OPENCMO_ADMIN_EMAIL", "admin@example.test")
+    monkeypatch.setenv("OPENCMO_EMAIL_VERIFICATION_ENABLED", "1")
     db_path = tmp_path / "verify.db"
     web_app._AUTH_RATE_BUCKETS.clear()
     _CAPTURED_CODES.clear()
@@ -86,6 +87,54 @@ def _signup(client: TestClient, email: str, password: str = "password123") -> di
     assert payload["ok"] is True
     assert payload["needs_verification"] is True
     return payload
+
+
+def test_signup_and_unverified_login_are_direct_when_verification_disabled(tmp_path, monkeypatch):
+    monkeypatch.setenv("OPENCMO_REQUIRE_SESSION_AUTH", "1")
+    monkeypatch.setenv("OPENCMO_COOKIE_SECRET", "test-cookie-secret")
+    monkeypatch.setenv("OPENCMO_SIGNUP_MODE", "open")
+    monkeypatch.setenv("OPENCMO_ADMIN_EMAIL", "admin@example.test")
+    monkeypatch.delenv("OPENCMO_EMAIL_VERIFICATION_ENABLED", raising=False)
+    db_path = tmp_path / "verification-disabled.db"
+    web_app._AUTH_RATE_BUCKETS.clear()
+
+    async def _unexpected_send(to: str, subject: str, html: str, text: str | None = None, **_kwargs) -> dict:
+        raise AssertionError(f"verification email should not be sent to {to}: {subject}")
+
+    with patch.object(storage, "_DB_PATH", db_path), \
+         patch.object(storage, "_SCHEMA_READY_FOR", None), \
+         patch("opencmo.tools.email_send.send_mail", side_effect=_unexpected_send), \
+         patch("opencmo.tools.email_verification.send_mail", side_effect=_unexpected_send):
+        with TestClient(app) as client:
+            signup = client.post(
+                "/api/v1/auth/signup",
+                json={"email": "direct@example.test", "password": "password123", "name": "Direct"},
+            )
+            assert signup.status_code == 201, signup.text
+            payload = signup.json()
+            assert payload["authenticated"] is True
+            assert payload["user"]["email"] == "direct@example.test"
+            assert "needs_verification" not in payload
+            assert "opencmo_session" in client.cookies
+            assert asyncio.run(storage.is_user_verified(payload["user"]["id"])) is True
+            assert asyncio.run(storage.last_verification_send_at(payload["user"]["id"], "signup")) is None
+
+            client.post("/api/v1/auth/logout")
+            client.cookies.clear()
+
+            user, _account = asyncio.run(
+                storage.create_user_with_account("old-unverified@example.test", "password123", "Old")
+            )
+            assert asyncio.run(storage.is_user_verified(user["id"])) is False
+            login = client.post(
+                "/api/v1/auth/login",
+                json={"email": "old-unverified@example.test", "password": "password123"},
+            )
+            assert login.status_code == 200, login.text
+            assert login.json()["authenticated"] is True
+            assert asyncio.run(storage.is_user_verified(user["id"])) is True
+
+    web_app._AUTH_RATE_BUCKETS.clear()
 
 
 def test_signup_returns_needs_verification_without_session(verification_db):
@@ -237,6 +286,7 @@ def test_existing_legacy_users_remain_verified_after_backfill(tmp_path, monkeypa
     monkeypatch.setenv("OPENCMO_COOKIE_SECRET", "test-cookie-secret")
     monkeypatch.setenv("OPENCMO_SIGNUP_MODE", "open")
     monkeypatch.setenv("OPENCMO_ADMIN_EMAIL", "admin@example.test")
+    monkeypatch.setenv("OPENCMO_EMAIL_VERIFICATION_ENABLED", "1")
 
     db_path = tmp_path / "legacy.db"
     # Hand-craft a pre-feature schema with one existing user + matching

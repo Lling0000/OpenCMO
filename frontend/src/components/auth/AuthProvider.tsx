@@ -11,6 +11,7 @@ import type { AccountUsage, AuthAccount, AuthUser } from "../../types";
 
 export type SignupOutcome =
   | { ok: true; needsVerification: true; userId: number; email: string }
+  | { ok: true; needsVerification?: false }
   | { ok: false; error?: string };
 
 export type LoginOutcome =
@@ -131,7 +132,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string, name?: string, locale?: string): Promise<SignupOutcome> => {
       try {
         const payload = await authApi.signup({ email, password, name, locale });
-        if (payload.needs_verification) {
+        if ("authenticated" in payload && payload.authenticated) {
+          applyPayload(payload);
+          await queryClient.invalidateQueries();
+          return { ok: true };
+        }
+        if ("needs_verification" in payload && payload.needs_verification) {
           return {
             ok: true,
             needsVerification: true,
@@ -142,11 +148,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Legacy fallback: server may still return an AuthPayload shape.
         return { ok: false, error: "unexpected_response" };
       } catch (err) {
-        const apiErr = err as { message?: string };
-        return { ok: false, error: apiErr?.message };
+        const apiErr = err as {
+          errorCode?: string;
+          message?: string;
+          payload?: { error?: string };
+        };
+        return { ok: false, error: apiErr?.errorCode ?? apiErr?.payload?.error ?? apiErr?.message };
       }
     },
-    [],
+    [applyPayload, queryClient],
   );
 
   const verifyEmail = useCallback(
