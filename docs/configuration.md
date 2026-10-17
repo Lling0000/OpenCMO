@@ -64,6 +64,28 @@ These settings are not required for the first scan, but they unlock richer monit
 | Dashboard access | `OPENCMO_WEB_TOKEN`, `OPENCMO_WEB_HOST` | Add these when exposing the dashboard outside local development. |
 | Publishing | `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, `TWITTER_API_KEY`, `OPENCMO_AUTO_PUBLISH` | Add these only when you are ready to enable controlled publishing workflows. |
 
+## Agent web search
+
+To give the CMO and specialist agents browser-free web search, set:
+
+```bash
+OPENCMO_SEARCH_PROVIDER=parallel
+```
+
+This routes their `web_search` tool through [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+at `https://search.parallel.ai/mcp`, using the HTTP MCP transport included with the
+OpenAI Agents SDK. Anonymous searches use Fast mode and need no Parallel account
+or API key. Free access has rate limits and is intended for exploration and light use.
+Queries are sent to Parallel, and source URLs and excerpts are returned to the agent.
+Requests have a 30-second overall timeout; failures are returned to the agent without
+switching providers.
+
+Leave the setting unset or use `auto` to keep the existing Tavily, OpenAI and Google
+scraping fallback chain. Existing Tavily credentials continue to work in `auto` mode.
+Use `none` to disable this agent tool. This setting only controls the agents'
+`web_search` tool; SERP tracking, community scans and page
+crawling retain their own integrations.
+
 ## Local development notes
 
 - Keep `.env` out of version control.

@@ -16,6 +16,22 @@ async def web_search(query: str) -> str:
     Args:
         query: The search query string.
     """
+    from opencmo import llm
+
+    provider = (llm.get_key("OPENCMO_SEARCH_PROVIDER", "auto") or "auto").strip().lower()
+    if provider == "none":
+        return "Web search is disabled."
+    if provider == "parallel":
+        from opencmo.tools.parallel_search import parallel_search
+
+        try:
+            return await parallel_search(query)
+        except Exception:
+            logger.warning("Parallel web search failed", exc_info=True)
+            return "Parallel web search failed. Please try again later."
+    if provider != "auto":
+        return "Unknown OPENCMO_SEARCH_PROVIDER. Choose auto, parallel, or none."
+
     try:
         from opencmo.tools.tavily_helper import tavily_search
 
