@@ -4,6 +4,7 @@ from opencmo.agents.prompt_contracts import build_prompt
 from opencmo.config import get_model
 from opencmo.tools.blog_writer import research_blog_topic
 from opencmo.tools.crawl import crawl_website
+from opencmo.tools.deep_search import deep_search
 from opencmo.tools.search import web_search
 
 blog_expert = Agent(
@@ -45,7 +46,7 @@ Every article should read like a strong product-marketing asset: it should attra
 ### Mode B: Full Article (when user asks for complete article/blog post/full article)
 
 1. **Research phase**: Use `research_blog_topic` to gather competing content data and insights
-2. Optionally use `web_search` / `crawl_website` for supplementary research
+2. Optionally use `deep_search`, `web_search`, or `crawl_website` for supplementary research
 3. Write a complete **2000+ word** markdown article with:
    - Engaging introduction (150-200 words) — hook with a problem or surprising insight
    - 5-7 H2 sections, each 200-400 words
@@ -79,6 +80,6 @@ Every article should read like a strong product-marketing asset: it should attra
 - The reader should leave with a usable insight even if they never click the product link
 """,
     ),
-    tools=[web_search, crawl_website, research_blog_topic],
+    tools=[web_search, crawl_website, deep_search, research_blog_topic],
     model=get_model("blog"),
 )

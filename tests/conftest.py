@@ -28,6 +28,9 @@ def _isolate_external_provider_keys(monkeypatch):
                         ('OPENAI_API_KEY', 'OPENAI_BASE_URL', 'OPENCMO_MODEL_DEFAULT')}
     for key in EXTERNAL_PROVIDER_KEYS:
         monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("OPENCMO_DEEP_SEARCH_TRACE", "0")
+    monkeypatch.delenv("OPENCMO_DEEP_SEARCH_CACHE", raising=False)
+    monkeypatch.delenv("OPENCMO_DEEP_SEARCH_DIR", raising=False)
     try:
         yield
     finally:

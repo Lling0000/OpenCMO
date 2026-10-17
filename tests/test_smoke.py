@@ -9,11 +9,13 @@ def test_imports():
     from opencmo.tools import (
         check_keyword_ranking,
         crawl_website,
+        deep_search,
         publish_to_reddit,
     )
     # Just verify they exist
     assert cmo_agent is not None
     assert crawl_website is not None
+    assert deep_search is not None
     assert check_keyword_ranking is not None
     assert publish_to_reddit is not None
 
@@ -23,6 +25,8 @@ def test_cmo_has_tools_and_handoffs():
 
     assert len(cmo_agent.tools) > 0, "CMO should have tools"
     assert len(cmo_agent.handoffs) > 0, "CMO should have handoffs"
+    tool_names = [t.name for t in cmo_agent.tools if hasattr(t, "name")]
+    assert "deep_search" in tool_names
 
 
 def test_cmo_has_as_tool_wrappers():
@@ -78,6 +82,13 @@ def test_all_experts_have_instructions():
     ]:
         assert agent.instructions, f"{agent.name} missing instructions"
         assert len(agent.instructions) > 50, f"{agent.name} instructions too short"
+
+
+def test_blog_expert_has_deep_search_tool():
+    from opencmo.agents import blog_expert
+
+    tool_names = [t.name for t in blog_expert.tools if hasattr(t, "name")]
+    assert "deep_search" in tool_names
 
 
 def test_platform_experts_keep_explicit_deliverable_labels():

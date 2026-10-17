@@ -29,6 +29,7 @@ from opencmo.tools.competitor import analyze_competitor
 from opencmo.tools.content_frequency import check_content_frequency
 from opencmo.tools.crawl import crawl_website
 from opencmo.tools.cta_audit import audit_landing_page_cta
+from opencmo.tools.deep_search import deep_search
 from opencmo.tools.graph_intel import get_competitive_landscape
 from opencmo.tools.gsc import check_search_console
 from opencmo.tools.keyword_suggest import suggest_keywords
@@ -204,7 +205,7 @@ Your job is to think like a real marketing leader, not a generic assistant. Conv
    - This is critical: for multi-channel, do NOT handoff — use the tool versions so you can collect all outputs and present a cohesive summary
    - The research brief creates a Campaign Run that tracks all generated content as artifacts
 
-4. **Web Search**: Use `web_search` for competitive research, market trends, keyword research, or any real-time information needs.
+4. **Deep Search / Web Search**: Use `deep_search` when research needs a transparent Search -> Read -> Search loop, especially for competitor/market research where traceability matters. Use `web_search` for quick real-time lookups.
 
 5. **Competitor Analysis**: Use `analyze_competitor` to get structured data about a competitor's product, then use insights to differentiate content.
 
@@ -244,6 +245,7 @@ When the user asks for "全平台" or "comprehensive" distribution, prioritize i
     ),
     tools=[
         crawl_website,
+        deep_search,
         web_search,
         analyze_competitor,
         generate_research_brief,
