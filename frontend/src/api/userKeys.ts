@@ -26,6 +26,7 @@ export const USER_KEY_NAMES = [
   "DEEPSEEK_API_KEY",
   "ZHIPU_API_KEY",
   "DOUBAO_API_KEY",
+  "CLORO_API_KEY",
 ] as const;
 
 export type UserKeyName = (typeof USER_KEY_NAMES)[number];

@@ -439,6 +439,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   "settings.deepseekKey": "Clave API de DeepSeek",
   "settings.zhipuKey": "Clave API de Zhipu",
   "settings.doubaoKey": "Clave API de Doubao",
+  "settings.cloroKey": "Clave API de cloro (respuestas de ChatGPT, Gemini y AI Mode)",
   "settings.geoChatgpt": "Habilitar GEO de ChatGPT",
   "settings.geoChatgptHint": "Usa tu clave API de OpenAI para verificar la visibilidad en ChatGPT.",
   "settings.geoHint": "Habilita más plataformas para obtener mayor cobertura de visibilidad IA. Perplexity y You.com funcionan sin claves.",

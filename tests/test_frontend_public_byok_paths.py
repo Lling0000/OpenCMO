@@ -21,5 +21,6 @@ def test_frontend_user_keys_include_gsc_and_chinese_geo_providers() -> None:
         "DEEPSEEK_API_KEY",
         "ZHIPU_API_KEY",
         "DOUBAO_API_KEY",
+        "CLORO_API_KEY",
     ):
         assert f'"{key}"' in user_keys_ts

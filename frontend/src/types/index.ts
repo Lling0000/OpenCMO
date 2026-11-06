@@ -607,6 +607,8 @@ export interface AISettings {
   zhipu_key_masked: string;
   doubao_key_set: boolean;
   doubao_key_masked: string;
+  cloro_key_set: boolean;
+  cloro_key_masked: string;
   geo_chatgpt_enabled: boolean;
   // SEO
   pagespeed_key_set: boolean;

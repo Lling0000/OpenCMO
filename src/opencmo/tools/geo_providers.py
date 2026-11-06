@@ -950,6 +950,110 @@ class DoubaoProvider(_OpenAICompatibleProvider):
 
 
 # ---------------------------------------------------------------------------
+# cloro providers: answers from the ChatGPT, Gemini and Google AI Mode web apps
+# ---------------------------------------------------------------------------
+
+CLORO_API_BASE = "https://api.cloro.dev/v1/monitor"
+
+
+class _CloroProvider(GeoProvider):
+    """Base for providers that read consumer AI answers through the cloro API.
+
+    The model API providers above return what the model says without the
+    consumer app's web search. cloro returns the answer that the web app shows
+    to a user. Docs: https://cloro.dev/docs?utm_source=opencmo&utm_medium=byok
+    """
+
+    status = "disabled"
+    requires_auth = True
+    auth_env_vars = ["CLORO_API_KEY"]
+    engine: str  # cloro monitor endpoint: "chatgpt" | "gemini" | "aimode"
+
+    @property
+    def is_enabled(self) -> bool:
+        from opencmo import llm
+        return bool(llm.get_key("CLORO_API_KEY"))
+
+    async def check_visibility(
+        self, brand_name: str, category: str
+    ) -> GeoProviderResult:
+        query = _API_QUERY_TEMPLATE.format(category=category)
+        return await self._check_single_query(brand_name, query)
+
+    async def _check_single_query(
+        self, brand_name: str, query: str
+    ) -> GeoProviderResult:
+        snippet_chars = _get_snippet_chars()
+        try:
+            import httpx
+
+            from opencmo import llm
+
+            async with httpx.AsyncClient(timeout=180) as client:
+                resp = await client.post(
+                    f"{CLORO_API_BASE}/{self.engine}",
+                    headers={"Authorization": f"Bearer {llm.get_key('CLORO_API_KEY')}"},
+                    json={"prompt": query, "country": llm.get_key("CLORO_COUNTRY") or "US"},
+                )
+            data = resp.json()
+            if resp.status_code >= 400 or not data.get("success"):
+                err = data.get("error") or {}
+                raise RuntimeError(f"cloro HTTP {resp.status_code}: {err.get('code', '')} {err.get('message', '')}")
+            content = (data.get("result") or {}).get("text") or ""
+            status = _classify_api_content(content)
+            if status != "ok":
+                return GeoProviderResult(
+                    platform=self.name,
+                    mentioned=False,
+                    mention_count=0,
+                    position_pct=None,
+                    content_snippet=content[:snippet_chars],
+                    error=None,
+                    query=query,
+                    source_status=status,
+                )
+            mentioned, mention_count, position_pct = _analyze_text(
+                content, brand_name
+            )
+            return GeoProviderResult(
+                platform=self.name,
+                mentioned=mentioned,
+                mention_count=mention_count,
+                position_pct=position_pct,
+                content_snippet=content[:snippet_chars],
+                error=None,
+                query=query,
+                source_status="ok",
+            )
+        except Exception as e:
+            return GeoProviderResult(
+                platform=self.name,
+                mentioned=False,
+                mention_count=0,
+                position_pct=None,
+                content_snippet="",
+                error=str(e),
+                query=query,
+                source_status="error",
+            )
+
+
+class CloroChatGPTProvider(_CloroProvider):
+    name = "ChatGPT (cloro)"
+    engine = "chatgpt"
+
+
+class CloroGeminiProvider(_CloroProvider):
+    name = "Gemini (cloro)"
+    engine = "gemini"
+
+
+class CloroAIModeProvider(_CloroProvider):
+    name = "Google AI Mode (cloro)"
+    engine = "aimode"
+
+
+# ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
 
@@ -999,4 +1103,7 @@ GEO_PROVIDER_REGISTRY: list[GeoProvider] = [
     DoubaoProvider(),
     MetaSoProvider(),
     ThreeSixtyAISearchProvider(),
+    CloroChatGPTProvider(),
+    CloroGeminiProvider(),
+    CloroAIModeProvider(),
 ]

@@ -229,6 +229,7 @@ def test_settings_save_supports_gsc_and_chinese_geo_provider_keys(client, monkey
         "DEEPSEEK_API_KEY": "deepseek-test-key",
         "ZHIPU_API_KEY": "zhipu-test-key",
         "DOUBAO_API_KEY": "doubao-test-key",
+        "CLORO_API_KEY": "cloro-test-key",
     }
     for key in keys:
         monkeypatch.delenv(key, raising=False)
@@ -249,6 +250,7 @@ def test_settings_save_supports_gsc_and_chinese_geo_provider_keys(client, monkey
     assert status["deepseek_key_set"] is True
     assert status["zhipu_key_set"] is True
     assert status["doubao_key_set"] is True
+    assert status["cloro_key_set"] is True
 
 
 def test_byok_injectable_keys_include_gsc_and_chinese_geo_providers():
@@ -260,6 +262,7 @@ def test_byok_injectable_keys_include_gsc_and_chinese_geo_providers():
         "DEEPSEEK_API_KEY",
         "ZHIPU_API_KEY",
         "DOUBAO_API_KEY",
+        "CLORO_API_KEY",
     }.issubset(app_module._INJECTABLE_KEYS)
 
 
@@ -272,6 +275,7 @@ def test_byok_middleware_injects_gsc_and_chinese_geo_provider_keys():
         "DEEPSEEK_API_KEY": "deepseek-test-key",
         "ZHIPU_API_KEY": "zhipu-test-key",
         "DOUBAO_API_KEY": "doubao-test-key",
+        "CLORO_API_KEY": "cloro-test-key",
     }
     encoded = base64.b64encode(json.dumps(user_keys).encode()).decode()
     request = Request({

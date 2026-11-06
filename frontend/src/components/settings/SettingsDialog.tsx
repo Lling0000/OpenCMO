@@ -127,6 +127,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
   const [deepseekKey, setDeepseekKey] = useState("");
   const [zhipuKey, setZhipuKey] = useState("");
   const [doubaoKey, setDoubaoKey] = useState("");
+  const [cloroKey, setCloroKey] = useState("");
 
   // ── Server-side settings ──
   const [redditClientId, setRedditClientId] = useState("");
@@ -162,6 +163,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
     if (uk.DEEPSEEK_API_KEY) setDeepseekKey(uk.DEEPSEEK_API_KEY);
     if (uk.ZHIPU_API_KEY) setZhipuKey(uk.ZHIPU_API_KEY);
     if (uk.DOUBAO_API_KEY) setDoubaoKey(uk.DOUBAO_API_KEY);
+    if (uk.CLORO_API_KEY) setCloroKey(uk.CLORO_API_KEY);
 
     // Load server-side status
     getSettings().then((s) => {
@@ -193,6 +195,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
       if (deepseekKey) newKeys.DEEPSEEK_API_KEY = deepseekKey;
       if (zhipuKey) newKeys.ZHIPU_API_KEY = zhipuKey;
       if (doubaoKey) newKeys.DOUBAO_API_KEY = doubaoKey;
+      if (cloroKey) newKeys.CLORO_API_KEY = cloroKey;
       setUserKeys(newKeys);
 
       // 2. Save server-side settings only when an operator changed them.
@@ -336,6 +339,11 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
                   okText={`Doubao ${t("settings.configured")} (${status.doubao_key_masked})`}
                   noText={`Doubao ${t("settings.notConfigured")}`}
                 />
+                <StatusBadge
+                  ok={status.cloro_key_set}
+                  okText={`cloro ${t("settings.configured")} (${status.cloro_key_masked})`}
+                  noText={`cloro ${t("settings.notConfigured")}`}
+                />
               </>
             )}
             <Field label={t("settings.anthropicKey")} type="password" placeholder="sk-ant-..." value={anthropicKey} onChange={setAnthropicKey} />
@@ -345,6 +353,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
             <Field label={t("settings.deepseekKey")} type="password" placeholder="sk-..." value={deepseekKey} onChange={setDeepseekKey} />
             <Field label={t("settings.zhipuKey")} type="password" placeholder="..." value={zhipuKey} onChange={setZhipuKey} />
             <Field label={t("settings.doubaoKey")} type="password" placeholder="..." value={doubaoKey} onChange={setDoubaoKey} />
+            <Field label={t("settings.cloroKey")} type="password" placeholder="..." value={cloroKey} onChange={setCloroKey} />
             <Toggle label={t("settings.geoChatgpt")} hint={t("settings.geoChatgptHint")} value={geoChatgpt} onChange={setGeoChatgpt} />
             <p className="text-[10px] text-slate-400">{t("settings.geoHint")}</p>
           </Section>

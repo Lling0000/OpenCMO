@@ -439,6 +439,7 @@ export const ko: Partial<Record<TranslationKey, string>> = {
   "settings.deepseekKey": "DeepSeek API Key",
   "settings.zhipuKey": "Zhipu API Key",
   "settings.doubaoKey": "Doubao API Key",
+  "settings.cloroKey": "cloro API Key (ChatGPT, Gemini, AI Mode 답변)",
   "settings.geoChatgpt": "ChatGPT GEO 활성화",
   "settings.geoChatgptHint": "OpenAI API 키를 사용하여 ChatGPT 가시성을 확인합니다.",
   "settings.geoHint": "더 많은 플랫폼을 활성화하여 AI 가시성 범위를 넓히세요. Perplexity와 You.com은 키 없이도 사용 가능합니다.",

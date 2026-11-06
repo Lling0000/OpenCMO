@@ -567,6 +567,7 @@ export const zh: Partial<Record<TranslationKey, string>> = {
   "settings.deepseekKey": "DeepSeek API Key",
   "settings.zhipuKey": "智谱 API Key",
   "settings.doubaoKey": "豆包 API Key",
+  "settings.cloroKey": "cloro API Key（ChatGPT、Gemini、AI Mode 回答）",
   "settings.geoChatgpt": "启用 ChatGPT GEO",
   "settings.geoChatgptHint": "使用你的 OpenAI API 密钥检测 ChatGPT 中的品牌可见度。",
   "settings.geoHint": "启用更多平台以获得更全面的 AI 可见度覆盖。Perplexity 和 You.com 无需密钥即可使用。",
