@@ -59,6 +59,7 @@ These settings are not required for the first scan, but they unlock richer monit
 | --- | --- | --- |
 | GEO platforms | `ANTHROPIC_API_KEY`, `GOOGLE_AI_API_KEY`, `MOONSHOT_API_KEY`, `DASHSCOPE_API_KEY`, `DEEPSEEK_API_KEY`, `ZHIPU_API_KEY`, `DOUBAO_API_KEY` | Add these when you want broader AI-search visibility checks across Claude, Gemini, Kimi, Qwen, DeepSeek, GLM, or Doubao. |
 | Web search and SERP | `TAVILY_API_KEY`, `PAGESPEED_API_KEY` | Add these for stronger search, keyword, crawler, and PageSpeed coverage. |
+| Consumer AI answers and SERP (cloro) | `CLORO_API_KEY`, `CLORO_COUNTRY` | Add these to check the answers that the ChatGPT, Gemini, Google AI Mode and Bing AI Mode web apps show, and to track Google positions when Tavily is not set. `CLORO_COUNTRY` is an ISO 3166-1 alpha-2 code (default `US`). Get a key at [cloro.dev](https://cloro.dev?utm_source=opencmo&utm_medium=byok). |
 | Community monitoring | `YOUTUBE_API_KEY`, `TWITTER_BEARER_TOKEN`, `BLUESKY_HANDLE`, `BLUESKY_APP_PASSWORD` | Add these when you want richer community discovery beyond unauthenticated sources. |
 | Reports and signup email | `OPENCMO_SMTP_HOST`, `OPENCMO_SMTP_PORT`, `OPENCMO_SMTP_USER`, `OPENCMO_SMTP_PASS`, `OPENCMO_SMTP_FROM`, `OPENCMO_REPORT_EMAIL` | Add these to send weekly reports and email verification codes through SMTP. |
 | Dashboard access | `OPENCMO_WEB_TOKEN`, `OPENCMO_WEB_HOST` | Add these when exposing the dashboard outside local development. |

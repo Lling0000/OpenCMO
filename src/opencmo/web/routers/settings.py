@@ -38,6 +38,7 @@ _ALL_SETTING_KEYS: tuple[str, ...] = (
     # GEO
     "ANTHROPIC_API_KEY", "GOOGLE_AI_API_KEY", "MOONSHOT_API_KEY", "DASHSCOPE_API_KEY",
     "DEEPSEEK_API_KEY", "ZHIPU_API_KEY", "DOUBAO_API_KEY", "OPENCMO_GEO_CHATGPT",
+    "CLORO_API_KEY",
     # SEO
     "PAGESPEED_API_KEY", "GOOGLE_GSC_CREDENTIALS", "GOOGLE_GSC_SITE_URL",
     # Search (Tavily)
@@ -89,6 +90,7 @@ async def api_v1_settings_get(request: Request):
     deepseek_key = await get("DEEPSEEK_API_KEY")
     zhipu_key = await get("ZHIPU_API_KEY")
     doubao_key = await get("DOUBAO_API_KEY")
+    cloro_key = await get("CLORO_API_KEY")
     geo_chatgpt = await get("OPENCMO_GEO_CHATGPT")
     # SEO
     pagespeed_key = await get("PAGESPEED_API_KEY")
@@ -145,6 +147,8 @@ async def api_v1_settings_get(request: Request):
         "zhipu_key_masked": _mask_key(zhipu_key),
         "doubao_key_set": bool(doubao_key),
         "doubao_key_masked": _mask_key(doubao_key),
+        "cloro_key_set": bool(cloro_key),
+        "cloro_key_masked": _mask_key(cloro_key),
         "geo_chatgpt_enabled": geo_chatgpt == "1",
         # SEO
         "pagespeed_key_set": bool(pagespeed_key),

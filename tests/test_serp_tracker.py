@@ -339,3 +339,67 @@ def test_tavily_provider_client_uses_current_byok_key(monkeypatch):
         llm.reset_request_keys(token)
 
     assert keys == ["byok-1", "byok-2"]
+
+
+@pytest.mark.asyncio
+async def test_cloro_provider_ranking(monkeypatch):
+    """cloro SERP provider reads organicResults and skips empty and /goto links."""
+    from opencmo import llm
+    from opencmo.tools.serp_tracker import CloroSerpProvider
+
+    payload = {
+        "success": True,
+        "result": {
+            "organicResults": [
+                {"position": 1, "title": "Other", "link": "https://competitor.com/a"},
+                {"position": 2, "title": "Redirect", "link": "https://www.google.com/goto?url=CAESZw"},
+                {"position": 3, "title": "Empty", "link": ""},
+                {"position": 4, "title": "Ours", "link": "https://www.example.com/page"},
+            ],
+            "peopleAlsoAsk": [],
+            "relatedSearches": [],
+        },
+    }
+    calls: list = []
+
+    class FakeResponse:
+        status_code = 200
+
+        def json(self):
+            return payload
+
+    class FakeClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *exc):
+            return False
+
+        async def post(self, url, headers=None, json=None):
+            calls.append({"url": url, "headers": headers, "json": json})
+            return FakeResponse()
+
+    token = llm.set_request_keys({"CLORO_API_KEY": "byok-cloro"})
+    try:
+        with patch("httpx.AsyncClient", FakeClient):
+            provider = CloroSerpProvider()
+            assert provider.is_enabled
+            result = await provider.check_ranking("web scraping", "example.com", num_results=20)
+    finally:
+        llm.reset_request_keys(token)
+
+    assert calls[0]["url"] == "https://api.cloro.dev/v1/monitor/google"
+    assert calls[0]["json"] == {"query": "web scraping", "country": "US", "pages": 2}
+    assert result.position == 4
+    assert result.url_found == "https://www.example.com/page"
+    assert result.total_results == 2
+    assert result.error is None
+
+
+def test_cloro_provider_disabled_without_key():
+    from opencmo.tools.serp_tracker import CloroSerpProvider
+
+    assert not CloroSerpProvider().is_enabled

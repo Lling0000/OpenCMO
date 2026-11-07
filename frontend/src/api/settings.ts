@@ -28,6 +28,7 @@ export type SettingsSavePayload = {
   DEEPSEEK_API_KEY?: string;
   ZHIPU_API_KEY?: string;
   DOUBAO_API_KEY?: string;
+  CLORO_API_KEY?: string;
   OPENCMO_GEO_CHATGPT?: string;
   // SEO
   PAGESPEED_API_KEY?: string;

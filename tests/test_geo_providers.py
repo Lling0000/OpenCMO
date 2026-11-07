@@ -9,6 +9,10 @@ from opencmo.tools.geo_providers import (
     GEO_PROVIDER_REGISTRY,
     ChatGPTProvider,
     ClaudeProvider,
+    CloroAIModeProvider,
+    CloroBingAIModeProvider,
+    CloroChatGPTProvider,
+    CloroGeminiProvider,
     DeepSeekProvider,
     DefaultLLMProvider,
     DoubaoProvider,
@@ -37,11 +41,13 @@ def _use_light_profile(monkeypatch):
 
 
 def test_geo_provider_registry():
-    assert len(GEO_PROVIDER_REGISTRY) == 13
+    assert len(GEO_PROVIDER_REGISTRY) == 17
     names = {p.name for p in GEO_PROVIDER_REGISTRY}
     assert names == {
         "Default LLM", "Perplexity", "You.com", "ChatGPT", "Claude", "Gemini",
         "Kimi", "Qwen", "DeepSeek", "Zhipu GLM", "Doubao", "MetaSo", "360 AI",
+        "ChatGPT (cloro)", "Gemini (cloro)", "Google AI Mode (cloro)",
+        "Bing AI Mode (cloro)",
     }
 
 
@@ -63,6 +69,7 @@ def test_api_providers_disabled_without_keys():
         "DEEPSEEK_API_KEY": "",
         "ZHIPU_API_KEY": "",
         "DOUBAO_API_KEY": "",
+        "CLORO_API_KEY": "",
     }
     with patch.dict(os.environ, env_clean, clear=False):
         assert not ChatGPTProvider().is_enabled
@@ -73,6 +80,10 @@ def test_api_providers_disabled_without_keys():
         assert not DeepSeekProvider().is_enabled
         assert not ZhipuProvider().is_enabled
         assert not DoubaoProvider().is_enabled
+        assert not CloroChatGPTProvider().is_enabled
+        assert not CloroGeminiProvider().is_enabled
+        assert not CloroAIModeProvider().is_enabled
+        assert not CloroBingAIModeProvider().is_enabled
 
 
 def test_chatgpt_requires_opt_in():
@@ -536,3 +547,96 @@ async def test_provider_multi_aggregates_error_and_empty_statuses():
     assert result.error == "api failed"
     assert result.source_status == "error"
     assert [r.source_status for r in result.per_query_results] == ["empty", "error"]
+
+
+# ---------------------------------------------------------------------------
+# cloro providers (HTTP stubbed; payloads follow live cloro responses)
+# ---------------------------------------------------------------------------
+
+
+def _fake_httpx_client(status_code: int, payload: dict, calls: list):
+    class FakeResponse:
+        def __init__(self):
+            self.status_code = status_code
+
+        def json(self):
+            return payload
+
+    class FakeClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *exc):
+            return False
+
+        async def post(self, url, headers=None, json=None):
+            calls.append({"url": url, "headers": headers, "json": json})
+            return FakeResponse()
+
+    return FakeClient
+
+
+_CLORO_ANSWER = {
+    "success": True,
+    "result": {
+        "model": None,
+        "text": "Top web scraping tools: 1. Crawl4AI is an open-source crawler. 2. Scrapy.",
+        "sources": [
+            {"position": 1, "label": "Crawl4AI docs", "url": "https://docs.crawl4ai.com/", "footnote": True},
+        ],
+        "citationPills": [],
+    },
+}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("provider_cls", "engine"),
+    [
+        (CloroChatGPTProvider, "chatgpt"),
+        (CloroGeminiProvider, "gemini"),
+        (CloroAIModeProvider, "aimode"),
+        (CloroBingAIModeProvider, "bing/aimode"),
+    ],
+)
+async def test_cloro_provider_parse(provider_cls, engine):
+    from opencmo import llm
+
+    calls: list = []
+    token = llm.set_request_keys({"CLORO_API_KEY": "byok-cloro"})
+    try:
+        with patch("httpx.AsyncClient", _fake_httpx_client(200, _CLORO_ANSWER, calls)):
+            provider = provider_cls()
+            assert provider.is_enabled
+            result = await provider.check_visibility("Crawl4AI", "web scraping")
+    finally:
+        llm.reset_request_keys(token)
+
+    assert calls[0]["url"] == f"https://api.cloro.dev/v1/monitor/{engine}"
+    assert calls[0]["headers"]["Authorization"] == "Bearer byok-cloro"
+    assert calls[0]["json"]["country"] == "US"
+    assert result.mentioned is True
+    assert result.mention_count >= 1
+    assert result.error is None
+    assert result.source_status == "ok"
+    assert result.platform == provider_cls.name
+
+
+@pytest.mark.asyncio
+async def test_cloro_provider_error_body_is_error_status():
+    from opencmo import llm
+
+    bad_key = {"success": False, "error": {"code": "INVALID_API_KEY_FORMAT", "message": "Invalid API key format"}}
+    token = llm.set_request_keys({"CLORO_API_KEY": "bad"})
+    try:
+        with patch("httpx.AsyncClient", _fake_httpx_client(401, bad_key, [])):
+            result = await CloroChatGPTProvider().check_visibility("Crawl4AI", "web scraping")
+    finally:
+        llm.reset_request_keys(token)
+
+    assert result.mentioned is False
+    assert result.source_status == "error"
+    assert "INVALID_API_KEY_FORMAT" in result.error

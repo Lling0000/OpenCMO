@@ -584,6 +584,7 @@ export const en = {
   "settings.deepseekKey": "DeepSeek API Key",
   "settings.zhipuKey": "Zhipu API Key",
   "settings.doubaoKey": "Doubao API Key",
+  "settings.cloroKey": "cloro API Key (ChatGPT, Gemini, Google AI Mode, Bing AI Mode answers)",
   "settings.geoChatgpt": "Enable ChatGPT AI Search checks",
   "settings.geoChatgptHint": "Uses your OpenAI API key to check ChatGPT visibility.",
   "settings.geoHint": "Enable more providers to broaden AI Search coverage. Perplexity and You.com work without extra keys.",

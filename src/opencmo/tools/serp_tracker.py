@@ -238,11 +238,91 @@ class TavilySerpProvider(SerpProvider):
 
 
 # ---------------------------------------------------------------------------
+# CloroSerpProvider: Google organic results through the cloro API
+# ---------------------------------------------------------------------------
+
+
+class CloroSerpProvider(SerpProvider):
+    """Google organic results from https://cloro.dev?utm_source=opencmo&utm_medium=byok.
+
+    Cost: 5 credits for the first page of 10 results, plus 2 credits for each
+    additional page.
+    """
+
+    name = "cloro"
+
+    @property
+    def is_enabled(self) -> bool:
+        from opencmo import llm
+
+        return bool(llm.get_key("CLORO_API_KEY"))
+
+    async def check_ranking(
+        self, keyword: str, target_domain: str, num_results: int = 20
+    ) -> SerpResult:
+        try:
+            import httpx
+
+            from opencmo import llm
+
+            pages = min(max((num_results + 9) // 10, 1), 10)
+            async with httpx.AsyncClient(timeout=180) as client:
+                resp = await client.post(
+                    "https://api.cloro.dev/v1/monitor/google",
+                    headers={"Authorization": f"Bearer {llm.get_key('CLORO_API_KEY')}"},
+                    json={"query": keyword, "country": llm.get_key("CLORO_COUNTRY") or "US", "pages": pages},
+                )
+            data = resp.json()
+            if resp.status_code >= 400 or not data.get("success"):
+                err = data.get("error") or {}
+                raise RuntimeError(f"cloro HTTP {resp.status_code}: {err.get('code', '')} {err.get('message', '')}")
+
+            # A link can be empty or a Google redirect (/goto). Skip those.
+            links: list[tuple[int, str]] = []
+            for item in (data.get("result") or {}).get("organicResults") or []:
+                url = item.get("link") or ""
+                parsed = urlparse(url)
+                if not url or (parsed.netloc.endswith("google.com") and parsed.path.startswith("/goto")):
+                    continue
+                links.append((item.get("position") or len(links) + 1, url))
+
+            target = target_domain.lower().removeprefix("www.")
+            for position, url in links:
+                domain = urlparse(url).netloc.lower().removeprefix("www.")
+                if _domain_matches(domain, target):
+                    return SerpResult(
+                        position=position,
+                        url_found=url,
+                        total_results=len(links),
+                        provider=self.name,
+                        error=None,
+                    )
+
+            return SerpResult(
+                position=None,
+                url_found=None,
+                total_results=len(links),
+                provider=self.name,
+                error=None,
+            )
+
+        except Exception as exc:
+            return SerpResult(
+                position=None,
+                url_found=None,
+                total_results=0,
+                provider=self.name,
+                error=str(exc),
+            )
+
+
+# ---------------------------------------------------------------------------
 # Registry & provider resolution
 # ---------------------------------------------------------------------------
 
 SERP_PROVIDER_REGISTRY: list[SerpProvider] = [
     TavilySerpProvider(),
+    CloroSerpProvider(),
     CrawlSerpProvider(),
     DataForSeoProvider(),
 ]
