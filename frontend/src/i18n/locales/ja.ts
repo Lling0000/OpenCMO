@@ -479,7 +479,7 @@ export const ja: Partial<Record<TranslationKey, string>> = {
   "settings.deepseekKey": "DeepSeek API Key",
   "settings.zhipuKey": "Zhipu API Key",
   "settings.doubaoKey": "Doubao API Key",
-  "settings.cloroKey": "cloro API Key（ChatGPT・Gemini・AI Mode の回答）",
+  "settings.cloroKey": "cloro API Key（ChatGPT・Gemini・Google AI Mode・Bing AI Mode の回答）",
   "settings.geoChatgpt": "ChatGPT GEO を有効化",
   "settings.geoChatgptHint": "OpenAI API キーを使用して ChatGPT での可視性を確認します。",
   "settings.geoHint": "より多くのプラットフォームを有効にして、AI 可視性のカバレッジを拡大します。Perplexity と You.com はキー不要です。",

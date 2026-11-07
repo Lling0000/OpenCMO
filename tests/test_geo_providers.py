@@ -10,6 +10,7 @@ from opencmo.tools.geo_providers import (
     ChatGPTProvider,
     ClaudeProvider,
     CloroAIModeProvider,
+    CloroBingAIModeProvider,
     CloroChatGPTProvider,
     CloroGeminiProvider,
     DeepSeekProvider,
@@ -40,12 +41,13 @@ def _use_light_profile(monkeypatch):
 
 
 def test_geo_provider_registry():
-    assert len(GEO_PROVIDER_REGISTRY) == 16
+    assert len(GEO_PROVIDER_REGISTRY) == 17
     names = {p.name for p in GEO_PROVIDER_REGISTRY}
     assert names == {
         "Default LLM", "Perplexity", "You.com", "ChatGPT", "Claude", "Gemini",
         "Kimi", "Qwen", "DeepSeek", "Zhipu GLM", "Doubao", "MetaSo", "360 AI",
         "ChatGPT (cloro)", "Gemini (cloro)", "Google AI Mode (cloro)",
+        "Bing AI Mode (cloro)",
     }
 
 
@@ -81,6 +83,7 @@ def test_api_providers_disabled_without_keys():
         assert not CloroChatGPTProvider().is_enabled
         assert not CloroGeminiProvider().is_enabled
         assert not CloroAIModeProvider().is_enabled
+        assert not CloroBingAIModeProvider().is_enabled
 
 
 def test_chatgpt_requires_opt_in():
@@ -592,7 +595,12 @@ _CLORO_ANSWER = {
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("provider_cls", "engine"),
-    [(CloroChatGPTProvider, "chatgpt"), (CloroGeminiProvider, "gemini"), (CloroAIModeProvider, "aimode")],
+    [
+        (CloroChatGPTProvider, "chatgpt"),
+        (CloroGeminiProvider, "gemini"),
+        (CloroAIModeProvider, "aimode"),
+        (CloroBingAIModeProvider, "bing/aimode"),
+    ],
 )
 async def test_cloro_provider_parse(provider_cls, engine):
     from opencmo import llm

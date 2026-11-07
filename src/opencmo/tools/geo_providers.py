@@ -950,7 +950,7 @@ class DoubaoProvider(_OpenAICompatibleProvider):
 
 
 # ---------------------------------------------------------------------------
-# cloro providers: answers from the ChatGPT, Gemini and Google AI Mode web apps
+# cloro providers: answers from the ChatGPT, Gemini, Google AI Mode and Bing AI Mode web apps
 # ---------------------------------------------------------------------------
 
 CLORO_API_BASE = "https://api.cloro.dev/v1/monitor"
@@ -967,7 +967,7 @@ class _CloroProvider(GeoProvider):
     status = "disabled"
     requires_auth = True
     auth_env_vars = ["CLORO_API_KEY"]
-    engine: str  # cloro monitor endpoint: "chatgpt" | "gemini" | "aimode"
+    engine: str  # cloro monitor endpoint: "chatgpt" | "gemini" | "aimode" | "bing/aimode"
 
     @property
     def is_enabled(self) -> bool:
@@ -1053,6 +1053,11 @@ class CloroAIModeProvider(_CloroProvider):
     engine = "aimode"
 
 
+class CloroBingAIModeProvider(_CloroProvider):
+    name = "Bing AI Mode (cloro)"
+    engine = "bing/aimode"
+
+
 # ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
@@ -1106,4 +1111,5 @@ GEO_PROVIDER_REGISTRY: list[GeoProvider] = [
     CloroChatGPTProvider(),
     CloroGeminiProvider(),
     CloroAIModeProvider(),
+    CloroBingAIModeProvider(),
 ]
